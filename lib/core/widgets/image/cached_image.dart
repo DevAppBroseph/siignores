@@ -45,7 +45,7 @@ class CachedImage extends StatelessWidget {
           height: height,
           width: MediaQuery.of(context).size.width,
           fit: BoxFit.cover,
-          image: AssetImage(isProfilePhoto ? 'https://aikidojo.lv/wp-content/uploads/2019/08/nophoto.jpg' : 'https://diamed.ru/wp-content/uploads/2020/11/nophoto.png'),
+          image: AssetImage(isProfilePhoto ? 'assets/images/profile.jpeg' : 'assets/images/nophoto.png'),
         ),
       ),
     );

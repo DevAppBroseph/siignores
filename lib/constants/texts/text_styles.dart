@@ -79,6 +79,14 @@ class TextStyles {
       fontSize: 18.sp,
       fontWeight: FontWeight.w400,
       color: ColorStyles.black);
+  
+
+  static  TextStyle black_17_w700 = TextStyle(
+      fontFamily: MainConfigApp.fontFamily1,
+      fontStyle: FontStyle.normal,
+      fontSize: 17.sp,
+      fontWeight: FontWeight.w700,
+      color: ColorStyles.black);
 
       
   static  TextStyle black_16_w700 = TextStyle(
