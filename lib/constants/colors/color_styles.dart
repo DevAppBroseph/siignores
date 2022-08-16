@@ -22,8 +22,10 @@ class ColorStyles {
 
 
   static const main_grey = Color(0xFFF0EEEC);
+  static const greyf9f9 = Color(0xFFF9F9F9);
   static const grey888 = Color(0xFF888888);
   static const grey999 = Color(0xFF999999);
+  static const grey777 = Color(0xFF777777);
   static const grey_f1f1f1 = Color(0xFFF1F1F1);
 
   static const green_accent = Color(0xFF6DB533);

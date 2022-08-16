@@ -87,7 +87,21 @@ class TextStyles {
       fontSize: 16.sp,
       fontWeight: FontWeight.w700,
       color: ColorStyles.black);
+
+  static  TextStyle black_15_w700 = TextStyle(
+      fontFamily: MainConfigApp.fontFamily1,
+      fontStyle: FontStyle.normal,
+      fontSize: 15.sp,
+      fontWeight: FontWeight.w700,
+      color: ColorStyles.black);
   
+  static  TextStyle black_15_w500 = TextStyle(
+      fontFamily: MainConfigApp.fontFamily1,
+      fontStyle: FontStyle.normal,
+      fontSize: 15.sp,
+      fontWeight: FontWeight.w500,
+      color: ColorStyles.black);
+
   static  TextStyle black_16_w400 = TextStyle(
       fontFamily: MainConfigApp.fontFamily1,
       fontStyle: FontStyle.normal,
@@ -268,6 +282,13 @@ class TextStyles {
       fontSize: 12.sp,
       fontWeight: FontWeight.w700,
       color: Colors.white);
+  
+  static  TextStyle white_11_w700 = TextStyle(
+      fontFamily: MainConfigApp.fontFamily1,
+      fontStyle: FontStyle.normal,
+      fontSize: 11.sp,
+      fontWeight: FontWeight.w700,
+      color: Colors.white);
 
   
 
@@ -299,4 +320,90 @@ class TextStyles {
       fontWeight: FontWeight.w400,
       color: ColorStyles.primary);
 
+
+
+
+
+
+
+
+
+
+
+  static  TextStyle cormorant_black_41_w400 = TextStyle(
+      fontFamily: MainConfigApp.fontFamily2,
+      fontStyle: FontStyle.normal,
+      fontSize: 41.sp,
+      fontWeight: FontWeight.w400,
+      color: ColorStyles.black);
+
+  static  TextStyle cormorant_black_27_w400 = TextStyle(
+      fontFamily: MainConfigApp.fontFamily2,
+      fontStyle: FontStyle.normal,
+      fontSize: 27.sp,
+      fontWeight: FontWeight.w400,
+      color: ColorStyles.black);
+  
+  static  TextStyle cormorant_black_16_w400 = TextStyle(
+      fontFamily: MainConfigApp.fontFamily2,
+      fontStyle: FontStyle.normal,
+      fontSize: 16.sp,
+      fontWeight: FontWeight.w400,
+      color: ColorStyles.black);
+  
+  static  TextStyle cormorant_black_15_w400 = TextStyle(
+      fontFamily: MainConfigApp.fontFamily2,
+      fontStyle: FontStyle.normal,
+      fontSize: 15.sp,
+      fontWeight: FontWeight.w400,
+      color: ColorStyles.black);
+
+  static  TextStyle cormorant_black_29_w400 = TextStyle(
+      fontFamily: MainConfigApp.fontFamily2,
+      fontStyle: FontStyle.normal,
+      fontSize: 29.sp,
+      fontWeight: FontWeight.w400,
+      color: ColorStyles.black);
+
+  static  TextStyle cormorant_black_25_w400 = TextStyle(
+      fontFamily: MainConfigApp.fontFamily2,
+      fontStyle: FontStyle.normal,
+      fontSize: 25.sp,
+      fontWeight: FontWeight.w400,
+      color: ColorStyles.black);
+  
+  static  TextStyle cormorant_black_18_w400 = TextStyle(
+      fontFamily: MainConfigApp.fontFamily2,
+      fontStyle: FontStyle.normal,
+      fontSize: 18.sp,
+      fontWeight: FontWeight.w400,
+      color: ColorStyles.black);
+  
+  static  TextStyle cormorant_black_17_w400 = TextStyle(
+      fontFamily: MainConfigApp.fontFamily2,
+      fontStyle: FontStyle.normal,
+      fontSize: 17.sp,
+      fontWeight: FontWeight.w400,
+      color: ColorStyles.black);
+
+
+
+
+
+
+
+
+
+
+
+
+  // Green
+  static  TextStyle green_12_w700 = TextStyle(
+      fontFamily: MainConfigApp.fontFamily1,
+      fontStyle: FontStyle.normal,
+      fontSize: 12.sp,
+      fontWeight: FontWeight.w700,
+      color: ColorStyles.green_accent);
+
+      
 }

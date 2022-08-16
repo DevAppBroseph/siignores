@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:siignores/constants/texts/text_styles.dart';
 import 'package:siignores/features/auth/presentation/views/register_view.dart';
 import 'package:siignores/features/auth/presentation/views/sign_in_view.dart';
+import 'package:siignores/features/main/presentation/views/main_view.dart';
 import '../../../../constants/colors/color_styles.dart';
 import '../../../../core/utils/toasts.dart';
 import '../bloc/auth/auth_bloc.dart';
@@ -68,7 +69,7 @@ class _SplashViewState extends State<SplashView> {
         if(state is RequiredRegisterState){
           // return RegisterView();
         }
-        return RegisterView();
+        return MainView();
         return SplashWidget(isLoading: true);
       },
     );

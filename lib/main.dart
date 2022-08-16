@@ -38,11 +38,11 @@ class MyApp extends StatelessWidget {
             bottomAppBarColor: Colors.green,
             scaffoldBackgroundColor: ColorStyles.backgroundColor,
             appBarTheme: AppBarTheme(
-              backgroundColor: ColorStyles.white,
+              backgroundColor: ColorStyles.backgroundColor,
               centerTitle: true,
               titleTextStyle: TextStyles.title_app_bar,
               elevation: 1.0,
-              toolbarHeight: 56,
+              toolbarHeight: 64.h,
               iconTheme: IconThemeData(
                 color: ColorStyles.black,
               ),
