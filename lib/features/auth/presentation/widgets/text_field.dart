@@ -1,9 +1,7 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:siignores/core/constants.dart';
+import 'package:siignores/constants/colors/color_styles.dart';
 
 class CustomTextField extends StatelessWidget {
   final String hint;
@@ -55,8 +53,8 @@ class CustomTextField extends StatelessWidget {
                     Center(
                       child: TextField(
                         controller: controller,
-                        cursorColor: accentColor,
-                        obscureText: textInputType == TextInputType.password &&
+                        cursorColor: ColorStyles.accentColor,
+                        obscureText: textInputType == TextInputType.visiblePassword &&
                                 !snapshot.data!
                             ? true
                             : false,
@@ -72,7 +70,7 @@ class CustomTextField extends StatelessWidget {
                         ),
                       ),
                     ),
-                    if (textInputType == TextInputType.password)
+                    if (textInputType == TextInputType.visiblePassword)
                       Align(
                         alignment: Alignment.centerRight,
                         child: Padding(
@@ -86,7 +84,7 @@ class CustomTextField extends StatelessWidget {
                               height: 20,
                               color: Colors.white,
                               child: SvgPicture.asset(
-                                'assets/eye.svg',
+                                'assets/svg/eye.svg',
                                 width: 17,
                                 height: 9,
                               ),
