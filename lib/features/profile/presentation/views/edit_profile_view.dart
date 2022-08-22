@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:siignores/constants/texts/text_styles.dart';
 import 'package:siignores/core/widgets/modals/password_created_modal.dart';
 import 'package:siignores/core/widgets/text_fields/default_text_form_field.dart';
@@ -10,23 +13,33 @@ import 'package:siignores/features/main/presentation/bloc/main_screen/main_scree
 import 'package:siignores/features/profile/presentation/bloc/profile/profile_bloc.dart';
 import 'package:siignores/features/profile/presentation/widgets/profile_photo_picker.dart';
 import '../../../../constants/colors/color_styles.dart';
+import '../../../../core/services/database/auth_params.dart';
 import '../../../../core/utils/toasts.dart';
 import '../../../../core/widgets/btns/back_appbar_btn.dart';
 import '../../../../core/widgets/btns/primary_btn.dart';
 import '../../../../core/widgets/loaders/overlay_loader.dart';
+import '../../../../core/widgets/modals/take_photo_modal.dart';
+import '../../../../locator.dart';
 
 
 
-class EditProfileView extends StatelessWidget {
+class EditProfileView extends StatefulWidget {
+
+  @override
+  State<EditProfileView> createState() => _EditProfileViewState();
+}
+
+class _EditProfileViewState extends State<EditProfileView> {
 
   final formKey = GlobalKey<FormState>();
+
   String errorFirstName = 'Введите имя';
   String errorEmail = 'Введите email';
   String errorLastName = 'Введите фамилию';
 
-  TextEditingController emailController = TextEditingController();
-  TextEditingController firstNameController = TextEditingController();
-  TextEditingController lastNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController(text: sl<AuthConfig>().userEntity!.email);
+  TextEditingController firstNameController = TextEditingController(text: sl<AuthConfig>().userEntity!.firstName);
+  TextEditingController lastNameController = TextEditingController(text: sl<AuthConfig>().userEntity!.lastName);
 
   void saveTap(BuildContext context){
     if(formKey.currentState!.validate()){
@@ -36,6 +49,27 @@ class EditProfileView extends StatelessWidget {
         lastName: lastNameController.text.trim()
       ));
     }
+  }
+
+  File? avatar;
+
+  void changePhotoTap(BuildContext context){
+    TakePhotoModal(
+      context: context,
+      title: 'Где выбрать \nизображение',
+      callback: (ImageSource source) async{
+        final getMedia = await ImagePicker().getImage(source: source, maxWidth: 1000.0, maxHeight: 1000.0);
+        if (getMedia != null) {
+          final file = File(getMedia.path);
+          setState(() {
+            avatar = file;
+          });
+          showLoaderWrapper(context);
+          context.read<ProfileBloc>().add(UpdateAvatarEvent(file: file));
+          Navigator.pop(context);
+        }
+      }
+    ).showMyDialog();
   }
 
   @override
@@ -71,7 +105,9 @@ class EditProfileView extends StatelessWidget {
                     ProfilePhotoPicker(
                       isVerified: false,
                       borderColor: ColorStyles.backgroundColor,
-                      onTap: (){},
+                      urlToImage: sl<AuthConfig>().userEntity!.avatar,
+                      fileImage: avatar,
+                      onTap: () => changePhotoTap(context),
                     ),
                     SizedBox(height: 20.h,),
                     DefaultTextFormField(

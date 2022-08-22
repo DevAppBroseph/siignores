@@ -44,6 +44,7 @@ class _ProfileViewState extends State<ProfileView> {
           });
           showLoaderWrapper(context);
           context.read<ProfileBloc>().add(UpdateAvatarEvent(file: file));
+          Navigator.pop(context);
         }
       }
     ).showMyDialog();

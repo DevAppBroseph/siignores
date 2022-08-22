@@ -26,6 +26,7 @@ import 'features/auth/domain/usecases/register.dart';
 import 'features/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'features/auth/presentation/bloc/forgot_password/forgot_password_bloc.dart';
 import 'features/auth/presentation/bloc/register/register_bloc.dart';
+import 'features/profile/data/datasources/profile/remote_datasource.dart';
 import 'features/profile/data/repositories/profile_repository_impl.dart';
 import 'features/profile/presentation/bloc/profile/profile_bloc.dart';
 
@@ -103,8 +104,8 @@ void setupInjections() {
 
   ///Profile
   // //Datasources
-  sl.registerLazySingleton<AuthenticationRemoteDataSource>(
-    () => AuthenticationRemoteDataSourceImpl(dio: sl()),
+  sl.registerLazySingleton<ProfileRemoteDataSource>(
+    () => ProfileRemoteDataSourceImpl(dio: sl()),
   );
 
   // //Repositories

@@ -1,6 +1,7 @@
 
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:siignores/features/auth/data/models/user_model.dart';
 import '../../../../../core/error/exceptions.dart';
 import '../../../../../core/services/database/auth_params.dart';
 import '../../../../../core/services/network/endpoints.dart';
@@ -29,8 +30,8 @@ class ProfileRemoteDataSourceImpl
     headers["Authorization"] = "Token ${sl<AuthConfig>().token}";
 
     var formData = FormData.fromMap({
-      "first_name": firstName,
-      "last_name": lastName,
+      "firstname": firstName,
+      "lastname": lastName,
     });
     Response response = await dio.patch(Endpoints.updateProfileInfo.getPath(),
         data: formData,
@@ -39,6 +40,7 @@ class ProfileRemoteDataSourceImpl
             validateStatus: (status) => status! < 499,
             headers: headers));
     if (response.statusCode == 200) {
+      sl<AuthConfig>().userEntity = UserModel.fromJson(response.data);
       return true;
     } else {
       throw ServerException(message: 'Ошибка с сервером');
