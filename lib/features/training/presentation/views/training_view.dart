@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:siignores/constants/texts/text_styles.dart';
 import 'package:siignores/features/training/presentation/views/lessons_view.dart';
 
 import '../../../../constants/colors/color_styles.dart';
+import '../../../main/presentation/bloc/main_screen/main_screen_bloc.dart';
 import '../widgets/module_card.dart';
 
 
@@ -35,7 +37,7 @@ class TrainingView extends StatelessWidget {
                 itemBuilder: (context, i){
                   return ModuleCard(
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => LessonsView()));
+                      context.read<MainScreenBloc>().add(ChangeViewEvent(widget: LessonsView()));
                     },
                   );
                 }

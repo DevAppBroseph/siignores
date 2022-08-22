@@ -1,10 +1,9 @@
 
-enum Config { baseUrl, baseScheme, baseAPIpath, reviewsAPIpath, url }
+enum Config { baseUrl, baseScheme, baseAPIpath, url }
 
 const bool isDev = true;
 
-// const String myUrl = '0.0.0.0';
-String myUrl = 'URL_TO_API';
+String myUrl = '176.113.83.169';
 
 extension ConfigExtension on Config {
   String get value {
@@ -12,30 +11,21 @@ extension ConfigExtension on Config {
       case Config.baseUrl:
         return !isDev ? "REALURL" : myUrl;
       case Config.baseAPIpath:
-        return 'api/v1';
-      case Config.reviewsAPIpath:
-        return 'reviews-api/v1';
+        return '';
       case Config.url:
         return url;
       default:
-        return 'https';
+        return 'http';
     }
   }
 
   String get url {
     return Config.baseScheme.value +
         "://" +
-        Config.baseUrl.value +
-        '/' +
-        Config.baseAPIpath.value;
-  }
-
-  String get urlReviews {
-    return Config.baseScheme.value +
-        "://" +
-        Config.baseUrl.value +
-        '/' +
-        Config.reviewsAPIpath.value;
+        Config.baseUrl.value;
+        // +
+        // '/' +
+        // Config.baseAPIpath.value;
   }
 
   String get urlWithoutApi {

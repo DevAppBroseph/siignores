@@ -17,6 +17,7 @@ class ColorStyles {
   static const primarySwath = MaterialColor(0xFFD4CBC4, color);
   static const black = Color(0xFF323232);
   static const white = Color(0xFFFFFFFF);
+  static const telegram = Color(0xFF40B3E0);
   static const text_color = Color(0xFF705B4C);
 
 

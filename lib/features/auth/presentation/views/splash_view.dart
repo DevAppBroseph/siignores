@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:siignores/constants/texts/text_styles.dart';
-import 'package:siignores/features/auth/presentation/views/register_view.dart';
+import 'package:siignores/core/services/database/auth_params.dart';
 import 'package:siignores/features/auth/presentation/views/sign_in_view.dart';
 import 'package:siignores/features/main/presentation/views/main_view.dart';
 import '../../../../constants/colors/color_styles.dart';
 import '../../../../core/utils/toasts.dart';
+import '../../../../locator.dart';
 import '../bloc/auth/auth_bloc.dart';
 
 
@@ -20,7 +22,7 @@ class _SplashViewState extends State<SplashView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // context.read<AuthBloc>().add(CheckUserLoggedEvent());
+    context.read<AuthBloc>().add(CheckUserLoggedEvent());
   }
 
 
@@ -28,7 +30,8 @@ class _SplashViewState extends State<SplashView> {
   Widget build(BuildContext context) {
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) async {
-        if(state is RequiredGetUserInfoState || state is LoginWithPhoneSuccessState){
+        if(state is RequiredGetUserInfoState){
+          Loader.hide();
           context.read<AuthBloc>().add(GetUserInfoEvent());
         }
         if(state is RequiredCheckState){
@@ -36,23 +39,18 @@ class _SplashViewState extends State<SplashView> {
         }
 
         if(state is ErrorState){
-          context.read<AuthBloc>().add(ServerErrorEvent());
+          Loader.hide();
+          showAlertToast(state.message);
+          // context.read<AuthBloc>().add(ServerErrorEvent());
         }
 
-        if(state is InternetConnectionFailed){
+        if(state is InternetErrorState){
           context.read<AuthBloc>().add(InternetErrorEvent());
-        }
-
-        if(state is LoginCodeErrorState){
-          if(state.message.length < 200){
-            showAlertToast(state.message);
-          }
-        }
-        if(state is LoginCodeSendedSuccessState || state is RequiredRegisterState){
         }
       },
       
       builder: (context, state) {
+        //Error screens
         // if(state is InternetErrorState){
         //   return InternetConnectErrorView();
         // }
@@ -60,16 +58,14 @@ class _SplashViewState extends State<SplashView> {
         //   return ServerConnectErrorView();
         // }
         
-        if(state is EnterCodeState){
-          // return EnterCodeView(phone: state.phone!,);
-        }
         if(state is CheckedState || state is BlankState || state is ErrorState){
-          return Container();
+          if(sl<AuthConfig>().authenticatedOption == AuthenticatedOption.authenticated){
+            return MainView();
+          }else{
+            return SignInView();
+          }
         }
-        if(state is RequiredRegisterState){
-          // return RegisterView();
-        }
-        return MainView();
+
         return SplashWidget(isLoading: true);
       },
     );

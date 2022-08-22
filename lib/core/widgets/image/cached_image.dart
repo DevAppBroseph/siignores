@@ -17,7 +17,7 @@ class CachedImage extends StatelessWidget {
     return CachedNetworkImage(
       imageUrl: urlImage == null ? '' :  urlImage!,
       imageBuilder: (context, imageProvider) => ClipRRect(
-        borderRadius: borderRadius ?? BorderRadius.zero,
+        borderRadius: borderRadius ?? BorderRadius.circular(0),
         child: Image(
           height: height,
           width: MediaQuery.of(context).size.width,

@@ -1,3 +1,4 @@
+import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -13,8 +14,8 @@ class TopInfoHome extends StatelessWidget {
   final int notificationCount;
   final Function() onTapByName;
   final Function() onTapNotification;
-  const TopInfoHome({Key? key, required this.notificationCount, required this.onTapByName, required this.onTapNotification, required this.text, required this.urlToImage}) : super(key: key);
-
+  TopInfoHome({Key? key, required this.notificationCount, required this.onTapByName, required this.onTapNotification, required this.text, required this.urlToImage}) : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -57,7 +58,16 @@ class TopInfoHome extends StatelessWidget {
                   Positioned(
                     bottom: 0,
                     left: 0,
-                    child: SvgPicture.asset('assets/svg/notification.svg')
+                    child: CustomPopupMenu(
+                      arrowColor: ColorStyles.white,
+                      arrowSize: 20,
+                      showArrow: true,
+                      child: SvgPicture.asset('assets/svg/notification.svg'),
+                      menuBuilder: _buildLongPressMenu,
+                      barrierColor: Colors.black.withOpacity(0.5),
+                      pressType: PressType.singleClick,
+                      
+                    )
                   ),
                   Positioned(
                     top: 0,
@@ -78,6 +88,71 @@ class TopInfoHome extends StatelessWidget {
             ),
           )
         ],
+      ),
+    );
+  }
+
+
+
+
+  Widget _buildLongPressMenu() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(14.h),
+      child: Container(
+        width: 330.w,
+        padding: EdgeInsets.symmetric(horizontal: 23.w),
+        color: ColorStyles.white,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 26.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Для Вас новое предложение', style: TextStyles.black_15_w500,),
+                  SizedBox(height: 4.h,),
+                  Text('4 ч. назад', style: TextStyles.black_13_w400
+                    .copyWith(color: ColorStyles.black.withOpacity(0.5)),)
+                ],
+              ),
+            ),
+            Container(
+              width: double.maxFinite,
+              height: 1.h,
+              color: ColorStyles.black.withOpacity(0.15),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 26.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Для Вас новое предложение', style: TextStyles.black_15_w500,),
+                  SizedBox(height: 4.h,),
+                  Text('4 ч. назад', style: TextStyles.black_13_w400
+                    .copyWith(color: ColorStyles.black.withOpacity(0.5)),)
+                ],
+              ),
+            ),
+            Container(
+              width: double.maxFinite,
+              height: 1.h,
+              color: ColorStyles.black.withOpacity(0.15),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 26.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Для Вас новое предложение', style: TextStyles.black_15_w500,),
+                  SizedBox(height: 4.h,),
+                  Text('4 ч. назад', style: TextStyles.black_13_w400
+                    .copyWith(color: ColorStyles.black.withOpacity(0.5)),)
+                ],
+              ),
+            ),
+          ],
+        )
       ),
     );
   }

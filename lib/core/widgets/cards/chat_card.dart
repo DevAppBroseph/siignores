@@ -11,7 +11,8 @@ import '../../../constants/texts/text_styles.dart';
 
 class ChatCard extends StatelessWidget {
   final bool centerButton;
-  const ChatCard({Key? key, this.centerButton = false}) : super(key: key);
+  final Function() onTap;
+  const ChatCard({Key? key, this.centerButton = false, required this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +50,7 @@ class ChatCard extends StatelessWidget {
           ),
           Bounce(
             duration: Duration(milliseconds: 110),
-            onPressed: (){},
+            onPressed: onTap,
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
               decoration: BoxDecoration(

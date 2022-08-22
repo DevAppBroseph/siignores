@@ -11,6 +11,8 @@ class RegisterBlankState extends RegisterState {}
 
 class RegisterViewState extends RegisterState{}
 class RegisteredState extends RegisterState{}
+class RegisterToSetPassswordViewState extends RegisterState{}
+class RegisterCompletedState extends RegisterState{}
 
 class RegisterErrorState extends RegisterState{
   final String message;

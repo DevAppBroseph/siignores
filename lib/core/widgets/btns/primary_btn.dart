@@ -8,10 +8,12 @@ import '../../../../constants/colors/color_styles.dart';
 class PrimaryBtn extends StatelessWidget {
   final String title;
   final Function() onTap;
+  final double? width;
   const PrimaryBtn({
     Key? key,
     required this.title,
     required this.onTap,
+    this.width
   }) : super(key: key);
 
   @override
@@ -20,7 +22,7 @@ class PrimaryBtn extends StatelessWidget {
       duration: Duration(milliseconds: 110),
       onPressed: onTap,
       child: Container(
-        width: 311.w,
+        width: width ?? 311.w,
         height: 44.h,
         decoration: BoxDecoration(
           color: ColorStyles.primary,

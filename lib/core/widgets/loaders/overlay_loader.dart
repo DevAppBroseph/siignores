@@ -6,9 +6,8 @@ import 'package:siignores/constants/colors/color_styles.dart';
 showLoaderWrapper(BuildContext context){
   return Loader.show(
     context,
-    progressIndicator: LoadingAnimationWidget.flickr(
-      leftDotColor: ColorStyles.primary,
-      rightDotColor: ColorStyles.black,
+    progressIndicator: LoadingAnimationWidget.fallingDot(
+      color: ColorStyles.primary,
       size: 35,
     ),
   );

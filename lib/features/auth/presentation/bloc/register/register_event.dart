@@ -7,18 +7,20 @@ class RegisterEvent extends Equatable {
 
 
 
-class RegisterSendCodeOTPEvent extends RegisterEvent {
+class RegisterByInfoEvent extends RegisterEvent {
   final String firstName;  
   final String lastName;  
   final String email;
 
-  RegisterSendCodeOTPEvent({required this.email, required this.firstName, required this.lastName});  
+  RegisterByInfoEvent({required this.email, required this.firstName, required this.lastName});  
 }
-class RegisterUserByOTPEvent extends RegisterEvent {
-  final String OTP;
-
-  RegisterUserByOTPEvent({required this.OTP});  
+class RegisterActivationCodeEvent extends RegisterEvent {
+  final String code;
+  RegisterActivationCodeEvent({required this.code});  
 }
-class RegisterSignInEvent extends RegisterEvent{}
-
-class RegisterErrorEvent extends RegisterEvent {}
+class RegisterSignInEvent extends RegisterEvent {}
+class RegisterSetPasswordEvent extends RegisterEvent{
+  final String password;
+  RegisterSetPasswordEvent({required this.password });
+}
+class RegisterBackEvent extends RegisterEvent{}

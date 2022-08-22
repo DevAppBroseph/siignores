@@ -6,7 +6,10 @@ import 'package:siignores/features/auth/presentation/bloc/register/register_bloc
 import 'constants/colors/color_styles.dart';
 import 'constants/texts/text_styles.dart';
 import 'features/auth/presentation/bloc/auth/auth_bloc.dart';
+import 'features/auth/presentation/bloc/forgot_password/forgot_password_bloc.dart';
 import 'features/auth/presentation/views/splash_view.dart';
+import 'features/main/presentation/bloc/main_screen/main_screen_bloc.dart';
+import 'features/profile/presentation/bloc/profile/profile_bloc.dart';
 import 'locator.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,6 +31,9 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider(create: (_) => sl<AuthBloc>()),
           BlocProvider(create: (_) => sl<RegisterBloc>()),
+          BlocProvider(create: (_) => sl<ForgotPasswordBloc>()),
+          BlocProvider(create: (_) => sl<MainScreenBloc>()),
+          BlocProvider(create: (_) => sl<ProfileBloc>()),
         ], 
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:siignores/core/widgets/image/cached_image.dart';
+import 'package:siignores/features/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'package:siignores/features/home/presentation/widgets/top_info_home.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../constants/colors/color_styles.dart';
 import '../../../../constants/texts/text_styles.dart';
+import '../../../../core/widgets/modals/lecture_modal.dart';
 import '../../../../core/widgets/sections/group_section.dart';
 import 'calendart_test.dart';
 
@@ -38,6 +41,7 @@ class HomeView extends StatelessWidget {
         backgroundColor: ColorStyles.primary,
       ),
       body: SingleChildScrollView(
+        physics: ClampingScrollPhysics(),
         child: Column(
           children: [
             Stack(
@@ -62,9 +66,12 @@ class HomeView extends StatelessWidget {
                       notificationCount: 3, 
                       urlToImage: 'https://aikidojo.lv/wp-content/uploads/2019/08/nophoto.jpg',
                       onTapByName: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => TableEventsExample()));
+                        context.read<AuthBloc>().add(LogoutEvent());
+                        // Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => TableEventsExample()));
                       }, 
-                      onTapNotification: (){}, 
+                      onTapNotification: (){
+                        
+                      }, 
                       text: 'Name Lastname'
                     ),
                     SizedBox(height: 28.h,),
@@ -73,25 +80,30 @@ class HomeView extends StatelessWidget {
                       child: ListView(
                         scrollDirection: Axis.horizontal,
                         children: _list.map((e) 
-                          => Container(
-                            height: 120.h,
-                            width: 212.w,
-                            padding: EdgeInsets.symmetric(horizontal: 10.w),
-                            margin: EdgeInsets.only(right: 16.w, left: _list.first['title'] == e['title'] ? 23.w : 0),
-                            decoration: BoxDecoration(
-                              color: ColorStyles.white,
-                              borderRadius: BorderRadius.circular(13.h)
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(e['title'] ?? '', style: TextStyles.cormorant_black_16_w400,),
-                                SizedBox(height: 11.h,),
-                                Text(e['desc']!.toUpperCase(), 
-                                  style: e['desc']!.length > 10 ? TextStyles.cormorant_black_15_w400 : TextStyles.cormorant_black_25_w400,
-                                  textAlign: TextAlign.center,
-                                )
-                              ],
+                          => GestureDetector(
+                            onTap: (){
+                              showModalLecture(context);
+                            },
+                            child: Container(
+                              height: 120.h,
+                              width: 212.w,
+                              padding: EdgeInsets.symmetric(horizontal: 10.w),
+                              margin: EdgeInsets.only(right: 16.w, left: _list.first['title'] == e['title'] ? 23.w : 0),
+                              decoration: BoxDecoration(
+                                color: ColorStyles.white,
+                                borderRadius: BorderRadius.circular(13.h)
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(e['title'] ?? '', style: TextStyles.cormorant_black_16_w400,),
+                                  SizedBox(height: 11.h,),
+                                  Text(e['desc']!.toUpperCase(), 
+                                    style: e['desc']!.length > 10 ? TextStyles.cormorant_black_15_w400 : TextStyles.cormorant_black_25_w400,
+                                    textAlign: TextAlign.center,
+                                  )
+                                ],
+                              ),
                             ),
                           )
                         ).toList()
@@ -166,6 +178,15 @@ class HomeView extends StatelessWidget {
                       // onRangeSelected: _onRangeSelected,
                     ),
                   ),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 6.h),
+                    margin: EdgeInsets.symmetric(vertical: 6.h),
+                    child: Row(
+                      children: [
+                        Text('08:00', style: TextStyles.black_12_w400,)
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),

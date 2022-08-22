@@ -14,13 +14,6 @@ class TextStyles {
       fontWeight: FontWeight.w700,
       color: ColorStyles.black);
 
-  static TextStyle cart_empty_text = TextStyle(
-      fontFamily: MainConfigApp.fontFamily1,
-      fontStyle: FontStyle.normal,
-      fontSize: 22.sp,
-      fontWeight: FontWeight.w700,
-      color: ColorStyles.black);
-
 
   // BLACK
   static  TextStyle black_30_w700 = TextStyle(
@@ -34,6 +27,13 @@ class TextStyles {
       fontFamily: MainConfigApp.fontFamily1,
       fontStyle: FontStyle.normal,
       fontSize: 28.sp,
+      fontWeight: FontWeight.w700,
+      color: ColorStyles.black);
+  
+  static  TextStyle black_27_w700 = TextStyle(
+      fontFamily: MainConfigApp.fontFamily1,
+      fontStyle: FontStyle.normal,
+      fontSize: 27.sp,
       fontWeight: FontWeight.w700,
       color: ColorStyles.black);
   
@@ -51,10 +51,24 @@ class TextStyles {
       fontWeight: FontWeight.w700,
       color: ColorStyles.black);
   
+  static  TextStyle black_26_w700 = TextStyle(
+      fontFamily: MainConfigApp.fontFamily1,
+      fontStyle: FontStyle.normal,
+      fontSize: 26.sp,
+      fontWeight: FontWeight.w700,
+      color: ColorStyles.black);
+  
   static  TextStyle black_24_w700 = TextStyle(
       fontFamily: MainConfigApp.fontFamily1,
       fontStyle: FontStyle.normal,
       fontSize: 24.sp,
+      fontWeight: FontWeight.w700,
+      color: ColorStyles.black);
+  
+  static  TextStyle black_25_w700 = TextStyle(
+      fontFamily: MainConfigApp.fontFamily1,
+      fontStyle: FontStyle.normal,
+      fontSize: 25.sp,
       fontWeight: FontWeight.w700,
       color: ColorStyles.black);
   
@@ -65,6 +79,12 @@ class TextStyles {
       fontWeight: FontWeight.w500,
       color: ColorStyles.black);
 
+  static  TextStyle black_19_w700 = TextStyle(
+      fontFamily: MainConfigApp.fontFamily1,
+      fontStyle: FontStyle.normal,
+      fontSize: 19.sp,
+      fontWeight: FontWeight.w700,
+      color: ColorStyles.black);
 
   static  TextStyle black_18_w700 = TextStyle(
       fontFamily: MainConfigApp.fontFamily1,
@@ -88,6 +108,12 @@ class TextStyles {
       fontWeight: FontWeight.w700,
       color: ColorStyles.black);
 
+  static  TextStyle black_17_w400 = TextStyle(
+      fontFamily: MainConfigApp.fontFamily1,
+      fontStyle: FontStyle.normal,
+      fontSize: 17.sp,
+      fontWeight: FontWeight.w400,
+      color: ColorStyles.black);
       
   static  TextStyle black_16_w700 = TextStyle(
       fontFamily: MainConfigApp.fontFamily1,
@@ -131,6 +157,13 @@ class TextStyles {
       fontWeight: FontWeight.w400,
       color: ColorStyles.black);
   
+  static  TextStyle black_13_w400 = TextStyle(
+      fontFamily: MainConfigApp.fontFamily1,
+      fontStyle: FontStyle.normal,
+      fontSize: 13.sp,
+      fontWeight: FontWeight.w400,
+      color: ColorStyles.black);
+
   static  TextStyle black_12_w700 = TextStyle(
       fontFamily: MainConfigApp.fontFamily1,
       fontStyle: FontStyle.normal,
@@ -142,6 +175,13 @@ class TextStyles {
       fontFamily: MainConfigApp.fontFamily1,
       fontStyle: FontStyle.normal,
       fontSize: 12.sp,
+      fontWeight: FontWeight.w400,
+      color: ColorStyles.black);
+    
+  static  TextStyle black_11_w400 = TextStyle(
+      fontFamily: MainConfigApp.fontFamily1,
+      fontStyle: FontStyle.normal,
+      fontSize: 11.sp,
       fontWeight: FontWeight.w400,
       color: ColorStyles.black);
 
@@ -371,6 +411,13 @@ class TextStyles {
       fontStyle: FontStyle.normal,
       fontSize: 29.sp,
       fontWeight: FontWeight.w400,
+      color: ColorStyles.black);
+    
+  static  TextStyle cormorant_black_25_w700 = TextStyle(
+      fontFamily: MainConfigApp.fontFamily2,
+      fontStyle: FontStyle.normal,
+      fontSize: 25.sp,
+      fontWeight: FontWeight.w700,
       color: ColorStyles.black);
 
   static  TextStyle cormorant_black_25_w400 = TextStyle(
