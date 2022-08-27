@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:siignores/constants/main_config_app.dart';
 
 import '../../../../constants/colors/color_styles.dart';
 
@@ -23,7 +24,7 @@ class TopStageWidget extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(1),
-              color: ColorStyles.primary,
+              color: MainConfigApp.app.isSiignores ? ColorStyles.primary : ColorStyles.lilac,
             ),
           )
         ),
@@ -34,7 +35,9 @@ class TopStageWidget extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(1),
-              color: currentStage == CurrentStage.second || currentStage == CurrentStage.third ? ColorStyles.primary : ColorStyles.white,
+              color: currentStage == CurrentStage.second || currentStage == CurrentStage.third
+                ? (MainConfigApp.app.isSiignores ? ColorStyles.primary : ColorStyles.lilac) 
+                : ColorStyles.white,
             ),
           )
         ),
@@ -45,7 +48,9 @@ class TopStageWidget extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(1),
-              color: currentStage == CurrentStage.third ? ColorStyles.primary : ColorStyles.white,
+              color: currentStage == CurrentStage.third 
+                ? (MainConfigApp.app.isSiignores ? ColorStyles.primary : ColorStyles.lilac) 
+                : ColorStyles.white,
             ),
           )
         ),

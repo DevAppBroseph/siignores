@@ -5,6 +5,7 @@ import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:siignores/constants/main_config_app.dart';
 import 'package:siignores/core/services/database/auth_params.dart';
 import 'package:siignores/core/utils/toasts.dart';
 import 'package:siignores/core/widgets/loaders/overlay_loader.dart';
@@ -55,8 +56,8 @@ class _ProfileViewState extends State<ProfileView> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: ColorStyles.primary,
-        title: Text('Профиль', style: TextStyles.black_18_w400,),
+        backgroundColor: MainConfigApp.app.isSiignores ? ColorStyles.primary : ColorStyles.backgroundColor,
+        title: Text('Профиль', ),
       ),
       body: BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state){
@@ -79,7 +80,7 @@ class _ProfileViewState extends State<ProfileView> {
                       left: -50.w,
                       child: Container(
                         decoration: BoxDecoration(
-                          color: ColorStyles.primary,
+                          color: MainConfigApp.app.isSiignores ? ColorStyles.primary : ColorStyles.backgroundColor,
                           borderRadius: const BorderRadius.all(Radius.elliptical(130, 50)),
                         ),
                       )
@@ -95,16 +96,25 @@ class _ProfileViewState extends State<ProfileView> {
                           onTap: () => changePhotoTap(context)
                         ),
                         SizedBox(height: 12.h,),
-                        Text('${sl<AuthConfig>().userEntity!.firstName} ${sl<AuthConfig>().userEntity!.lastName}', style: TextStyles.black_17_w700,),
+                        Text(MainConfigApp.app.isSiignores 
+                          ? '${sl<AuthConfig>().userEntity!.firstName} ${sl<AuthConfig>().userEntity!.lastName}'
+                          : '${sl<AuthConfig>().userEntity!.firstName} ${sl<AuthConfig>().userEntity!.lastName}'.toUpperCase(), style: MainConfigApp.app.isSiignores
+                          ? TextStyles.black_17_w700
+                          : TextStyles.black_17_w300.copyWith(color: ColorStyles.primary),),
                         SizedBox(height: 4.h,),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(sl<AuthConfig>().userEntity!.email, style: TextStyles.black_14_w700,),
+                            Text(sl<AuthConfig>().userEntity!.email, style: MainConfigApp.app.isSiignores
+                              ? TextStyles.black_14_w700
+                              : TextStyles.white_14_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
                             SizedBox(width: 10.w,),
                             GestureDetector(
                               onTap: () =>context.read<MainScreenBloc>().add(ChangeViewEvent(widget: EditProfileView())),
-                              child: SvgPicture.asset('assets/svg/edit.svg',)
+                              child: SvgPicture.asset(
+                                'assets/svg/edit.svg',
+                                color: MainConfigApp.app.isSiignores ? null : ColorStyles.white,
+                              )
                             )
                           ],
                         ),
@@ -123,7 +133,9 @@ class _ProfileViewState extends State<ProfileView> {
                   children: [
                     Padding(
                       padding: EdgeInsets.only(left: 23.w),
-                      child: Text('Мой прогресс', style: TextStyles.black_24_w700,),
+                      child: Text(MainConfigApp.app.isSiignores ? 'Мой прогресс' : 'Мой прогресс'.toUpperCase(), style: MainConfigApp.app.isSiignores
+                        ? TextStyles.black_24_w700
+                        : TextStyles.black_24_w300.copyWith(color: ColorStyles.primary),),
                     ),
                     SizedBox(height: 13.h,),
                     Container(
@@ -131,7 +143,7 @@ class _ProfileViewState extends State<ProfileView> {
                       margin: EdgeInsets.symmetric(horizontal: 23.w),
                       height: 105.h,
                       decoration: BoxDecoration(
-                        color: ColorStyles.white,
+                        color: MainConfigApp.app.isSiignores ? ColorStyles.white : ColorStyles.black2,
                         borderRadius: BorderRadius.circular(13.h)
                       ),
                       child: Row(
@@ -149,12 +161,14 @@ class _ProfileViewState extends State<ProfileView> {
                                   child: CircularProgressIndicator(
                                     strokeWidth: 5.w,
                                     value: 0.67,
-                                    color: ColorStyles.green_accent,
+                                    color: MainConfigApp.app.isSiignores ? ColorStyles.green_accent : ColorStyles.primary,
                                     backgroundColor: ColorStyles.backgroundColor,
                                   ),
                                 ),
                               ),
-                              Text('67%', style: TextStyles.cormorant_black_25_w700,)
+                              Text('67%', style: MainConfigApp.app.isSiignores
+                                ? TextStyles.cormorant_black_25_w700
+                                : TextStyles.white_22_w300,)
                             ],
                           ),
                           SizedBox(width: 20.w,),
@@ -162,9 +176,13 @@ class _ProfileViewState extends State<ProfileView> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Модуль 2/5', style: TextStyles.black_14_w700,),
+                              Text('Модуль 2/5', style: MainConfigApp.app.isSiignores
+                                ? TextStyles.black_14_w700
+                                : TextStyles.black_14_w400.copyWith(fontFamily: MainConfigApp.fontFamily4, color: ColorStyles.white),),
                               SizedBox(height: 6.h,),
-                              Text('Урок 2/30', style: TextStyles.black_19_w700,),
+                              Text('Урок 2/30', style: MainConfigApp.app.isSiignores
+                                ? TextStyles.black_19_w700
+                                : TextStyles.black_19_w400.copyWith(fontFamily: MainConfigApp.fontFamily4, color: ColorStyles.white),),
                             ],
                           )
                         ],
@@ -179,13 +197,16 @@ class _ProfileViewState extends State<ProfileView> {
                   },
                   child: Text(
                     'Политика конфиденциальности', 
-                    style: TextStyles.black_13_w400
-                      .copyWith(decoration: TextDecoration.underline),
+                    style: MainConfigApp.app.isSiignores
+                      ? TextStyles.black_13_w400
+                      .copyWith(decoration: TextDecoration.underline)
+                      : TextStyles.black_13_w400
+                      .copyWith(decoration: TextDecoration.underline, fontFamily: MainConfigApp.fontFamily4, color: ColorStyles.white.withOpacity(0.5)),
                   ),
                 ),
                 SizedBox(height: 20.h,),
                 SvgPicture.asset('assets/svg/gastrosoft.svg'),
-                SizedBox(height: 20.h,),
+                SizedBox(height: 155.h,),
               ],
             ),
           );

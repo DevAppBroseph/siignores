@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:siignores/constants/main_config_app.dart';
 import 'package:siignores/constants/texts/text_styles.dart';
 import 'package:siignores/core/widgets/cards/chat_card.dart';
 import '../../../../constants/colors/color_styles.dart';
@@ -14,15 +15,16 @@ class ChatTabsView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 1.h,
-        shadowColor: ColorStyles.black,
-        title: Text('Общение', style: TextStyles.title_app_bar,),
+        title: Text('Общение'),
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: 24.h,),
-            Text('Вы состоите в 2ух группах', style: TextStyles.black_15_w700,),
+            Text('Вы состоите в 2ух группах', style: MainConfigApp.app.isSiignores
+              ? TextStyles.black_15_w700
+              : TextStyles.white_15_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
             SizedBox(height: 26.h,),
             ListView.builder(
               shrinkWrap: true,
@@ -38,7 +40,8 @@ class ChatTabsView extends StatelessWidget {
                   )
                 );
               }
-            )
+            ),
+            SizedBox(height: 30.h,),
           ],
         ),
       ),

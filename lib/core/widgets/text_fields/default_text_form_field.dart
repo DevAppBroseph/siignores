@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:siignores/constants/main_config_app.dart';
 import 'package:siignores/constants/texts/text_styles.dart';
 
 import '../../../constants/colors/color_styles.dart';
@@ -20,9 +21,11 @@ class DefaultTextFormField extends StatelessWidget {
   final EdgeInsets? margin;
   final List<TextInputFormatter>? inputFormatters;
   final TextInputType? keyboardType;
+  final bool white;
   DefaultTextFormField({
     Key? key,
     this.width,
+    this.white = false,
     required this.hint,
     this.title,
     this.validator,
@@ -49,7 +52,9 @@ class DefaultTextFormField extends StatelessWidget {
             children: [
               if(title != null)
               ...[
-                Text(title!, style: TextStyles.black_15_w700,),
+                Text(title!, style: MainConfigApp.app.isSiignores 
+                  ? TextStyles.black_15_w700
+                  : TextStyles.white_15_w400.copyWith(fontFamily: MainConfigApp.fontFamily4,)),
                 SizedBox(height: 8.h,),
               ],
               Stack(
@@ -57,10 +62,10 @@ class DefaultTextFormField extends StatelessWidget {
                   Positioned(
                     child: Container(
                       width: MediaQuery.of(context).size.width,
-                      height: 60.h,
+                      height: white ? 48.h : 60.h,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.h),
-                        color: ColorStyles.white,
+                        color: MainConfigApp.app.isSiignores || white ? ColorStyles.white : ColorStyles.black2,
                       ),
                     )
                   ),
@@ -70,10 +75,14 @@ class DefaultTextFormField extends StatelessWidget {
                     validator: validator,
                     controller: controller,
                     obscureText: textInputType == TextInputType.visiblePassword && !snapshot.data!,
-                    style: TextStyles.black_16_w400,
+                    style: white
+                      ? TextStyles.black_14_w400.copyWith(fontFamily: MainConfigApp.fontFamily4)
+                      : MainConfigApp.app.isSiignores 
+                      ? TextStyles.black_16_w400 
+                      : TextStyles.white_16_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),
                     obscuringCharacter: '•',
                     decoration: InputDecoration(
-                      contentPadding: EdgeInsets.all(20.h),
+                      contentPadding: EdgeInsets.all(white ? 15.h : 20.h),
                       hintText: hint,
                       border: InputBorder.none,
                       fillColor: ColorStyles.white,
@@ -86,10 +95,15 @@ class DefaultTextFormField extends StatelessWidget {
                           },
                           child: SvgPicture.asset(
                             'assets/svg/eye.svg',
+                            color: !MainConfigApp.app.isSiignores ? ColorStyles.white : null,
                           ),
                         ) : null,
                       ),
-                      hintStyle: TextStyles.black_16_w400.copyWith(color: ColorStyles.black.withOpacity(0.5)),
+                      hintStyle: white
+                      ? TextStyles.black_14_w400.copyWith(color: ColorStyles.black2.withOpacity(0.4), fontFamily: MainConfigApp.fontFamily4)
+                      : MainConfigApp.app.isSiignores 
+                      ? TextStyles.black_16_w400.copyWith(color: ColorStyles.black.withOpacity(0.5))
+                      : TextStyles.white_16_w400.copyWith(fontFamily: MainConfigApp.fontFamily4, color: ColorStyles.white.withOpacity(0.5))
                     ),
                   ),
                 ],

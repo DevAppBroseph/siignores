@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:siignores/constants/main_config_app.dart';
 import 'package:siignores/core/widgets/btns/close_modal_btn.dart';
 import 'package:siignores/core/widgets/btns/primary_btn.dart';
 import '../../../constants/texts/text_styles.dart';
@@ -38,7 +39,9 @@ class SentCodeOTPModal {
                     SizedBox(height: 23.h),
                     Text(
                       'Мы отправили код регистрации на\nуказанный адрес электронной\nпочты',
-                      style: TextStyles.black_16_w400,
+                      style: MainConfigApp.app.isSiignores
+                        ? TextStyles.black_16_w400
+                        : TextStyles.black_16_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),
                       textAlign: TextAlign.center
                     ),
                     SizedBox(height: 23.h),

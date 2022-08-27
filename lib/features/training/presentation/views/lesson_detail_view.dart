@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:siignores/constants/main_config_app.dart';
 import 'package:siignores/constants/texts/text_styles.dart';
 import 'package:siignores/core/widgets/btns/back_btn.dart';
 import 'package:siignores/core/widgets/btns/primary_btn.dart';
@@ -45,8 +46,8 @@ class LessonDetailView extends StatelessWidget {
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                          color: ColorStyles.white.withOpacity(0.5),
-                          borderRadius: BorderRadius.circular(40.h)
+                          color: MainConfigApp.app.isSiignores ? ColorStyles.white.withOpacity(0.5) : ColorStyles.primary,
+                          borderRadius: BorderRadius.circular(MainConfigApp.app.isSiignores ? 40.h : 8.h)
                         ),
                         padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 14.h),
                         child: Row(
@@ -64,7 +65,9 @@ class LessonDetailView extends StatelessWidget {
                               child: SvgPicture.asset('assets/svg/play.svg',),
                             ),
                             SizedBox(width: 7.w,),
-                            Text('Смотреть урок', style: TextStyles.black_16_w700,)
+                            Text(MainConfigApp.app.isSiignores ? 'Смотреть урок' : 'Смотреть урок'.toUpperCase(), style: MainConfigApp.app.isSiignores
+                              ? TextStyles.black_16_w700
+                              : TextStyles.black_14_w300,)
                           ],
                         ),
                       ),
@@ -77,7 +80,7 @@ class LessonDetailView extends StatelessWidget {
                   child: Container(
                     height: 30.h,
                     decoration: BoxDecoration(
-                      color: ColorStyles.backgroundColor,
+                      color: MainConfigApp.app.isSiignores ? ColorStyles.backgroundColor : ColorStyles.white2,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(28.h),
                         topRight: Radius.circular(28.h),
@@ -91,20 +94,35 @@ class LessonDetailView extends StatelessWidget {
               SliverToBoxAdapter(
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 22.w),
-                  color: ColorStyles.backgroundColor,
+                  color: MainConfigApp.app.isSiignores ? ColorStyles.backgroundColor : ColorStyles.white2,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Урок 2', style: TextStyles.black_16_w700,),
+                      Text('Урок 2', style: MainConfigApp.app.isSiignores
+                        ? TextStyles.black_16_w700
+                        : TextStyles.black_16_w300,),
                       SizedBox(height: 6.h,),
-                      Text('3 основных блока для\nформирования личного\nбренда', style: TextStyles.black_24_w700,),
+                      Text('3 основных блока для\nформирования личного\nбренда', style: MainConfigApp.app.isSiignores
+                        ? TextStyles.black_24_w700
+                        : TextStyles.black_24_w300,),
                       SizedBox(height: 16.h,),
-                      Text('Личный брендинг — это практика создания бренда вокруг человека, а не бизнеса. Построение личного бренда не происходит внезапно. Для того, чтобы начать видеть первые результаты, необходимо долгосрочное планирование и месяцы напряженной работы', style: TextStyles.black_14_w400.copyWith(height: 1.75.h),),
+                      Text('Личный брендинг — это практика создания бренда вокруг человека, а не бизнеса. Построение личного бренда не происходит внезапно. Для того, чтобы начать видеть первые результаты, необходимо долгосрочное планирование и месяцы напряженной работы', 
+                        style: MainConfigApp.app.isSiignores
+                          ? TextStyles.black_14_w400.copyWith(height: 1.75.h)
+                          : TextStyles.black_14_w300.copyWith(height: 1.75.h, fontFamily: MainConfigApp.fontFamily4),),
                       SizedBox(height: 3.h,),
-                      Text('Еще', style: TextStyles.black_14_w700
-                        .copyWith(decorationStyle: TextDecorationStyle.dashed, decoration: TextDecoration.underline),),
+                      Text('Еще', style: MainConfigApp.app.isSiignores
+                        ? TextStyles.black_14_w700
+                        .copyWith(decorationStyle: TextDecorationStyle.dashed, decoration: TextDecoration.underline)
+                        : TextStyles.black_14_w300
+                        .copyWith(decorationStyle: TextDecorationStyle.dashed, decoration: TextDecoration.underline, fontFamily: MainConfigApp.fontFamily4),),
                       SizedBox(height: 30.h,),
-                      Text('Тайминг', style: TextStyles.black_18_w700,),
+
+                      if(MainConfigApp.app.isSiignores)
+                      ...[
+                      Text('Тайминг', style: MainConfigApp.app.isSiignores
+                        ? TextStyles.black_18_w700
+                        : TextStyles.black_18_w300,),
                       SizedBox(height: 15.h,),
                       Container(
                         width: MediaQuery.of(context).size.width,
@@ -202,7 +220,10 @@ class LessonDetailView extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 35.h,),
-                      Text('Задание', style: TextStyles.black_18_w700,),
+                      ],
+                      Text('Задание', style: MainConfigApp.app.isSiignores
+                        ? TextStyles.black_18_w700
+                        : TextStyles.black_18_w300,),
                       SizedBox(height: 15.h,),
                       Container(
                         width: MediaQuery.of(context).size.width,
@@ -211,10 +232,15 @@ class LessonDetailView extends StatelessWidget {
                           borderRadius: BorderRadius.circular(13.h)
                         ),
                         padding: EdgeInsets.all(20.h),
-                        child: Text('Пожалуй, составить список своих компетенций и обнародовать их – это самое сложное задание в формировании персонального бренда.', style: TextStyles.black_14_w400.copyWith(height: 1.75.h),)
+                        child: Text('Пожалуй, составить список своих компетенций и обнародовать их – это самое сложное задание в формировании персонального бренда.', 
+                          style: MainConfigApp.app.isSiignores
+                          ? TextStyles.black_14_w400.copyWith(height: 1.75.h)
+                          : TextStyles.black_14_w300.copyWith(height: 1.75.h, fontFamily: MainConfigApp.fontFamily4),)
                       ),
                       SizedBox(height: 35.h,),
-                      Text('Дополнительные материалы', style: TextStyles.black_18_w700,),
+                      Text('Дополнительные материалы', style: MainConfigApp.app.isSiignores
+                        ? TextStyles.black_18_w700
+                        : TextStyles.black_18_w300,),
                       SizedBox(height: 13.h,),
                       _buildFileLink(context, 'Описание задачи.doc', FileType.doc),
                       SizedBox(height: 13.h,),
@@ -222,10 +248,13 @@ class LessonDetailView extends StatelessWidget {
                       SizedBox(height: 13.h,),
                       _buildFileLink(context, 'Документация.pdf', FileType.pdf),
                       SizedBox(height: 35.h,),
-                      Text('Написать ответ', style: TextStyles.black_18_w700,),
+                      Text('Написать ответ', style: MainConfigApp.app.isSiignores
+                        ? TextStyles.black_18_w700
+                        : TextStyles.black_18_w300,),
                       SizedBox(height: 13.h,),
                       DefaultTextFormField(
                         hint: 'Написать ответ',
+                        white: true,
                       ),
                       SizedBox(height: 22.h,),
                       Container(
@@ -239,7 +268,9 @@ class LessonDetailView extends StatelessWidget {
                           children: [
                             SvgPicture.asset('assets/svg/link_file.svg'),
                             SizedBox(width: 13.w,),
-                            Text('Прикрепить файлы', style: TextStyles.white_12_w700,)
+                            Text('Прикрепить файлы', style: MainConfigApp.app.isSiignores
+                              ? TextStyles.white_12_w700
+                              : TextStyles.white_12_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),)
                           ],
                         ),
                       ),
@@ -249,7 +280,7 @@ class LessonDetailView extends StatelessWidget {
                         title: 'Отправить задание', 
                         onTap: (){}
                       ),
-                      SizedBox(height: 55.h,),
+                      SizedBox(height: 155.h,),
                     ],
                   )
                 ),
@@ -282,7 +313,9 @@ class LessonDetailView extends StatelessWidget {
       children: [
         fileType.iconFile,
         SizedBox(width: 12.w,),
-        Text(text, style: TextStyles.black_13_w400.copyWith(decoration: TextDecoration.underline))
+        Text(text, style: MainConfigApp.app.isSiignores
+          ? TextStyles.black_13_w400.copyWith(decoration: TextDecoration.underline)
+          : TextStyles.black_13_w400.copyWith(decoration: TextDecoration.underline, fontFamily: MainConfigApp.fontFamily4))
       ],
     );
   }
@@ -298,11 +331,17 @@ extension FileTypeExtension on FileType{
   Widget get iconFile{
     switch (this) {
       case FileType.doc:
-        return SvgPicture.asset('assets/svg/doc.svg');
+        return SvgPicture.asset(
+          'assets/svg/doc.svg',
+        );
       case FileType.image:
-        return SvgPicture.asset('assets/svg/jpg.svg');
+        return SvgPicture.asset(
+          'assets/svg/jpg.svg',
+        );
       default:
-        return SvgPicture.asset('assets/svg/pdf.svg');
+        return SvgPicture.asset(
+          MainConfigApp.app.isSiignores ? 'assets/svg/pdf.svg' : 'assets/svg/pdf2.svg',
+        );
     }
   }
 }

@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
+import 'package:siignores/constants/main_config_app.dart';
 import 'package:siignores/core/utils/helpers/dio_helper.dart';
 import 'package:siignores/features/auth/data/models/user_model.dart';
 import 'package:siignores/features/auth/domain/entities/reset_data_enitiy.dart';
@@ -37,19 +40,22 @@ class AuthenticationRemoteDataSourceImpl
 
   @override
   Future<String> login(String email, String password) async {
+    print('appp; ${MainConfigApp.app.token}');
     headers.remove("Authorization");
-    var formData = FormData.fromMap({
+    var formData = jsonEncode({
       "email": email, 
-      "password": password
+      "password": password,
+      "app": MainConfigApp.app.token
     });
-
     Response response = await dio.post(Endpoints.login.getPath(),
         data: formData,
         options: Options(
             followRedirects: false,
-            validateStatus: (status) => status! < 499,
+            validateStatus: (status) => status! < 599,
             headers: headers));
+    print('DATA: ${response.requestOptions.data}');
     printRes(response);
+    print('RES: ${response.data}');
     if (response.statusCode! >= 200 && response.statusCode! <= 299) {
       return response.data['auth_token'];
     } else if(response.statusCode == 400) {
@@ -66,6 +72,7 @@ class AuthenticationRemoteDataSourceImpl
       "email": email, 
       "firstname": firstName,
       "lastname": lastName,
+      "app": MainConfigApp.app.token
     });
     Response response = await dio.post(Endpoints.register.getPath(),
         data: formData,
@@ -113,6 +120,7 @@ class AuthenticationRemoteDataSourceImpl
     var formData = FormData.fromMap({
       "email": email, 
       "registration_code": int.parse(code), 
+      "app": MainConfigApp.app.token
     });
 
     Response response = await dio.post(Endpoints.activationCode.getPath(),
@@ -138,6 +146,7 @@ class AuthenticationRemoteDataSourceImpl
     var formData = FormData.fromMap({
       "email": email, 
       "password": password, 
+      "app": MainConfigApp.app.token
     });
 
     Response response = await dio.post(Endpoints.setPassword.getPath(),
@@ -188,6 +197,7 @@ class AuthenticationRemoteDataSourceImpl
     headers.remove("Authorization");
     var formData = FormData.fromMap({
       "email": email, 
+      "app": MainConfigApp.app.token
     });
 
     Response response = await dio.post(Endpoints.sendCodeForResetPassword.getPath(),
@@ -199,6 +209,8 @@ class AuthenticationRemoteDataSourceImpl
     printRes(response);
     if (response.statusCode! >= 200 && response.statusCode! < 400) {
       return true;
+    } else if(response.statusCode! == 400){
+      throw ServerException(message: 'Пользователь с таким email-ом не существует');
     } else {
       throw ServerException(message: 'Ошибка с сервером');
     }
@@ -212,6 +224,7 @@ class AuthenticationRemoteDataSourceImpl
     var formData = FormData.fromMap({
       "email": email, 
       "registration_code": int.parse(code), 
+      "app": MainConfigApp.app.token
     });
     Response response = await dio.post(Endpoints.verifyCodeForResetPassword.getPath(),
         data: formData,
@@ -240,6 +253,7 @@ class AuthenticationRemoteDataSourceImpl
       "uid": resetDataEntity.uid, 
       "token": resetDataEntity.token, 
       "new_password": password, 
+      "app": MainConfigApp.app.token
     });
 
     Response response = await dio.post(Endpoints.resetPassword.getPath(),

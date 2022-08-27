@@ -2,6 +2,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:siignores/features/auth/data/models/user_model.dart';
+import '../../../../../constants/main_config_app.dart';
 import '../../../../../core/error/exceptions.dart';
 import '../../../../../core/services/database/auth_params.dart';
 import '../../../../../core/services/network/endpoints.dart';
@@ -32,6 +33,7 @@ class ProfileRemoteDataSourceImpl
     var formData = FormData.fromMap({
       "firstname": firstName,
       "lastname": lastName,
+      "app": MainConfigApp.app.token
     });
     Response response = await dio.patch(Endpoints.updateProfileInfo.getPath(),
         data: formData,
@@ -56,6 +58,7 @@ class ProfileRemoteDataSourceImpl
 
     var formData = FormData.fromMap({
       "photo": await MultipartFile.fromFile(avatar.path),
+      "app": MainConfigApp.app.token
     });
     Response response = await dio.put(Endpoints.updateAvatar.getPath(),
         data: formData,

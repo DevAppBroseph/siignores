@@ -2,9 +2,12 @@ import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:siignores/constants/main_config_app.dart';
 import '../../../../constants/colors/color_styles.dart';
 import '../../../../constants/texts/text_styles.dart';
+import '../../../../core/services/database/auth_params.dart';
 import '../../../../core/widgets/image/cached_image.dart';
+import '../../../../locator.dart';
 
 
 
@@ -28,8 +31,8 @@ class TopInfoHome extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.fromLTRB(5.h, 5.h, 18.h, 5.h),
               decoration: BoxDecoration(
-                border: Border.all(color: ColorStyles.white, width: 2.w),
-                borderRadius: BorderRadius.circular(30.h)
+                border: Border.all(color: MainConfigApp.app.isSiignores ? ColorStyles.white : ColorStyles.primary, width: 2.w),
+                borderRadius: BorderRadius.circular(MainConfigApp.app.isSiignores ? 30.h : 8.h)
               ),
               child: Row(
                 children: [
@@ -38,12 +41,14 @@ class TopInfoHome extends StatelessWidget {
                     child: CachedImage(
                       borderRadius: BorderRadius.circular(30),
                       height: 33.h, 
-                      urlImage: urlToImage, 
+                      urlImage: sl<AuthConfig>().userEntity!.avatar, 
                       isProfilePhoto: true
                     ),
                   ),
                   SizedBox(width: 7.w,),
-                  Text(text, style: TextStyles.black_16_w700,)
+                  Text('${sl<AuthConfig>().userEntity!.firstName} ${sl<AuthConfig>().userEntity!.lastName}', style: MainConfigApp.app.isSiignores
+                    ? TextStyles.black_16_w700
+                    : TextStyles.white_16_w700.copyWith(fontFamily: MainConfigApp.fontFamily4),)
                 ],
               ),
             ),
@@ -62,7 +67,10 @@ class TopInfoHome extends StatelessWidget {
                       arrowColor: ColorStyles.white,
                       arrowSize: 20,
                       showArrow: true,
-                      child: SvgPicture.asset('assets/svg/notification.svg'),
+                      child: SvgPicture.asset(
+                        'assets/svg/notification.svg',
+                        color: MainConfigApp.app.isSiignores ? null : ColorStyles.white,
+                      ),
                       menuBuilder: _buildLongPressMenu,
                       barrierColor: Colors.black.withOpacity(0.5),
                       pressType: PressType.singleClick,
@@ -76,11 +84,13 @@ class TopInfoHome extends StatelessWidget {
                       width: 17.w,
                       height: 17.w,
                       decoration: BoxDecoration(
-                        color: ColorStyles.green_accent,
+                        color: MainConfigApp.app.isSiignores ? ColorStyles.green_accent : ColorStyles.darkViolet,
                         borderRadius: BorderRadius.circular(30)
                       ),
                       alignment: Alignment.center,
-                      child: Text('$notificationCount', style: TextStyles.white_11_w700,),
+                      child: Text('$notificationCount', style: MainConfigApp.app.isSiignores 
+                        ? TextStyles.white_11_w700
+                        : TextStyles.white_11_w700.copyWith(fontFamily: MainConfigApp.fontFamily4),),
                     )
                   )
                 ],
@@ -110,10 +120,15 @@ class TopInfoHome extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Для Вас новое предложение', style: TextStyles.black_15_w500,),
+                  Text('Для Вас новое предложение', style: MainConfigApp.app.isSiignores
+                    ? TextStyles.black_15_w500
+                    : TextStyles.black_15_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
                   SizedBox(height: 4.h,),
-                  Text('4 ч. назад', style: TextStyles.black_13_w400
-                    .copyWith(color: ColorStyles.black.withOpacity(0.5)),)
+                  Text('4 ч. назад', style: MainConfigApp.app.isSiignores 
+                    ? TextStyles.black_13_w400
+                    .copyWith(color: ColorStyles.black.withOpacity(0.5))
+                    : TextStyles.black_13_w400
+                    .copyWith(fontFamily: MainConfigApp.fontFamily4, color: ColorStyles.black.withOpacity(0.5)),)
                 ],
               ),
             ),

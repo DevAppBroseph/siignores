@@ -5,6 +5,7 @@ import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:siignores/constants/main_config_app.dart';
 import 'package:siignores/constants/texts/text_styles.dart';
 import 'package:siignores/core/utils/toasts.dart';
 import 'package:siignores/core/widgets/loaders/overlay_loader.dart';
@@ -152,10 +153,13 @@ class _RegisterViewState extends State<RegisterView> {
         children: [
           Padding(
             padding: EdgeInsets.fromLTRB(32.w, 36.h, 16.w, 0),
-            child: Text('Регистрация', style: TextStyles.black_30_w700,)
+            child: Text(MainConfigApp.app.isSiignores ? 'Регистрация' : 'Регистрация'.toUpperCase(), style: MainConfigApp.app.isSiignores
+              ? TextStyles.black_30_w700
+              : TextStyles.black_30_w300.copyWith(color: ColorStyles.primary,),
+              )
           ),
           DefaultTextFormField(
-            margin: EdgeInsets.only(top: 66.h, left: 32.w, right: 32.w),
+            margin: EdgeInsets.only(top: 33.h, left: 32.w, right: 32.w),
             title: 'Ваше имя',
             hint: 'Юлия',
             validator: (v){
@@ -204,11 +208,15 @@ class _RegisterViewState extends State<RegisterView> {
         children: [
           Padding(
             padding: EdgeInsets.fromLTRB(32.w, 36.h, 16.w, 0),
-            child: Text('Код регистрации', style: TextStyles.black_30_w700,)
+            child: Text(MainConfigApp.app.isSiignores ? 'Код регистрации' : 'Код регистрации'.toUpperCase(), style: MainConfigApp.app.isSiignores
+              ? TextStyles.black_30_w700
+              : TextStyles.black_30_w300.copyWith(color: ColorStyles.primary,))
           ),
           Padding(
             padding: EdgeInsets.fromLTRB(32.w, 36.h, 16.w, 0),
-            child: Text('Введите код который мы выслали \nна Ваш электронный ящик ', style: TextStyles.black_16_w400,)
+            child: Text('Введите код который мы выслали \nна Ваш электронный ящик ', style: MainConfigApp.app.isSiignores 
+              ? TextStyles.black_16_w400
+              : TextStyles.white_16_w400.copyWith(color: ColorStyles.white.withOpacity(0.5), fontFamily: MainConfigApp.fontFamily4),)
           ),
           SizedBox(width: MediaQuery.of(context).size.width,),
           DefaultTextFormField(
@@ -238,18 +246,24 @@ class _RegisterViewState extends State<RegisterView> {
         SizedBox(height: 126.h,),
         Container(
           decoration: BoxDecoration(
-            color: ColorStyles.white,
+            color: MainConfigApp.app.isSiignores ? ColorStyles.white : ColorStyles.black2,
             borderRadius: BorderRadius.circular(150)
           ),
           width: 178.w,
           height: 178.w,
           alignment: Alignment.center,
-          child: SvgPicture.asset('assets/svg/checked.svg')
+          child: SvgPicture.asset(
+            'assets/svg/checked.svg',
+            color: MainConfigApp.app.isSiignores ? null : ColorStyles.lilac,
+          )
         ),
         SizedBox(height: 112.h, width: MediaQuery.of(context).size.width,),
-        Text('Поздравляем!', style: TextStyles.black_30_w700,),
+        Text(MainConfigApp.app.isSiignores ? 'Поздравляем!' : 'Поздравляем!'.toUpperCase(), style: MainConfigApp.app.isSiignores 
+          ? TextStyles.black_30_w700
+          : TextStyles.black_30_w300.copyWith(color: ColorStyles.primary,)),
         SizedBox(height: 24.h,),
-        Text.rich(
+        MainConfigApp.app.isSiignores
+        ? Text.rich(
           TextSpan(
             text: 'Вы успешно зарегистировались\nв приложении.',
             style: TextStyles.black_16_w400.copyWith(),
@@ -265,7 +279,15 @@ class _RegisterViewState extends State<RegisterView> {
             ]
           ),
           textAlign: TextAlign.center,
-        ),
+        ) 
+        : Text(
+          'Вы успешно зарегистировались\nв приложении. Теперь Вы можете\nавторизироватся', 
+          style: TextStyles.black_16_w500.copyWith(
+            color: ColorStyles.white.withOpacity(0.5),
+            fontFamily: MainConfigApp.fontFamily4
+          ),
+          textAlign: TextAlign.center,
+        )
 
         
       ],

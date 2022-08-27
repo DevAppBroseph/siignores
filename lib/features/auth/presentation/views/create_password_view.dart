@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:siignores/constants/main_config_app.dart';
 import 'package:siignores/constants/texts/text_styles.dart';
 import 'package:siignores/core/utils/toasts.dart';
 import 'package:siignores/core/widgets/loaders/overlay_loader.dart';
@@ -42,8 +43,8 @@ class CreatePasswordView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 1.h,
-        shadowColor: ColorStyles.black,
-        title: Text('Установка пароля', style: TextStyles.title_app_bar,),
+        shadowColor: MainConfigApp.app.isSiignores ? ColorStyles.black : ColorStyles.white,
+        title: Text('Установка пароля'),
         leading: BackAppbarBtn(
           onTap: () => Navigator.pop(context),
         )
@@ -67,8 +68,13 @@ class CreatePasswordView extends StatelessWidget {
               child: Column(
                 children: [
                   SizedBox(height: 29.h,),
-                  Text('Установите пароль для входа в\nприложение', style: TextStyles.black_16_w400
+                  MainConfigApp.app.isSiignores
+                  ? Text('Установите пароль для входа в\nприложение', style: TextStyles.black_16_w400
                     .copyWith(color: ColorStyles.black.withOpacity(0.6),),
+                    textAlign: TextAlign.center,
+                  )
+                  : Text('Установите пароль для\nвхода в приложение', style: TextStyles.black_16_w400
+                    .copyWith(color: ColorStyles.white.withOpacity(0.5), fontFamily: MainConfigApp.fontFamily4),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 29.h,),

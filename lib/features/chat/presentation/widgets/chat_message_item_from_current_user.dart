@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../constants/colors/color_styles.dart';
+import '../../../../constants/main_config_app.dart';
 import '../../../../constants/texts/text_styles.dart';
 import '../../../../core/widgets/image/cached_image.dart';
 
@@ -21,11 +22,13 @@ class ChatMessageItemFromCurrentUser extends StatelessWidget {
               Container(
                 constraints: BoxConstraints(minWidth: 50.w, maxWidth: 248.w),
                 decoration: BoxDecoration(
-                  color: ColorStyles.primary,
+                  color: MainConfigApp.app.isSiignores ? ColorStyles.primary : ColorStyles.lilac2,
                   borderRadius: BorderRadius.circular(12.w),
                 ),
                 padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 16.h),
-                child: Text('Ковальчук Виталий', style: TextStyles.black_14_w700,),
+                child: Text('Ковальчук Виталий', style: MainConfigApp.app.isSiignores
+                  ? TextStyles.black_14_w700
+                  : TextStyles.black_14_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
               ),
               SizedBox(width: 16.w,),
               SizedBox(
@@ -43,8 +46,11 @@ class ChatMessageItemFromCurrentUser extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Text('2:37', style: TextStyles.black_11_w400
-                .copyWith(color: ColorStyles.black.withOpacity(0.7)),),
+              Text('2:37', style: MainConfigApp.app.isSiignores
+                ? TextStyles.black_11_w400
+                .copyWith(color: ColorStyles.black.withOpacity(0.7))
+                : TextStyles.black_11_w400
+                .copyWith(color: ColorStyles.white.withOpacity(0.7), fontFamily: MainConfigApp.fontFamily4),),
               SizedBox(width: 50.w,),
             ],
           )

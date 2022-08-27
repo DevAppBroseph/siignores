@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:siignores/constants/main_config_app.dart';
 import 'package:siignores/constants/texts/text_styles.dart';
 import 'package:siignores/core/widgets/btns/primary_btn.dart';
 import 'package:siignores/core/widgets/loaders/overlay_loader.dart';
@@ -39,7 +40,8 @@ class SignInView extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          Positioned(
+          MainConfigApp.app.isSiignores
+          ? Positioned(
             bottom: 0,
             right: 10,
             child: Stack(
@@ -77,6 +79,13 @@ class SignInView extends StatelessWidget {
                 )
               ],
             ),
+          )
+          : Positioned(
+            bottom: -20.h,
+            child: Image.asset(
+              'assets/images/sign_in_back.png',
+              width: MediaQuery.of(context).size.width
+            )
           ),
           CustomScrollView(
             slivers: [
@@ -92,13 +101,13 @@ class SignInView extends StatelessWidget {
                           padding:
                               EdgeInsets.only(left: 100.w, right: 100.w, top: 100.h),
                           child: SvgPicture.asset(
-                            'assets/svg/logotype.svg',
-                            width: 174.w,
-                            height: 39.h,
+                            MainConfigApp.app.isSiignores ? 'assets/svg/logotype.svg' : 'assets/svg/logotype2.svg',
+                            width: MainConfigApp.app.isSiignores ? 174.w : 113.w,
+                            height: MainConfigApp.app.isSiignores ? 39.h : null,
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(top: 66.h),
+                          padding: EdgeInsets.only(top: MainConfigApp.app.isSiignores ? 66.h : 27.h),
                           child: DefaultTextFormField(
                             margin: EdgeInsets.symmetric(horizontal: 32.w),
                             title: 'E-mail',
@@ -139,13 +148,9 @@ class SignInView extends StatelessWidget {
                               },
                               child: Text(
                                 'Забыли пароль?',
-                                style: TextStyle(
-                                  fontFamily: 'Formular',
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w400,
-                                  color: const Color.fromRGBO(50, 50, 50, 1)
-                                      .withOpacity(0.5),
-                                ),
+                                style: MainConfigApp.app.isSiignores 
+                                ? TextStyles.black_15_w400.copyWith(color: ColorStyles.black.withOpacity(0.5))
+                                : TextStyles.black_15_w400.copyWith(color: ColorStyles.white.withOpacity(0.5), fontFamily: MainConfigApp.fontFamily4),
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -160,7 +165,9 @@ class SignInView extends StatelessWidget {
                           padding: EdgeInsets.only(top: 50.h),
                           child: Text(
                             'У Вас нет аккаунта?',
-                            style: TextStyles.black_14_w400,
+                            style: MainConfigApp.app.isSiignores
+                              ? TextStyles.black_14_w400
+                              : TextStyles.white_16_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -171,7 +178,9 @@ class SignInView extends StatelessWidget {
                             onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterView())),
                             child: Text(
                               'Зарегистрируйтесь',
-                              style: TextStyles.black_14_w700.copyWith(color: ColorStyles.text_color),
+                              style: MainConfigApp.app.isSiignores
+                                ? TextStyles.black_14_w700.copyWith(color: ColorStyles.text_color)
+                                : TextStyles.white_16_w400.copyWith(fontFamily: MainConfigApp.fontFamily4, color: ColorStyles.primary),
                               textAlign: TextAlign.center,
                             ),
                           ),

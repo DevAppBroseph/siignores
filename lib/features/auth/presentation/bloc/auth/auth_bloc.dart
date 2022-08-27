@@ -29,7 +29,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   @override
   Stream<AuthState> mapEventToState(AuthEvent event) async*{
     if(event is CheckUserLoggedEvent){
-      yield BlankState();
+      yield InitialState();
       var token = await getTokenLocal(NoParams());
       yield token.fold(
         (failure) => errorCheck(failure),

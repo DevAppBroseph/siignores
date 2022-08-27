@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:siignores/constants/main_config_app.dart';
 import 'package:siignores/features/auth/presentation/bloc/register/register_bloc.dart';
 import 'constants/colors/color_styles.dart';
 import 'constants/texts/text_styles.dart';
@@ -46,11 +47,12 @@ class MyApp extends StatelessWidget {
             appBarTheme: AppBarTheme(
               backgroundColor: ColorStyles.backgroundColor,
               centerTitle: true,
-              titleTextStyle: TextStyles.title_app_bar,
+              titleTextStyle: MainConfigApp.app.isSiignores ? TextStyles.title_app_bar : TextStyles.title_app_bar2,
               elevation: 1.0,
               toolbarHeight: 64.h,
+              shadowColor: MainConfigApp.app.isSiignores ? ColorStyles.black : ColorStyles.white,
               iconTheme: IconThemeData(
-                color: ColorStyles.black,
+                color: MainConfigApp.app.isSiignores ? ColorStyles.black : ColorStyles.white,
               ),
               
             )

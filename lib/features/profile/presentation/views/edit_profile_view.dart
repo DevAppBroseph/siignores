@@ -6,6 +6,7 @@ import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:siignores/constants/main_config_app.dart';
 import 'package:siignores/constants/texts/text_styles.dart';
 import 'package:siignores/core/widgets/modals/password_created_modal.dart';
 import 'package:siignores/core/widgets/text_fields/default_text_form_field.dart';
@@ -77,8 +78,7 @@ class _EditProfileViewState extends State<EditProfileView> {
     return Scaffold(
       appBar: AppBar(
         elevation: 1.h,
-        shadowColor: ColorStyles.black,
-        title: Text('Редактировать профиль', style: TextStyles.title_app_bar,),
+        title: Text('Редактировать профиль',),
         leading: BackAppbarBtn(
           onTap: () => context.read<MainScreenBloc>().add(ChangeViewEvent(view: 3)),
         )
@@ -150,17 +150,19 @@ class _EditProfileViewState extends State<EditProfileView> {
                       padding: EdgeInsets.symmetric(horizontal: 20.h, vertical: 20.h),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10.w),
-                        color: ColorStyles.white
+                        color: MainConfigApp.app.isSiignores ? ColorStyles.white : ColorStyles.black2
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Изменить пароль для входа', style: TextStyles.black_15_w700,),
+                          Text('Изменить пароль для входа', style: MainConfigApp.app.isSiignores
+                            ? TextStyles.black_15_w700
+                            : TextStyles.white_15_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
                           SvgPicture.asset('assets/svg/arrow_right.svg')
                         ],
                       ),
                     ),
-                    SizedBox(height: 180.h,),
+                    SizedBox(height: 280.h,),
                   ],
                 ),
               ),
@@ -170,9 +172,16 @@ class _EditProfileViewState extends State<EditProfileView> {
       ),
 
 
-      floatingActionButton: PrimaryBtn(
-        title: 'Сохранить изменения',
-        onTap: () => saveTap(context),
+      floatingActionButton: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          PrimaryBtn(
+            title: 'Сохранить изменения',
+            onTap: () => saveTap(context),
+          ),
+                    SizedBox(height: 140.h,),
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );

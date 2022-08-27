@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:siignores/constants/main_config_app.dart';
 
 import '../../../constants/colors/color_styles.dart';
 
@@ -22,7 +23,7 @@ class CloseModalBtn extends StatelessWidget {
         height: 40.h,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),
-          color: ColorStyles.grey_f1f1f1
+          color: MainConfigApp.app.isSiignores ? ColorStyles.grey_f1f1f1 : ColorStyles.lilac2
         ),
         alignment: Alignment.center,
         child: SvgPicture.asset('assets/svg/close_modal.svg'),

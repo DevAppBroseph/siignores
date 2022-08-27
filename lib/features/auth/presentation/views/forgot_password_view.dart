@@ -9,6 +9,7 @@ import 'package:siignores/core/widgets/loaders/overlay_loader.dart';
 import 'package:siignores/core/widgets/text_fields/default_text_form_field.dart';
 import 'package:siignores/features/auth/presentation/bloc/auth/auth_bloc.dart';
 import '../../../../constants/colors/color_styles.dart';
+import '../../../../constants/main_config_app.dart';
 import '../../../../core/widgets/btns/back_btn.dart';
 import '../../../../core/widgets/btns/primary_btn.dart';
 import '../bloc/forgot_password/forgot_password_bloc.dart';
@@ -149,11 +150,15 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
         children: [
           Padding(
             padding: EdgeInsets.fromLTRB(32.w, 36.h, 16.w, 0),
-            child: Text('Забыли пароль', style: TextStyles.black_30_w700,)
+            child: Text(MainConfigApp.app.isSiignores ? 'Забыли пароль' : 'Забыли пароль'.toUpperCase(), style: MainConfigApp.app.isSiignores
+              ? TextStyles.black_30_w700
+              : TextStyles.black_30_w300.copyWith(color: ColorStyles.primary,))
           ),
           Padding(
             padding: EdgeInsets.fromLTRB(32.w, 36.h, 16.w, 0),
-            child: Text('Введите email чтобы мы смогли\nвыслать код на ваш email', style: TextStyles.black_16_w400,)
+            child: Text('Введите email чтобы мы смогли\nвыслать код на ваш email', style: MainConfigApp.app.isSiignores 
+              ? TextStyles.black_16_w400
+              : TextStyles.white_16_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),)
           ),
           Padding(
             padding: EdgeInsets.only(top: 32, left: 32.w, right: 32.w),
@@ -184,11 +189,15 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
 
           Padding(
             padding: EdgeInsets.fromLTRB(32.w, 36.h, 16.w, 0),
-            child: Text('Код подтверждения', style: TextStyles.black_30_w700,)
+            child: Text(MainConfigApp.app.isSiignores ? 'Код подтверждения' : 'Код подтверждения'.toUpperCase(), style: MainConfigApp.app.isSiignores
+              ? TextStyles.black_30_w700
+              : TextStyles.black_30_w300.copyWith(color: ColorStyles.primary,))
           ),
           Padding(
             padding: EdgeInsets.fromLTRB(32.w, 36.h, 16.w, 0),
-            child: Text('Введите код который мы выслали\nна Ваш электронный ящик ', style: TextStyles.black_16_w400,)
+            child: Text('Введите код который мы выслали\nна Ваш электронный ящик ', style: MainConfigApp.app.isSiignores 
+              ? TextStyles.black_16_w400
+              : TextStyles.white_16_w400.copyWith(fontFamily: MainConfigApp.fontFamily4))
           ),
           Padding(
             padding: EdgeInsets.only(top: 32, left: 32.w, right: 32.w),
@@ -219,7 +228,9 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
         children: [
           Padding(
             padding: EdgeInsets.fromLTRB(32.w, 36.h, 16.w, 0),
-            child: Text('Новый пароль', style: TextStyles.black_30_w700,)
+            child: Text('Новый пароль', style: MainConfigApp.app.isSiignores
+              ? TextStyles.black_30_w700
+              : TextStyles.black_30_w300.copyWith(color: ColorStyles.primary,))
           ),
           Padding(
             padding: EdgeInsets.only(top: 32.h, left: 32.w, right: 32.w),

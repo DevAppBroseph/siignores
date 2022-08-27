@@ -24,8 +24,7 @@ class TrainingEmptyView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 1.h,
-        shadowColor: ColorStyles.black,
-        title: Text('Тренинг', style: TextStyles.title_app_bar,),
+        title: Text('Тренинг'),
       ),
       body: Center(
         child: emptyViewType == EmptyViewType.first

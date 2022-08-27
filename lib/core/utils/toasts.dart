@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:siignores/constants/main_config_app.dart';
 
 import '../../constants/colors/color_styles.dart';
 
@@ -18,8 +19,8 @@ void showSuccessAlertToast(String msg) {
       msg: '$msg',
       timeInSecForIosWeb: 2,
       gravity: ToastGravity.TOP,
-      backgroundColor: ColorStyles.green_accent,
-      textColor: Colors.white,
+      backgroundColor: MainConfigApp.app.isSiignores ? ColorStyles.green_accent : ColorStyles.primary,
+      textColor: MainConfigApp.app.isSiignores ? Colors.white : ColorStyles.black,
       toastLength: Toast.LENGTH_LONG,
       fontSize: 20,);
 }

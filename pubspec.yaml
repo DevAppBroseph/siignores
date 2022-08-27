@@ -78,6 +78,12 @@ flutter:
         - asset: assets/fonts/Cormorant-Light.ttf
           weight: 400
   #       - asset: fonts/TrajanPro_Bold.ttf
+    - family: Mak
+      fonts:
+        - asset: assets/fonts/MAK.otf
+    - family: Gilroy
+      fonts:
+        - asset: assets/fonts/gilroy-regular.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

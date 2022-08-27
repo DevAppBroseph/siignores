@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:siignores/constants/main_config_app.dart';
 import '../../../../constants/colors/color_styles.dart';
 import '../../../../core/widgets/image/cached_image.dart';
 
@@ -10,11 +11,11 @@ import '../../../../core/widgets/image/cached_image.dart';
 
 class ProfilePhotoPicker extends StatelessWidget {
   final bool isVerified;
-  final Color borderColor;
+  final Color? borderColor;
   final Function() onTap;
   final File? fileImage;
   final String? urlToImage;
-  const ProfilePhotoPicker({Key? key, required this.isVerified, this.borderColor = ColorStyles.primary, required this.onTap, this.fileImage, this.urlToImage}) : super(key: key);
+  const ProfilePhotoPicker({Key? key, required this.isVerified, this.borderColor, required this.onTap, this.fileImage, this.urlToImage}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +55,9 @@ class ProfilePhotoPicker extends StatelessWidget {
           Positioned(
             top: 0,
             right: 0,
-            child: SvgPicture.asset('assets/svg/verified.svg')
+            child: SvgPicture.asset(
+              MainConfigApp.app.isSiignores ? 'assets/svg/verified.svg' : 'assets/svg/verified2.svg',
+            )
           ),
           Positioned(
             right: 9.w,
@@ -66,7 +69,7 @@ class ProfilePhotoPicker extends StatelessWidget {
               decoration: BoxDecoration(
                 color: ColorStyles.white,
                 borderRadius: BorderRadius.circular(50.w),
-                border: Border.all(width: 4.w, color: borderColor)
+                border: Border.all(width: 4.w, color: !MainConfigApp.app.isSiignores ? ColorStyles.darkViolet : borderColor ?? ColorStyles.primary)
               ),
               child: SvgPicture.asset('assets/svg/camera.svg',)
             )

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:siignores/constants/main_config_app.dart';
 import 'package:siignores/core/widgets/image/cached_image.dart';
 import 'package:siignores/features/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'package:siignores/features/home/presentation/widgets/top_info_home.dart';
@@ -12,6 +13,7 @@ import '../../../../constants/colors/color_styles.dart';
 import '../../../../constants/texts/text_styles.dart';
 import '../../../../core/widgets/modals/lecture_modal.dart';
 import '../../../../core/widgets/sections/group_section.dart';
+import '../widgets/lecture_card.dart';
 import 'calendart_test.dart';
 
 
@@ -38,7 +40,7 @@ class HomeView extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         toolbarHeight: 0,
-        backgroundColor: ColorStyles.primary,
+        backgroundColor: MainConfigApp.app.isSiignores ? ColorStyles.primary : ColorStyles.backgroundColor,
       ),
       body: SingleChildScrollView(
         physics: ClampingScrollPhysics(),
@@ -53,7 +55,7 @@ class HomeView extends StatelessWidget {
                   left: -50.w,
                   child: Container(
                     decoration: BoxDecoration(
-                      color: ColorStyles.primary,
+                      color: MainConfigApp.app.isSiignores ? ColorStyles.primary : ColorStyles.backgroundColor,
                       borderRadius: const BorderRadius.all(Radius.elliptical(130, 50)),
                     ),
                   )
@@ -80,31 +82,13 @@ class HomeView extends StatelessWidget {
                       child: ListView(
                         scrollDirection: Axis.horizontal,
                         children: _list.map((e) 
-                          => GestureDetector(
+                          => LectureCard(
                             onTap: (){
                               showModalLecture(context);
                             },
-                            child: Container(
-                              height: 120.h,
-                              width: 212.w,
-                              padding: EdgeInsets.symmetric(horizontal: 10.w),
-                              margin: EdgeInsets.only(right: 16.w, left: _list.first['title'] == e['title'] ? 23.w : 0),
-                              decoration: BoxDecoration(
-                                color: ColorStyles.white,
-                                borderRadius: BorderRadius.circular(13.h)
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(e['title'] ?? '', style: TextStyles.cormorant_black_16_w400,),
-                                  SizedBox(height: 11.h,),
-                                  Text(e['desc']!.toUpperCase(), 
-                                    style: e['desc']!.length > 10 ? TextStyles.cormorant_black_15_w400 : TextStyles.cormorant_black_25_w400,
-                                    textAlign: TextAlign.center,
-                                  )
-                                ],
-                              ),
-                            ),
+                            title: e['title'] ?? '',
+                            text: e['desc'] ?? '',
+                            isFirst: _list.first['title'] == e['title'],
                           )
                         ).toList()
                       ),
@@ -135,12 +119,20 @@ class HomeView extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Календарь', style: TextStyles.black_24_w700,),
+                        Text(MainConfigApp.app.isSiignores ? 'Календарь' : 'Календарь'.toUpperCase(), style: MainConfigApp.app.isSiignores
+                          ? TextStyles.black_24_w700
+                          : TextStyles.black_24_w300,),
                         Row(
                           children: [
-                            SvgPicture.asset('assets/svg/arrow_left.svg'),
+                            SvgPicture.asset(
+                              'assets/svg/arrow_left.svg',
+                              color: MainConfigApp.app.isSiignores ? null : ColorStyles.black2,
+                            ),
                             SizedBox(width: 16.w,),
-                            SvgPicture.asset('assets/svg/arrow_right.svg')
+                            SvgPicture.asset(
+                              'assets/svg/arrow_right.svg',
+                              color: MainConfigApp.app.isSiignores ? null : ColorStyles.black2,
+                            )
                           ],
                         )
                       ],
@@ -167,9 +159,18 @@ class HomeView extends StatelessWidget {
                         outsideDaysVisible: false,
                         cellPadding: EdgeInsets.zero,
                         todayDecoration: BoxDecoration(color: ColorStyles.black, shape: BoxShape.circle),
-                        defaultTextStyle: TextStyles.black_14_w400,
-                        weekendTextStyle: TextStyles.black_14_w400,
-                        selectedTextStyle: TextStyles.white_14_w400,
+                        defaultTextStyle: MainConfigApp.app.isSiignores
+                          ? TextStyles.black_14_w400
+                          : TextStyles.black_13_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),
+                        weekendTextStyle: MainConfigApp.app.isSiignores
+                          ? TextStyles.black_14_w400
+                          : TextStyles.black_13_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),
+                        selectedTextStyle: MainConfigApp.app.isSiignores
+                          ? TextStyles.white_14_w400
+                          : TextStyles.white_13_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),
+                        todayTextStyle: MainConfigApp.app.isSiignores
+                          ? TextStyles.white_14_w400
+                          : TextStyles.white_13_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),
                         rangeHighlightColor: ColorStyles.black,
                         selectedDecoration: BoxDecoration(color: ColorStyles.black, shape: BoxShape.circle)
                         
@@ -190,6 +191,7 @@ class HomeView extends StatelessWidget {
                 ],
               ),
             ),
+            SizedBox(height: 30.h,),
           ],
         ),
       ),

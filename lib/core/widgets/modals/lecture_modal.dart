@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:siignores/constants/colors/color_styles.dart';
+import 'package:siignores/constants/main_config_app.dart';
 import 'package:siignores/constants/texts/text_styles.dart';
 import 'package:siignores/core/widgets/btns/close_modal_btn.dart';
 import 'package:siignores/core/widgets/btns/primary_btn.dart';
@@ -63,12 +64,16 @@ showModalLecture(
                         SizedBox(height: 22.h,),
                         Text(
                           'Самое большое количество\nвремени и сил человек тратит на\nпринятие решений', 
-                          style: TextStyles.black_18_w700,
+                          style: MainConfigApp.app.isSiignores
+                            ? TextStyles.black_18_w700
+                            : TextStyles.black_18_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),
                         ),
                         SizedBox(height: 22.h,),
                         Text(
                           'Решительность и смелость идут за руку с друг\nдругом и помогают  нам в реализации своих\nцелей', 
-                          style: TextStyles.black_13_w400,
+                          style: MainConfigApp.app.isSiignores
+                            ? TextStyles.black_13_w400
+                            : TextStyles.black_13_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),
                         ),
                         SizedBox(height: 55.h,),
                       ],

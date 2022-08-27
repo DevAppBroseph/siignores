@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:siignores/constants/colors/color_styles.dart';
+import 'package:siignores/constants/main_config_app.dart';
 import 'package:siignores/constants/texts/text_styles.dart';
 import 'package:siignores/core/widgets/btns/close_modal_btn.dart';
 import 'package:siignores/core/widgets/image/cached_image.dart';
@@ -50,11 +51,15 @@ showModalGroupUsers(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         SizedBox(height: 9.h,),
-                        Text('Участники группы', style: TextStyles.black_27_w700,),
+                        Text(MainConfigApp.app.isSiignores ? 'Участники группы' : 'Участники группы'.toUpperCase(), style: MainConfigApp.app.isSiignores
+                          ? TextStyles.black_27_w700
+                          : TextStyles.black_27_w300),
                         SizedBox(height: 8.h,),
                         Text(
                           'В группе 4 пользователя', 
-                          style: TextStyles.black_15_w500,
+                          style: MainConfigApp.app.isSiignores
+                            ? TextStyles.black_15_w500
+                            : TextStyles.black_15_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),
                         ),
                         SizedBox(height: 11.h,),
                         ListView.builder(
@@ -82,9 +87,14 @@ showModalGroupUsers(
                                     ),
                                   ),
                                   SizedBox(width: 17.w,),
-                                  Text('Администратор', style: TextStyles.black_15_w500,),
+                                  Text('Администратор', style: MainConfigApp.app.isSiignores
+                                    ? TextStyles.black_15_w500
+                                    : TextStyles.black_15_w400.copyWith(fontFamily: MainConfigApp.fontFamily4)),
                                   SizedBox(width: 7.w,),
-                                  SvgPicture.asset('assets/svg/star.svg')
+                                  SvgPicture.asset(
+                                    'assets/svg/star.svg',
+                                    color: MainConfigApp.app.isSiignores ? null : ColorStyles.darkViolet,
+                                  )
                                 ],
                               ),
                             );

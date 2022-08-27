@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:siignores/constants/main_config_app.dart';
 
 import '../../../constants/colors/color_styles.dart';
 import '../../../constants/texts/text_styles.dart';
@@ -33,7 +34,9 @@ class TakePhotoModal {
                 
                 Text(
                   title,
-                  style: TextStyles.black_18_w700,
+                  style: MainConfigApp.app.isSiignores
+                  ? TextStyles.black_18_w700
+                  : TextStyles.black_18_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),
                   textAlign: TextAlign.center,
                 ),
 

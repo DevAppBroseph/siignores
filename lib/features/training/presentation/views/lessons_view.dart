@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:siignores/constants/texts/text_styles.dart';
 import 'package:siignores/features/main/presentation/bloc/main_screen/main_screen_bloc.dart';
+import 'package:siignores/features/training/presentation/views/training_view.dart';
 
 import '../../../../constants/colors/color_styles.dart';
 import '../../../../core/widgets/btns/back_appbar_btn.dart';
@@ -20,15 +21,14 @@ class LessonsView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 1.h,
-        shadowColor: ColorStyles.black,
-        title: Text('Модуль 1', style: TextStyles.title_app_bar,),
+        title: Text('Модуль 1',),
         leading: BackAppbarBtn(
-          onTap: () => context.read<MainScreenBloc>().add(ChangeViewEvent(view: 1)),
+          onTap: () => context.read<MainScreenBloc>().add(ChangeViewEvent(widget: TrainingView())),
         )
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.w),
+          padding: EdgeInsets.symmetric(horizontal: 24.w),
           child: Column(
             children: [
               SizedBox(height: 15.h,),
@@ -46,6 +46,7 @@ class LessonsView extends StatelessWidget {
                   );
                 }
               ),
+              SizedBox(height: 30.h,),
             ],
           ),
         ),
