@@ -23,7 +23,7 @@ class LessonsView extends StatelessWidget {
         elevation: 1.h,
         title: Text('Модуль 1',),
         leading: BackAppbarBtn(
-          onTap: () => context.read<MainScreenBloc>().add(ChangeViewEvent(widget: TrainingView())),
+          onTap: () => context.read<MainScreenBloc>().add(ChangeViewEvent(widget: TrainingView(courseId: 1,))),
         )
       ),
       body: SingleChildScrollView(

@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:siignores/constants/texts/text_styles.dart';
+import 'package:siignores/features/training/domain/entities/module_entity.dart';
 
 import '../../../../constants/colors/color_styles.dart';
 import '../../../../constants/main_config_app.dart';
+import '../../../../core/services/network/config.dart';
+import '../../../../core/widgets/image/cached_image.dart';
 
 
 
 class ModuleCard extends StatelessWidget {
   final Function() onTap;
-  const ModuleCard({Key? key, required this.onTap}) : super(key: key);
+  final int index;
+  final ModuleEntity moduleEntity;
+  const ModuleCard({Key? key, required this.onTap, required this.moduleEntity, this.index = 1}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,30 +23,39 @@ class ModuleCard extends StatelessWidget {
         onTap: onTap, 
         child: Container(
           margin: EdgeInsets.fromLTRB(9.w, 0, 9.w, 14.h),
-          padding: EdgeInsets.fromLTRB(14.w, 22.h, 10.w, 0),
+          padding: EdgeInsets.fromLTRB(14.w, 22.h, 0, 0),
           decoration: BoxDecoration(
             color: ColorStyles.white,
             borderRadius: BorderRadius.circular(14.h)
           ),
           
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
+          child: Stack(
             children: [
-              Text('Модуль '.toUpperCase(), style: TextStyles.cormorant_black_18_w400,),
-              SizedBox(height: 10.h,),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('1', style: TextStyles.cormorant_black_41_w400,),
-                  Container(
-                    width: 40.w,
-                    height: 70.h,
-                    color: ColorStyles.black,
+              Positioned(
+                bottom: 5.h,
+                right: 5.h,
+                child: Container(
+                    width: MediaQuery.of(context).size.width/4,
+                    child: CachedImage(
+                      height: 80.w,
+                      isProfilePhoto: false,
+                      alignment: Alignment.bottomRight,
+                      fit: BoxFit.contain,
+                      borderRadius: BorderRadius.zero,
+                      urlImage: moduleEntity.image == null ? null : Config.url.url+moduleEntity.image!
+                    ),
                   )
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(moduleEntity.title.toUpperCase(), style: TextStyles.cormorant_black_18_w400,),
+                  SizedBox(height: 10.h,),
+                  Text(index.toString(), style: TextStyles.cormorant_black_41_w400,),
+                  
                 ],
-              )
+              ),
             ],
           ),
         ),
@@ -51,34 +65,42 @@ class ModuleCard extends StatelessWidget {
         onTap: onTap, 
         child: Container(
           margin: EdgeInsets.fromLTRB(9.w, 0, 9.w, 14.h),
-          padding: EdgeInsets.fromLTRB(14.w, 22.h, 10.w, 0),
+          padding: EdgeInsets.fromLTRB(14.w, 22.h, 0, 0),
           decoration: BoxDecoration(
             color: ColorStyles.black2,
             borderRadius: BorderRadius.circular(14.h)
           ),
           
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
+          child: Stack(
             children: [
-              Text('ЛИНЕЙКА\nСТУДЕНТОК'.toUpperCase(), style: MainConfigApp.app.isSiignores
-                ? TextStyles.cormorant_black_18_w400
-                : TextStyles.white_16_w300,),
-              SizedBox(height: 5.h,),
-              Text('Анализируем себя', style: TextStyles.grey_10_w400
-                .copyWith(color: ColorStyles.grey929292, fontFamily: MainConfigApp.fontFamily4 ),),
-              SizedBox(height: 10.h,),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Container(
-                    width: 90.w,
-                    height: 40.h,
-                    color: ColorStyles.primary,
+              Positioned(
+                bottom: 5.h,
+                right: 5.h,
+                child: Container(
+                    width: MediaQuery.of(context).size.width/4,
+                    child: CachedImage(
+                      height: 60.w,
+                      isProfilePhoto: false,
+                      fit: BoxFit.contain,
+                      alignment: Alignment.bottomRight,
+                      borderRadius: BorderRadius.zero,
+                      urlImage: moduleEntity.image == null ? null : Config.url.url+moduleEntity.image!
+                    ),
                   )
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(moduleEntity.title.toUpperCase(), style: MainConfigApp.app.isSiignores
+                    ? TextStyles.cormorant_black_18_w400
+                    : TextStyles.white_16_w300,),
+                  SizedBox(height: 5.h,),
+                  Text('Анализируем себя', style: TextStyles.grey_10_w400
+                    .copyWith(color: ColorStyles.grey929292, fontFamily: MainConfigApp.fontFamily4 ),),
+                  
                 ],
-              )
+              ),
             ],
           ),
         ),

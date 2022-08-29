@@ -9,7 +9,9 @@ class CachedImage extends StatelessWidget {
   final String? urlImage;
   final double height;
   final bool isProfilePhoto;
-  CachedImage({this.borderRadius, required this.height, required this.urlImage, required this.isProfilePhoto});
+  final BoxFit fit;
+  final Alignment? alignment;
+  CachedImage({this.alignment, this.borderRadius, required this.height, required this.urlImage, required this.isProfilePhoto, this.fit = BoxFit.cover});
 
 
   @override
@@ -20,8 +22,9 @@ class CachedImage extends StatelessWidget {
         borderRadius: borderRadius ?? BorderRadius.circular(0),
         child: Image(
           height: height,
+          alignment: alignment ?? Alignment.center,
           width: MediaQuery.of(context).size.width,
-          fit: BoxFit.cover,
+          fit: fit,
           image: imageProvider,
         ),
       ),

@@ -4,10 +4,12 @@ import '../../../../constants/colors/color_styles.dart';
 import '../../../../constants/main_config_app.dart';
 import '../../../../constants/texts/text_styles.dart';
 import '../../../../core/widgets/image/cached_image.dart';
+import '../../domain/entities/chat_message_entity.dart';
 
 
 class ChatMessageItemFromCurrentUser extends StatelessWidget {
-  const ChatMessageItemFromCurrentUser({Key? key}) : super(key: key);
+  final ChatMessageEntity chatMessage;
+  const ChatMessageItemFromCurrentUser({Key? key, required this.chatMessage}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class ChatMessageItemFromCurrentUser extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12.w),
                 ),
                 padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 16.h),
-                child: Text('Ковальчук Виталий', style: MainConfigApp.app.isSiignores
+                child: Text(chatMessage.message, style: MainConfigApp.app.isSiignores
                   ? TextStyles.black_14_w700
                   : TextStyles.black_14_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
               ),

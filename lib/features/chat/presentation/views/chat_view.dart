@@ -1,31 +1,67 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:siignores/constants/main_config_app.dart';
 import 'package:siignores/constants/texts/text_styles.dart';
-import 'package:siignores/core/widgets/cards/chat_card.dart';
-import 'package:siignores/core/widgets/image/cached_image.dart';
+import 'package:siignores/core/services/database/auth_params.dart';
+import 'package:siignores/features/chat/domain/entities/chat_tab_entity.dart';
+import 'package:siignores/features/chat/presentation/bloc/chat/chat_bloc.dart';
 import 'package:siignores/features/chat/presentation/widgets/chat_message_item_from_another_user.dart';
 import '../../../../constants/colors/color_styles.dart';
+import '../../../../core/utils/toasts.dart';
 import '../../../../core/widgets/btns/back_appbar_btn.dart';
+import '../../../../core/widgets/loaders/loader_v1.dart';
 import '../../../../core/widgets/modals/group_users_modal.dart';
-import '../../../main/presentation/bloc/main_screen/main_screen_bloc.dart';
+import '../../../../locator.dart';
+import '../../../auth/presentation/bloc/auth/auth_bloc.dart';
 import '../widgets/chat_message_item_from_current_user.dart';
 
 
 
-class ChatView extends StatelessWidget {
+class ChatView extends StatefulWidget {
+  final ChatTabEntity chatTabEntity;
+
+  ChatView({required this.chatTabEntity});
+
+  @override
+  State<ChatView> createState() => _ChatViewState();
+}
 
 
-  List<Widget> items = [
-    ChatMessageItemFromAnotherUser(),
-    ChatMessageItemFromCurrentUser(),
-    ChatMessageItemFromAnotherUser(),
-  ];
+class _ChatViewState extends State<ChatView> {
+
+  TextEditingController messageController = TextEditingController();
+  bool isLoading = true;
+  ScrollController scrollController = ScrollController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    context.read<ChatBloc>().add(GetChatEvent(id: widget.chatTabEntity.id));
+
+  }
+
+  void sendMessage() async{
+    if(messageController.text.trim().length > 0){
+      setState(() {
+        isLoading = true;
+      });
+      context.read<ChatBloc>().add(SendMessageEvent(chatId: widget.chatTabEntity.id, message: messageController.text.trim()));
+      messageController.clear();
+    }
+  }
+
+  void scrollToBottom() {
+    scrollController.jumpTo(scrollController.position.maxScrollExtent);
+  }
 
   @override
   Widget build(BuildContext context) {
+    ChatBloc bloc = context.read<ChatBloc>();
+    
     return Scaffold(
       appBar: AppBar(
         elevation: 1.h,
@@ -39,7 +75,7 @@ class ChatView extends StatelessWidget {
               Text('Начальная', style: MainConfigApp.app.isSiignores 
                 ? TextStyles.title_app_bar
                 : TextStyles.title_app_bar2,),
-              Text('5 участников', style: MainConfigApp.app.isSiignores
+              Text('${widget.chatTabEntity.usersCount} участников', style: MainConfigApp.app.isSiignores
                 ? TextStyles.black_13_w400
                 : TextStyles.white_13_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
             ],
@@ -53,32 +89,93 @@ class ChatView extends StatelessWidget {
         children: [
           Container(
             height: MediaQuery.of(context).size.height,
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 18.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(height: 56.h,),
-                    Text('30 июня 2022', style: MainConfigApp.app.isSiignores
-                      ? TextStyles.black_13_w400
-                      : TextStyles.white_13_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
-                    SizedBox(height: 27.h,),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: items.length,
-                      itemBuilder: (context, i){
-                        return Container(
-                          margin: EdgeInsets.only(bottom: 20.h),
-                          child: items[i]
-                        );
-                      }
-                    )
-                  ],
+            child: BlocConsumer<ChatBloc, ChatState>(
+              listener: (context, state){
+                if(state is ChatErrorState){
+                  Loader.hide();
+                  showAlertToast(state.message);
+                }
+
+                if(state is ChatInternetErrorState){
+                  context.read<AuthBloc>().add(InternetErrorEvent());
+                }
+                if(state is GotSuccessChatState){
+                  setState(() {
+                    isLoading = false;
+                  });
+                  Future.delayed(Duration(milliseconds: 10), (){
+                    if(bloc.chatMessages.isNotEmpty){
+                      scrollToBottom();
+                    }
+                  });
+                }
+                if(state is ChatSetStateState){
+                  setState(() {
+                    isLoading = false;
+                  });
+                  scrollToBottom();
+                }
+              },
+              builder: (context, state){
+                if(state is ChatInitialState || state is ChatLoadingState){
+                  return  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      LoaderV1(),
+                      SizedBox(height: 75.h,)
+                    ],
+                  );
+                }
+
+                if(state is GotSuccessChatState && bloc.chatMessages.isEmpty){
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text('Напишите что нибудь', style: MainConfigApp.app.isSiignores
+                        ? TextStyles.black_15_w700
+                        : TextStyles.white_15_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
+                      SizedBox(height: 75.h, width: MediaQuery.of(context).size.width,)
+                    ],
+                  );
+                }
+
+                return SingleChildScrollView(
+                  controller: scrollController,
+                  child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 18.w),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 56.h,),
+                      Text('30 июня 2022', style: MainConfigApp.app.isSiignores
+                        ? TextStyles.black_13_w400
+                        : TextStyles.white_13_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
+                      SizedBox(height: 27.h,),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: bloc.chatMessages.length,
+                        itemBuilder: (context, i){
+                          return Container(
+                            margin: EdgeInsets.only(bottom: 20.h),
+                            child: bloc.chatMessages[i].from == sl<AuthConfig>().userEntity!.id
+                              ? ChatMessageItemFromCurrentUser(
+                                chatMessage: bloc.chatMessages[i],
+                              )
+                              : ChatMessageItemFromAnotherUser(
+                                chatMessage: bloc.chatMessages[i],
+                              )
+                          );
+                        }
+                      ),
+                      SizedBox(height: 155.h)
+                    ],
+                  ),
                 ),
-              ),
-            ),
+              );
+              },
+            )
           ),
 
 
@@ -108,6 +205,7 @@ class ChatView extends StatelessWidget {
                   SizedBox(width: 15.w,),
                   Expanded(
                     child: TextFormField(
+                      controller: messageController,
                       style: MainConfigApp.app.isSiignores
                         ? TextStyles.black_14_w400
                         : TextStyles.white_14_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),
@@ -131,10 +229,13 @@ class ChatView extends StatelessWidget {
                             color: MainConfigApp.app.isSiignores ? ColorStyles.black.withOpacity(0.1) : ColorStyles.white.withOpacity(0.1)
                           )
                         ),
-                        suffixIcon: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 7.w),
-                          child: SvgPicture.asset(
-                            MainConfigApp.app.isSiignores ? 'assets/svg/send_btn.svg' : 'assets/svg/send_btn2.svg',
+                        suffixIcon: GestureDetector(
+                          onTap: sendMessage,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 7.w),
+                            child: SvgPicture.asset(
+                              MainConfigApp.app.isSiignores ? 'assets/svg/send_btn.svg' : 'assets/svg/send_btn2.svg',
+                            ),
                           ),
                         )
                       ),
@@ -142,6 +243,23 @@ class ChatView extends StatelessWidget {
                   )
                 ],
               )
+            )
+          ),
+
+          if(isLoading)
+          Positioned(
+            bottom: 0,
+            right: 0,
+            left: 0,
+            child: Container(
+              height: 105.h,
+              decoration: BoxDecoration(
+                color: MainConfigApp.app.isSiignores ? ColorStyles.white.withOpacity(0.5) : ColorStyles.black2.withOpacity(0.4),
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(15.w),
+                  topLeft: Radius.circular(15.w),
+                ),
+              ),
             )
           )
         ],

@@ -35,7 +35,7 @@ dependencies:
   shared_preferences: ^2.0.15
   flutter_secure_storage: ^5.1.0
 
-
+  web_socket_channel:
   cupertino_icons: ^1.0.2
 
 dev_dependencies:

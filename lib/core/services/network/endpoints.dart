@@ -20,8 +20,17 @@ enum Endpoints {
 
   //Profile
   updateProfileInfo,
-  updateAvatar
+  updateAvatar,
 
+
+  //Training
+  getCourses,
+  getModules,
+
+
+  //Chat
+  getChatTabs,
+  getChatMessages
 }
 
 extension EndpointsExtension on Endpoints {
@@ -52,8 +61,14 @@ extension EndpointsExtension on Endpoints {
         return "$url/auth/users/me/";
       case Endpoints.updateAvatar:
         return "$url/auth/users/change_photo/";
-      
-     
+      case Endpoints.getCourses:
+        return "$url/courses/course/get_courses/";
+      case Endpoints.getModules:
+        return "$url/courses/course/get_modules${params![0]}/";
+      case Endpoints.getChatTabs:
+        return "$url/chat/all/";
+      case Endpoints.getChatMessages:
+        return "$url/chat/${params![0]}/";
       default:
         return '';
     }

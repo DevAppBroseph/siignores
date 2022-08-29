@@ -9,8 +9,12 @@ import 'constants/texts/text_styles.dart';
 import 'features/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'features/auth/presentation/bloc/forgot_password/forgot_password_bloc.dart';
 import 'features/auth/presentation/views/splash_view.dart';
+import 'features/chat/presentation/bloc/chat/chat_bloc.dart';
+import 'features/chat/presentation/bloc/chat_tabs/chat_tabs_bloc.dart';
 import 'features/main/presentation/bloc/main_screen/main_screen_bloc.dart';
 import 'features/profile/presentation/bloc/profile/profile_bloc.dart';
+import 'features/training/presentation/bloc/course/course_bloc.dart';
+import 'features/training/presentation/bloc/modules/module_bloc.dart';
 import 'locator.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,6 +39,10 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (_) => sl<ForgotPasswordBloc>()),
           BlocProvider(create: (_) => sl<MainScreenBloc>()),
           BlocProvider(create: (_) => sl<ProfileBloc>()),
+          BlocProvider(create: (_) => sl<CourseBloc>()),
+          BlocProvider(create: (_) => sl<ModuleBloc>()),
+          BlocProvider(create: (_) => sl<ChatTabsBloc>()),
+          BlocProvider(create: (_) => sl<ChatBloc>()),
         ], 
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

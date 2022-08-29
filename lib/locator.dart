@@ -6,10 +6,16 @@ import 'package:siignores/features/auth/domain/usecases/reset_password.dart';
 import 'package:siignores/features/auth/domain/usecases/send_code_reset_password.dart';
 import 'package:siignores/features/auth/domain/usecases/set_password.dart';
 import 'package:siignores/features/auth/domain/usecases/verify_code_reset_password.dart';
+import 'package:siignores/features/chat/domain/usecases/get_chat.dart';
+import 'package:siignores/features/chat/domain/usecases/get_chat_tabs.dart';
+import 'package:siignores/features/chat/presentation/bloc/chat_tabs/chat_tabs_bloc.dart';
 import 'package:siignores/features/main/presentation/bloc/main_screen/main_screen_bloc.dart';
 import 'package:siignores/features/profile/domain/repositories/profile/profile_repository.dart';
 import 'package:siignores/features/profile/domain/usecases/update_avatar.dart';
 import 'package:siignores/features/profile/domain/usecases/update_user_info.dart';
+import 'package:siignores/features/training/domain/usecases/get_courses.dart';
+import 'package:siignores/features/training/domain/usecases/get_modules.dart';
+import 'package:siignores/features/training/presentation/bloc/modules/module_bloc.dart';
 import 'constants/main_config_app.dart';
 import 'core/services/database/auth_params.dart';
 import 'core/services/network/config.dart';
@@ -26,9 +32,17 @@ import 'features/auth/domain/usecases/register.dart';
 import 'features/auth/presentation/bloc/auth/auth_bloc.dart';
 import 'features/auth/presentation/bloc/forgot_password/forgot_password_bloc.dart';
 import 'features/auth/presentation/bloc/register/register_bloc.dart';
+import 'features/chat/data/datasources/chat/remote_datasource.dart';
+import 'features/chat/data/repositories/chat_repository_impl.dart';
+import 'features/chat/domain/repositories/chat/chat_repository.dart';
+import 'features/chat/presentation/bloc/chat/chat_bloc.dart';
 import 'features/profile/data/datasources/profile/remote_datasource.dart';
 import 'features/profile/data/repositories/profile_repository_impl.dart';
 import 'features/profile/presentation/bloc/profile/profile_bloc.dart';
+import 'features/training/data/datasources/training_main/remote_datasource.dart';
+import 'features/training/data/repositories/training_repository_impl.dart';
+import 'features/training/domain/repositories/training/training_repository.dart';
+import 'features/training/presentation/bloc/course/course_bloc.dart';
 
 
 final sl = GetIt.instance;
@@ -125,4 +139,70 @@ void setupInjections() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+  ///Training
+  // //Datasources
+  sl.registerLazySingleton<TrainingRemoteDataSource>(
+    () => TrainingRemoteDataSourceImpl(dio: sl()),
+  );
+
+  // //Repositories
+  sl.registerLazySingleton<TrainingRepository>(
+    () => TrainingRepositoryImpl(sl(), sl(), ),
+  );
+
+  // //UseCases
+  sl.registerLazySingleton(() => GetCourses(sl()));
+  sl.registerLazySingleton(() => GetModules(sl()));
+
+  //Blocs
+  sl.registerFactory<CourseBloc>(
+    () => CourseBloc(sl()),
+  );
+  //Blocs
+  sl.registerFactory<ModuleBloc>(
+    () => ModuleBloc(sl()),
+  );
+
+
+
+
+
+
+
+
+
+
+
+  ///Chat
+  // //Datasources
+  sl.registerLazySingleton<ChatRemoteDataSource>(
+    () => ChatRemoteDataSourceImpl(dio: sl()),
+  );
+
+  // //Repositories
+  sl.registerLazySingleton<ChatRepository>(
+    () => ChatRepositoryImpl(sl(), sl(), ),
+  );
+
+  // //UseCases
+  sl.registerLazySingleton(() => GetChatTabs(sl()));
+  sl.registerLazySingleton(() => GetChat(sl()));
+
+  //Blocs
+  sl.registerFactory<ChatTabsBloc>(
+    () => ChatTabsBloc(sl()),
+  );
+  sl.registerFactory<ChatBloc>(
+    () => ChatBloc(sl(),)
+  );
 }

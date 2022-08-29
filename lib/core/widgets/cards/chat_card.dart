@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:siignores/constants/colors/color_styles.dart';
 import 'package:siignores/constants/main_config_app.dart';
+import 'package:siignores/features/chat/domain/entities/chat_tab_entity.dart';
 
 import '../../../constants/texts/text_styles.dart';
 
@@ -12,8 +13,9 @@ import '../../../constants/texts/text_styles.dart';
 
 class ChatCard extends StatelessWidget {
   final bool centerButton;
+  final ChatTabEntity chatTabEntity;
   final Function() onTap;
-  const ChatCard({Key? key, this.centerButton = false, required this.onTap}) : super(key: key);
+  const ChatCard({Key? key, this.centerButton = false, required this.onTap, required this.chatTabEntity}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,7 @@ class ChatCard extends StatelessWidget {
                 color: MainConfigApp.app.isSiignores ? null : ColorStyles.lilac,
               ),
               SizedBox(width: 10.w,),
-              Text('Начальная группа', style: MainConfigApp.app.isSiignores
+              Text(chatTabEntity.chatName, style: MainConfigApp.app.isSiignores
                 ? TextStyles.black_14_w700
                 : TextStyles.white_14_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
               SizedBox(width: 7.w,),
@@ -50,7 +52,7 @@ class ChatCard extends StatelessWidget {
                 ),
                 alignment: Alignment.center,
                 padding: EdgeInsets.symmetric(horizontal: 8.w),
-                child: Text('560', style: MainConfigApp.app.isSiignores
+                child: Text(chatTabEntity.usersCount.toString(), style: MainConfigApp.app.isSiignores
                   ? TextStyles.green_12_w700
                   : TextStyles.black_12_w700.copyWith(fontFamily: MainConfigApp.fontFamily4),),
               )

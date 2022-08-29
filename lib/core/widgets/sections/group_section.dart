@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:siignores/constants/colors/color_styles.dart';
 import 'package:siignores/constants/main_config_app.dart';
+import 'package:siignores/features/chat/domain/entities/chat_tab_entity.dart';
 import '../../../constants/texts/text_styles.dart';
 import '../cards/chat_card.dart';
 
@@ -25,6 +26,11 @@ class GroupSection extends StatelessWidget {
         SizedBox(height: 13.h,),
         ChatCard(
           centerButton: MainConfigApp.app.isSiignores,
+          chatTabEntity: ChatTabEntity(
+            chatName: 'Начальная группа',
+            usersCount: 560,
+            id: 0
+          ),
           onTap: (){
 
           },

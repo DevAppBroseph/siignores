@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:siignores/constants/main_config_app.dart';
+import 'package:siignores/features/chat/domain/entities/chat_message_entity.dart';
 import '../../../../constants/colors/color_styles.dart';
 import '../../../../constants/texts/text_styles.dart';
 import '../../../../core/widgets/image/cached_image.dart';
@@ -8,7 +9,8 @@ import '../../../../core/widgets/image/cached_image.dart';
 
 
 class ChatMessageItemFromAnotherUser extends StatelessWidget {
-  const ChatMessageItemFromAnotherUser({Key? key}) : super(key: key);
+  final ChatMessageEntity chatMessage;
+  const ChatMessageItemFromAnotherUser({Key? key, required this.chatMessage}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +38,7 @@ class ChatMessageItemFromAnotherUser extends StatelessWidget {
                   borderRadius: BorderRadius.circular(12.w),
                 ),
                 padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 16.h),
-                child: Text('Здравствуйте. Мы рады Вас приветствовать. Назовите Ваше имя?', style: MainConfigApp.app.isSiignores
+                child: Text(chatMessage.message, style: MainConfigApp.app.isSiignores
                   ? TextStyles.black_14_w400
                   : TextStyles.white_14_w400.copyWith(color: ColorStyles.white, fontFamily: MainConfigApp.fontFamily4),),
               )

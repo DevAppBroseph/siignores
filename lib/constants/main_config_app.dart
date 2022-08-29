@@ -5,7 +5,7 @@ class MainConfigApp {
 
   //======== APP SETTINGS ========//
 
-  static App app = App.siignores; 
+  static App app = App.secondApp; 
 
 
   //UI

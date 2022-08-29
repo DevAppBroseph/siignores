@@ -4,14 +4,14 @@ import '../../domain/entities/user_entity.dart';
 
 class UserModel extends UserEntity{
   UserModel({
-    // required int id,
+    required int id,
     required String firstName,
     required String lastName,
     required String email,
     required String? avatar,
     required DateTime? lastLogin,
   }) : super(
-    // id: id, 
+    id: id, 
     avatar: avatar,
     firstName: firstName, 
     lastName: lastName, 
@@ -20,7 +20,7 @@ class UserModel extends UserEntity{
   );
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-    // id: json['id'],
+    id: json['id'],
     firstName: json['firstname'] ?? '',
     lastName: json['lastname'] ?? '',
     email: json['email'] ?? '',

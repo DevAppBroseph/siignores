@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:siignores/constants/main_config_app.dart';
 import 'package:siignores/core/widgets/image/cached_image.dart';
 import 'package:siignores/features/auth/presentation/bloc/auth/auth_bloc.dart';
+import 'package:siignores/features/chat/presentation/bloc/chat/chat_bloc.dart';
 import 'package:siignores/features/home/presentation/widgets/top_info_home.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -68,6 +69,7 @@ class HomeView extends StatelessWidget {
                       notificationCount: 3, 
                       urlToImage: 'https://aikidojo.lv/wp-content/uploads/2019/08/nophoto.jpg',
                       onTapByName: (){
+                        context.read<ChatBloc>().add(CloseSocketEvent());
                         context.read<AuthBloc>().add(LogoutEvent());
                         // Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => TableEventsExample()));
                       }, 

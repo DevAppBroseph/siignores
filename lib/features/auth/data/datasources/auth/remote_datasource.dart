@@ -105,7 +105,7 @@ class AuthenticationRemoteDataSourceImpl
     if (response.statusCode == 200) {
       return UserModel.fromJson(response.data);
     } else if(response.statusCode == 401) {
-      return UserModel(firstName: 'unauthorized', lastLogin: null, lastName: '', email: '', avatar: null);
+      return UserModel(firstName: 'unauthorized', lastLogin: null, lastName: '', email: '', avatar: null, id: 0);
     } else {
       throw ServerException(message: 'Ошибка с сервером');
     }
