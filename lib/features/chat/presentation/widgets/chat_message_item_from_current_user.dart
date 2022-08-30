@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import '../../../../constants/colors/color_styles.dart';
 import '../../../../constants/main_config_app.dart';
 import '../../../../constants/texts/text_styles.dart';
@@ -48,7 +49,7 @@ class ChatMessageItemFromCurrentUser extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Text('2:37', style: MainConfigApp.app.isSiignores
+              Text(DateFormat('H:mm').format(chatMessage.time), style: MainConfigApp.app.isSiignores
                 ? TextStyles.black_11_w400
                 .copyWith(color: ColorStyles.black.withOpacity(0.7))
                 : TextStyles.black_11_w400

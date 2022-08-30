@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:siignores/core/services/network/network_info.dart';
 import 'package:siignores/features/chat/domain/entities/chat_message_entity.dart';
+import 'package:siignores/features/chat/domain/entities/chat_room_entity.dart';
 import 'package:siignores/features/chat/domain/entities/chat_tab_entity.dart';
 import '../../../../core/error/failures.dart';
 import '../../domain/repositories/chat/chat_repository.dart';
@@ -37,7 +38,7 @@ class ChatRepositoryImpl implements ChatRepository {
 
 
   @override
-  Future<Either<Failure, List<ChatMessageEntity>>> getChat(int params) async {
+  Future<Either<Failure, ChatRoomEntity>> getChat(int params) async {
     if (await networkInfo.isConnected) {
       try {
         final items = await remoteDataSource.getChat(params);

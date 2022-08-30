@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:siignores/constants/main_config_app.dart';
 import 'package:siignores/constants/texts/text_styles.dart';
 import 'package:siignores/core/services/database/auth_params.dart';
+import 'package:siignores/features/chat/domain/entities/chat_message_entity.dart';
 import 'package:siignores/features/chat/domain/entities/chat_tab_entity.dart';
 import 'package:siignores/features/chat/presentation/bloc/chat/chat_bloc.dart';
 import 'package:siignores/features/chat/presentation/widgets/chat_message_item_from_another_user.dart';
@@ -72,7 +74,7 @@ class _ChatViewState extends State<ChatView> {
           behavior: HitTestBehavior.translucent,
           child: Column(
             children: [
-              Text('Начальная', style: MainConfigApp.app.isSiignores 
+              Text(widget.chatTabEntity.chatName, style: MainConfigApp.app.isSiignores 
                 ? TextStyles.title_app_bar
                 : TextStyles.title_app_bar2,),
               Text('${widget.chatTabEntity.usersCount} участников', style: MainConfigApp.app.isSiignores
@@ -104,7 +106,7 @@ class _ChatViewState extends State<ChatView> {
                     isLoading = false;
                   });
                   Future.delayed(Duration(milliseconds: 10), (){
-                    if(bloc.chatMessages.isNotEmpty){
+                    if(bloc.chatRoom.messages.isNotEmpty){
                       scrollToBottom();
                     }
                   });
@@ -127,7 +129,7 @@ class _ChatViewState extends State<ChatView> {
                   );
                 }
 
-                if(state is GotSuccessChatState && bloc.chatMessages.isEmpty){
+                if(state is GotSuccessChatState && bloc.chatRoom.messages.isEmpty){
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -147,26 +149,28 @@ class _ChatViewState extends State<ChatView> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(height: 56.h,),
-                      Text('30 июня 2022', style: MainConfigApp.app.isSiignores
-                        ? TextStyles.black_13_w400
-                        : TextStyles.white_13_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
-                      SizedBox(height: 27.h,),
+                      SizedBox(height: 56.h-7.h,),
                       ListView.builder(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
-                        itemCount: bloc.chatMessages.length,
+                        itemCount: bloc.chatRoom.messages.length,
                         itemBuilder: (context, i){
-                          return Container(
-                            margin: EdgeInsets.only(bottom: 20.h),
-                            child: bloc.chatMessages[i].from == sl<AuthConfig>().userEntity!.id
-                              ? ChatMessageItemFromCurrentUser(
-                                chatMessage: bloc.chatMessages[i],
-                              )
-                              : ChatMessageItemFromAnotherUser(
-                                chatMessage: bloc.chatMessages[i],
-                              )
-                          );
+                          return i == 0 
+                            || bloc.chatRoom.messages[i].time.year != bloc.chatRoom.messages[i-1].time.year
+                            || bloc.chatRoom.messages[i].time.month != bloc.chatRoom.messages[i-1].time.month
+                            || bloc.chatRoom.messages[i].time.day != bloc.chatRoom.messages[i-1].time.day
+                          ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(height: 7.h,),
+                              Text(DateFormat('dd MMMM yyyy').format(bloc.chatRoom.messages[i == 0 ? 0 : i-1].time), style: MainConfigApp.app.isSiignores
+                                ? TextStyles.black_13_w400
+                                : TextStyles.white_13_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
+                              SizedBox(height: 27.h,),
+                              _buildMessage(context, bloc.chatRoom.messages[i])
+                            ],
+                          )
+                          : _buildMessage(context, bloc.chatRoom.messages[i]);
                         }
                       ),
                       SizedBox(height: 155.h)
@@ -264,6 +268,21 @@ class _ChatViewState extends State<ChatView> {
           )
         ],
       ),
+    );
+  }
+
+
+
+  Widget _buildMessage(BuildContext context, ChatMessageEntity chatMessageEntity){
+    return Container(
+      margin: EdgeInsets.only(bottom: 20.h),
+      child: chatMessageEntity.from == sl<AuthConfig>().userEntity!.id
+        ? ChatMessageItemFromCurrentUser(
+          chatMessage: chatMessageEntity,
+        )
+        : ChatMessageItemFromAnotherUser(
+          chatMessage: chatMessageEntity,
+        )
     );
   }
 }

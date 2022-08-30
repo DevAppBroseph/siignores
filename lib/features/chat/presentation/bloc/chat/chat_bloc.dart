@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:siignores/features/chat/data/models/chat_message_model.dart';
+import 'package:siignores/features/chat/domain/entities/chat_room_entity.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import '../../../../../core/error/failures.dart';
 import '../../../../../core/services/database/auth_params.dart';
@@ -17,7 +18,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   
   ChatBloc(this.getChat) : super(ChatInitialState());
 
-  List<ChatMessageEntity> chatMessages = [];
+  ChatRoomEntity chatRoom = ChatRoomEntity(count: 0, users: [], messages: []);
   Stream<dynamic>? streamWS;
   WebSocketChannel? channel;
   @override
@@ -29,7 +30,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       yield chat.fold(
         (failure) => errorCheck(failure),
         (data){
-          chatMessages = data;
+          chatRoom = data;
           return GotSuccessChatState();
         }
       );
@@ -49,7 +50,10 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       if(channel != null){
         channel!.stream.listen((event) {
           print('EVENT WS: ${event}');
-          chatMessages.add(ChatMessageModel.fromJson(jsonDecode(event)));
+          // if(jsonDecode(event)['']){
+
+          // }
+          chatRoom.messages.add(ChatMessageModel.fromJson(jsonDecode(event)));
           add(ChatSetStateEvent());
         });
       }

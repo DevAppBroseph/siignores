@@ -62,9 +62,9 @@ extension EndpointsExtension on Endpoints {
       case Endpoints.updateAvatar:
         return "$url/auth/users/change_photo/";
       case Endpoints.getCourses:
-        return "$url/courses/course/get_courses/";
+        return "$url/course/get_courses/";
       case Endpoints.getModules:
-        return "$url/courses/course/get_modules${params![0]}/";
+        return "$url/course/get_modules/${params![0]}/";
       case Endpoints.getChatTabs:
         return "$url/chat/all/";
       case Endpoints.getChatMessages:
