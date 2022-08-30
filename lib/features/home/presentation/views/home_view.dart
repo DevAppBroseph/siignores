@@ -14,6 +14,9 @@ import '../../../../constants/colors/color_styles.dart';
 import '../../../../constants/texts/text_styles.dart';
 import '../../../../core/widgets/modals/lecture_modal.dart';
 import '../../../../core/widgets/sections/group_section.dart';
+import '../../../main/presentation/bloc/main_screen/main_screen_bloc.dart';
+import '../../../profile/presentation/views/edit_profile_view.dart';
+import '../../../profile/presentation/views/profile_view.dart';
 import '../widgets/lecture_card.dart';
 import 'calendart_test.dart';
 
@@ -69,9 +72,7 @@ class HomeView extends StatelessWidget {
                       notificationCount: 3, 
                       urlToImage: 'https://aikidojo.lv/wp-content/uploads/2019/08/nophoto.jpg',
                       onTapByName: (){
-                        context.read<ChatBloc>().add(CloseSocketEvent());
-                        context.read<AuthBloc>().add(LogoutEvent());
-                        // Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => TableEventsExample()));
+                        context.read<MainScreenBloc>().add(ChangeViewEvent(widget: ProfileView()));
                       }, 
                       onTapNotification: (){
                         

@@ -88,7 +88,7 @@ class LessonsView extends StatelessWidget {
                         onTap: (){
                           context.read<MainScreenBloc>().add(ChangeViewEvent(widget: LessonDetailView(
                             courseId: courseId,
-                            lessonId: 3,//bloc.lessons[i].id,
+                            lessonId: bloc.lessons[i].id,
                             moduleEntity: moduleEntity,
                           )));
                           

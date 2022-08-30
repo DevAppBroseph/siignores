@@ -38,6 +38,7 @@ dependencies:
   web_socket_channel:
   video_player:
   flick_video_player:
+  flutter_keyboard_visibility:
   cupertino_icons: ^1.0.2
 
 dev_dependencies:

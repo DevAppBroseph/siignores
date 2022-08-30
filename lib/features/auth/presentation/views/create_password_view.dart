@@ -23,6 +23,7 @@ class CreatePasswordView extends StatelessWidget {
 
   String errorPassword = 'Введите пароль'; 
   String errorPasswordCompare = 'Пароли не совпадают'; 
+  String errorPasswordShort = 'Пароль слишком короткий'; 
 
   TextEditingController passwordFirstController = TextEditingController();
   TextEditingController passwordSecondController = TextEditingController();
@@ -83,10 +84,13 @@ class CreatePasswordView extends StatelessWidget {
                     hint: '• • • • • • • •',
                     title: 'Придумайте пароль',
                     validator: (v){
-                      if((v ?? '').length > 3){
+                      if((v ?? '').length == 0){
+                        return errorPassword;
+                      }
+                      if((v ?? '').length > 8){
                         return null;
                       }
-                      return errorPassword;
+                      return errorPasswordShort;
                     },
                     textInputType: TextInputType.visiblePassword,
                   ),
@@ -96,13 +100,17 @@ class CreatePasswordView extends StatelessWidget {
                     hint: '• • • • • • • •',
                     title: 'Повторите пароль',
                     validator: (v){
-                      if((v ?? '').length > 3){
+                      if((v ?? '').length == 0){
+                        return errorPassword;
+                      }
+                      if((v ?? '').length > 8){
                         return null;
                       }
-                      return errorPassword;
+                      return errorPasswordShort;
                     },
                     textInputType: TextInputType.visiblePassword,
-                  )
+                  ),
+                  SizedBox(height: 150.h,)
                 ],
               ),
             ),

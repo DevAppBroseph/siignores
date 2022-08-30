@@ -67,7 +67,9 @@ class ProfileRemoteDataSourceImpl
             validateStatus: (status) => status! < 499,
             headers: headers));
     if (response.statusCode == 200) {
-      sl<AuthConfig>().userEntity!.avatar = response.data['photo'];
+      print('DATA: ${response.data}');
+      response.data['id'] = sl<AuthConfig>().userEntity!.id;
+      sl<AuthConfig>().userEntity = UserModel.fromJson(response.data);
       return true;
     } else {
       throw ServerException(message: 'Ошибка с сервером');

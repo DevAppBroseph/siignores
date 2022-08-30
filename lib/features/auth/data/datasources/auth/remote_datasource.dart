@@ -221,7 +221,7 @@ class AuthenticationRemoteDataSourceImpl
    @override
   Future<ResetDataEntity> verifyCodeForResetPassword(String email, String code) async {
     headers.remove("Authorization");
-    var formData = FormData.fromMap({
+    var formData = jsonEncode({
       "email": email, 
       "registration_code": int.parse(code), 
       "app": MainConfigApp.app.token

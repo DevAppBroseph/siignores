@@ -17,6 +17,8 @@ import '../../../../core/widgets/modals/privacy_modal.dart';
 import '../../../../core/widgets/modals/take_photo_modal.dart';
 import '../../../../core/widgets/sections/group_section.dart';
 import '../../../../locator.dart';
+import '../../../auth/presentation/bloc/auth/auth_bloc.dart';
+import '../../../chat/presentation/bloc/chat/chat_bloc.dart';
 import '../widgets/profile_photo_picker.dart';
 import 'edit_profile_view.dart';
 
@@ -58,6 +60,24 @@ class _ProfileViewState extends State<ProfileView> {
         elevation: 0,
         backgroundColor: MainConfigApp.app.isSiignores ? ColorStyles.primary : ColorStyles.backgroundColor,
         title: Text('Профиль', ),
+        actions: [
+          Row(
+            children: [
+              GestureDetector(
+                onTap: (){
+                  context.read<ChatBloc>().add(CloseSocketEvent());
+                  context.read<AuthBloc>().add(LogoutEvent());
+                },
+                child: Icon(
+                  Icons.exit_to_app,
+                  color: MainConfigApp.app.isSiignores ? ColorStyles.black : ColorStyles.primary,
+                  size: 26.w,
+                ),
+              ),
+              SizedBox(width: 15.w,)
+            ],
+          )
+        ],
       ),
       body: BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state){
