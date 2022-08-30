@@ -40,6 +40,7 @@ class CourseCard extends StatelessWidget {
                     width: MediaQuery.of(context).size.width/3.5,
                     child: CachedImage(
                       height: 100.w,
+                      alignment: Alignment.bottomRight,
                       isProfilePhoto: false,
                       fit: BoxFit.contain,
                       borderRadius: BorderRadius.zero,
@@ -68,18 +69,32 @@ class CourseCard extends StatelessWidget {
         child: Container(
           height: 140.h,
           margin: EdgeInsets.fromLTRB(9.w, 0, 9.w, 14.h),
-          padding: EdgeInsets.fromLTRB(14.w, 22.h, 10.w, 10.h),
+          padding: EdgeInsets.fromLTRB(14.w, 0, 0, 0),
           decoration: BoxDecoration(
             color: ColorStyles.white,
             borderRadius: BorderRadius.circular(14.h)
           ),
           
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+          child: Stack(
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Positioned(
+                bottom: 5.h,
+                right: 5.h,
+                child: Container(
+                    width: MediaQuery.of(context).size.width/3.5,
+                    child: CachedImage(
+                      height: 100.w,
+                      alignment: Alignment.bottomRight,
+                      isProfilePhoto: false,
+                      fit: BoxFit.contain,
+                      borderRadius: BorderRadius.zero,
+                      urlImage: courseEntity.image == null ? null : Config.url.url+courseEntity.image!
+                    ),
+                  )
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
                     width: MediaQuery.of(context).size.width/2,
@@ -87,18 +102,8 @@ class CourseCard extends StatelessWidget {
                       ? TextStyles.cormorant_black_25_w400
                       : TextStyles.black_23_w300,),
                   ),
-                  Container(
-                    width: MediaQuery.of(context).size.width/3.5,
-                    child: CachedImage(
-                      height: 100.w,
-                      isProfilePhoto: false,
-                      fit: BoxFit.contain,
-                      borderRadius: BorderRadius.zero,
-                      urlImage: courseEntity.image == null ? null : Config.url.url+courseEntity.image!
-                    ),
-                  )
                 ],
-              )
+              ),
             ],
           ),
         ),

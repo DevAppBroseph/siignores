@@ -1,5 +1,5 @@
 
-enum Config { baseUrl, baseScheme, baseAPIpath, url }
+enum Config { baseUrl, baseScheme, baseAPIpath, url, ws }
 
 const bool isDev = true;
 
@@ -12,6 +12,8 @@ extension ConfigExtension on Config {
         return !isDev ? "REALURL" : myUrl;
       case Config.baseAPIpath:
         return '';
+      case Config.ws:
+        return 'ws';
       case Config.url:
         return url;
       default:
@@ -26,6 +28,11 @@ extension ConfigExtension on Config {
         // +
         // '/' +
         // Config.baseAPIpath.value;
+  }
+  String get ws {
+    return Config.ws.value +
+        "://" +
+        Config.baseUrl.value;
   }
 
   String get urlWithoutApi {

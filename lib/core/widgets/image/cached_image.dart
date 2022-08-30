@@ -44,12 +44,16 @@ class CachedImage extends StatelessWidget {
       ),
       errorWidget: (context, url, error) => ClipRRect(
         borderRadius: borderRadius,
-        child: Image(
+        child: isProfilePhoto
+        ? Image(
           height: height,
           width: MediaQuery.of(context).size.width,
           fit: BoxFit.cover,
           image: AssetImage(isProfilePhoto ? 'assets/images/profile.jpeg' : 'assets/images/nophoto.png'),
-        ),
+        ) : Container(
+          height: height,
+          width: MediaQuery.of(context).size.width,
+        ) 
       ),
     );
   }

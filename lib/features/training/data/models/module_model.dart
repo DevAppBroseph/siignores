@@ -1,4 +1,4 @@
-import 'package:siignores/features/training/domain/entities/module_entity.dart';
+import '../../domain/entities/module_enitiy.dart';
 
 class ModuleModel extends ModuleEntity{
   ModuleModel({
@@ -9,13 +9,12 @@ class ModuleModel extends ModuleEntity{
   }) : super(
     id: id, 
     title: title,
-    image: image
+    image: image,
   );
 
   factory ModuleModel.fromJson(Map<String, dynamic> json) => ModuleModel(
     id: json['id'] ?? 1,
     title: json['name'],
     image: json['image'],
-    
   );
 }

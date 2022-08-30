@@ -26,11 +26,16 @@ enum Endpoints {
   //Training
   getCourses,
   getModules,
+  getLessons,
+  getLesson,
 
 
   //Chat
   getChatTabs,
-  getChatMessages
+  getChatMessages,
+
+  chatWS,
+
 }
 
 extension EndpointsExtension on Endpoints {
@@ -38,6 +43,7 @@ extension EndpointsExtension on Endpoints {
     List<dynamic>? params,
   }) {
     var url = Config.url.url;
+    var ws = Config.ws.ws;
     switch (this) {
       case Endpoints.register:
         return "$url/auth/users/";
@@ -65,10 +71,16 @@ extension EndpointsExtension on Endpoints {
         return "$url/course/get_courses/";
       case Endpoints.getModules:
         return "$url/course/get_modules/${params![0]}/";
+      case Endpoints.getLessons:
+        return "$url/course/get_lessons/${params![0]}/";
+      case Endpoints.getLesson:
+        return "$url/course/lesson/${params![0]}/";
       case Endpoints.getChatTabs:
         return "$url/chat/all/";
       case Endpoints.getChatMessages:
         return "$url/chat/${params![0]}/";
+      case Endpoints.chatWS:
+        return "$ws/ws/${params![0]}";
       default:
         return '';
     }

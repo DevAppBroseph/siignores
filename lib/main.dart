@@ -14,6 +14,8 @@ import 'features/chat/presentation/bloc/chat_tabs/chat_tabs_bloc.dart';
 import 'features/main/presentation/bloc/main_screen/main_screen_bloc.dart';
 import 'features/profile/presentation/bloc/profile/profile_bloc.dart';
 import 'features/training/presentation/bloc/course/course_bloc.dart';
+import 'features/training/presentation/bloc/lesson_detail/lesson_detail_bloc.dart';
+import 'features/training/presentation/bloc/lessons/lessons_bloc.dart';
 import 'features/training/presentation/bloc/modules/module_bloc.dart';
 import 'locator.dart';
 void main() {
@@ -41,6 +43,8 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (_) => sl<ProfileBloc>()),
           BlocProvider(create: (_) => sl<CourseBloc>()),
           BlocProvider(create: (_) => sl<ModuleBloc>()),
+          BlocProvider(create: (_) => sl<LessonsBloc>()),
+          BlocProvider(create: (_) => sl<LessonDetailBloc>()),
           BlocProvider(create: (_) => sl<ChatTabsBloc>()),
           BlocProvider(create: (_) => sl<ChatBloc>()),
         ], 

@@ -5,7 +5,7 @@ import 'package:siignores/features/chat/domain/entities/chat_message_entity.dart
 class ChatRoomEntity extends Equatable {
   final int count;
   final List<UserEntity> users;
-  final List<ChatMessageEntity> messages;
+  List<ChatMessageEntity> messages;
 
   ChatRoomEntity({
     required this.count,

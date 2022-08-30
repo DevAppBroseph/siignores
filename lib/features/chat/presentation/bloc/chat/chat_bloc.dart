@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:siignores/core/services/network/endpoints.dart';
 import 'package:siignores/features/chat/data/models/chat_message_model.dart';
 import 'package:siignores/features/chat/domain/entities/chat_room_entity.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -19,8 +20,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   ChatBloc(this.getChat) : super(ChatInitialState());
 
   ChatRoomEntity chatRoom = ChatRoomEntity(count: 0, users: [], messages: []);
-  Stream<dynamic>? streamWS;
   WebSocketChannel? channel;
+  int currentChatId = 0;
+  
   @override
   Stream<ChatState> mapEventToState(ChatEvent event) async*{
     if(event is GetChatEvent){
@@ -30,6 +32,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       yield chat.fold(
         (failure) => errorCheck(failure),
         (data){
+          currentChatId = event.id;
           chatRoom = data;
           return GotSuccessChatState();
         }
@@ -41,7 +44,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
       try{
         channel = WebSocketChannel.connect(
-          Uri.parse('ws://176.113.83.169/ws/${sl<AuthConfig>().token}'),
+          Uri.parse(Endpoints.chatWS.getPath(params: [sl<AuthConfig>().token])),
         );
       }catch(e){
         yield ChatErrorState(message: 'Ошибка с сервером');
@@ -49,12 +52,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       
       if(channel != null){
         channel!.stream.listen((event) {
-          print('EVENT WS: ${event}');
-          // if(jsonDecode(event)['']){
-
-          // }
-          chatRoom.messages.add(ChatMessageModel.fromJson(jsonDecode(event)));
-          add(ChatSetStateEvent());
+          print('EVENT WS: $event');
+          if(jsonDecode(event)['chat_id'] == currentChatId){
+            chatRoom.messages.add(ChatMessageModel.fromJson(jsonDecode(event)));
+            add(ChatSetStateEvent());
+          }
         });
       }
     }

@@ -69,7 +69,9 @@ class _ChatViewState extends State<ChatView> {
         elevation: 1.h,
         title: GestureDetector(
           onTap: (){
-            showModalGroupUsers(context);
+            if(bloc.chatRoom.users.isNotEmpty && bloc.currentChatId == widget.chatTabEntity.id){
+              showModalGroupUsers(context, bloc.chatRoom.users);
+            }
           },
           behavior: HitTestBehavior.translucent,
           child: Column(
@@ -129,7 +131,7 @@ class _ChatViewState extends State<ChatView> {
                   );
                 }
 
-                if(state is GotSuccessChatState && bloc.chatRoom.messages.isEmpty){
+                if(bloc.chatRoom.messages.isEmpty){
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -163,7 +165,7 @@ class _ChatViewState extends State<ChatView> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               SizedBox(height: 7.h,),
-                              Text(DateFormat('dd MMMM yyyy').format(bloc.chatRoom.messages[i == 0 ? 0 : i-1].time), style: MainConfigApp.app.isSiignores
+                              Text(DateFormat('dd MMMM yyyy', 'ru').format(bloc.chatRoom.messages[i == 0 ? 0 : i-1].time), style: MainConfigApp.app.isSiignores
                                 ? TextStyles.black_13_w400
                                 : TextStyles.white_13_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
                               SizedBox(height: 27.h,),
@@ -276,7 +278,7 @@ class _ChatViewState extends State<ChatView> {
   Widget _buildMessage(BuildContext context, ChatMessageEntity chatMessageEntity){
     return Container(
       margin: EdgeInsets.only(bottom: 20.h),
-      child: chatMessageEntity.from == sl<AuthConfig>().userEntity!.id
+      child: chatMessageEntity.from.id == sl<AuthConfig>().userEntity!.id
         ? ChatMessageItemFromCurrentUser(
           chatMessage: chatMessageEntity,
         )

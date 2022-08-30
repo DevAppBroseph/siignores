@@ -1,22 +1,27 @@
 import 'package:siignores/features/training/domain/entities/lesson_list_entity.dart';
 
-import '../../domain/entities/course_entity.dart';
-
-class CourseModel extends CourseEntity{
-  CourseModel({
+class LessonListModel extends LessonListEntity{
+  LessonListModel({
     required int id,
+    required int moduleId,
     required String title,
+    required String text,
     required String? image,
 
   }) : super(
     id: id, 
     title: title,
     image: image,
+    moduleId: moduleId,
+    text: text
   );
 
-  factory CourseModel.fromJson(Map<String, dynamic> json) => CourseModel(
+  factory LessonListModel.fromJson(Map<String, dynamic> json) => LessonListModel(
     id: json['id'] ?? 1,
     title: json['name'],
     image: json['image'],
+    moduleId: json['module'],
+    text: json['text']
+    
   );
 }

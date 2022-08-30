@@ -2,9 +2,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:siignores/core/services/network/network_info.dart';
 import 'package:siignores/features/training/domain/entities/course_entity.dart';
-import 'package:siignores/features/training/domain/entities/module_entity.dart';
-
+import 'package:siignores/features/training/domain/entities/lesson_list_entity.dart';
 import '../../../../core/error/failures.dart';
+import '../../domain/entities/lesson_detail_entity.dart';
+import '../../domain/entities/module_enitiy.dart';
 import '../../domain/repositories/training/training_repository.dart';
 import '../datasources/training_main/remote_datasource.dart';
 
@@ -53,5 +54,45 @@ class TrainingRepositoryImpl implements TrainingRepository {
     }
   }
 
+
+
+
+
+
+  @override
+  Future<Either<Failure, List<LessonListEntity>>> getLessons(int params) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final items = await remoteDataSource.getLessons(params);
+        return Right(items);
+      } catch (e) {
+        print(e);
+        return Left(ServerFailure(e.toString()));
+      }
+    } else {
+      return Left(NetworkFailure());
+    }
+  }
+
+
+
+
+
+
+
+  @override
+  Future<Either<Failure, LessonDetailEntity>> getLesson(int params) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final item = await remoteDataSource.getLesson(params);
+        return Right(item);
+      } catch (e) {
+        print(e);
+        return Left(ServerFailure(e.toString()));
+      }
+    } else {
+      return Left(NetworkFailure());
+    }
+  }
 }
 

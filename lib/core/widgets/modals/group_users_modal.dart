@@ -10,9 +10,12 @@ import 'package:siignores/constants/texts/text_styles.dart';
 import 'package:siignores/core/widgets/btns/close_modal_btn.dart';
 import 'package:siignores/core/widgets/image/cached_image.dart';
 
+import '../../../features/auth/domain/entities/user_entity.dart';
+
 
 showModalGroupUsers(
     BuildContext context,
+    List<UserEntity> users
   ){
   showMaterialModalBottomSheet(
     elevation: 0,
@@ -56,7 +59,7 @@ showModalGroupUsers(
                           : TextStyles.black_27_w300),
                         SizedBox(height: 8.h,),
                         Text(
-                          'В группе 4 пользователя', 
+                          'В группе ${users.length} пользователя', 
                           style: MainConfigApp.app.isSiignores
                             ? TextStyles.black_15_w500
                             : TextStyles.black_15_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),
@@ -66,13 +69,13 @@ showModalGroupUsers(
                           padding: EdgeInsets.zero,
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
-                          itemCount: 8,
+                          itemCount: users.length,
                           itemBuilder: (context, i){
                             return Container(
                               padding: EdgeInsets.symmetric(vertical: 18.h),
                               decoration: BoxDecoration(
                                 border: Border(
-                                  bottom: BorderSide(width: 1.w, color: ColorStyles.black.withOpacity(0.1))
+                                  bottom: i == (users.length-1) ? BorderSide.none : BorderSide(width: 1.w, color: ColorStyles.black.withOpacity(0.1))
                                 )
                               ),
                               child: Row(
@@ -81,16 +84,17 @@ showModalGroupUsers(
                                     width: 50.h,
                                     child: CachedImage(
                                       borderRadius: BorderRadius.circular(50.h),
-                                      urlImage: 'https://aikidojo.lv/wp-content/uploads/2019/08/nophoto.jpg',
+                                      urlImage: users[i].avatar,
                                       isProfilePhoto: true,
                                       height: 50.h,
                                     ),
                                   ),
                                   SizedBox(width: 17.w,),
-                                  Text('Администратор', style: MainConfigApp.app.isSiignores
+                                  Text('${users[i].firstName} ${users[i].lastName}', style: MainConfigApp.app.isSiignores
                                     ? TextStyles.black_15_w500
                                     : TextStyles.black_15_w400.copyWith(fontFamily: MainConfigApp.fontFamily4)),
                                   SizedBox(width: 7.w,),
+                                  if(i == 0)
                                   SvgPicture.asset(
                                     'assets/svg/star.svg',
                                     color: MainConfigApp.app.isSiignores ? null : ColorStyles.darkViolet,

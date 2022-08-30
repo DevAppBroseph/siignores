@@ -14,7 +14,10 @@ import 'package:siignores/features/profile/domain/repositories/profile/profile_r
 import 'package:siignores/features/profile/domain/usecases/update_avatar.dart';
 import 'package:siignores/features/profile/domain/usecases/update_user_info.dart';
 import 'package:siignores/features/training/domain/usecases/get_courses.dart';
+import 'package:siignores/features/training/domain/usecases/get_lesson.dart';
+import 'package:siignores/features/training/domain/usecases/get_lessons.dart';
 import 'package:siignores/features/training/domain/usecases/get_modules.dart';
+import 'package:siignores/features/training/presentation/bloc/lessons/lessons_bloc.dart';
 import 'package:siignores/features/training/presentation/bloc/modules/module_bloc.dart';
 import 'constants/main_config_app.dart';
 import 'core/services/database/auth_params.dart';
@@ -43,6 +46,7 @@ import 'features/training/data/datasources/training_main/remote_datasource.dart'
 import 'features/training/data/repositories/training_repository_impl.dart';
 import 'features/training/domain/repositories/training/training_repository.dart';
 import 'features/training/presentation/bloc/course/course_bloc.dart';
+import 'features/training/presentation/bloc/lesson_detail/lesson_detail_bloc.dart';
 
 
 final sl = GetIt.instance;
@@ -163,16 +167,22 @@ void setupInjections() {
   // //UseCases
   sl.registerLazySingleton(() => GetCourses(sl()));
   sl.registerLazySingleton(() => GetModules(sl()));
+  sl.registerLazySingleton(() => GetLessons(sl()));
+  sl.registerLazySingleton(() => GetLesson(sl()));
 
   //Blocs
   sl.registerFactory<CourseBloc>(
     () => CourseBloc(sl()),
   );
-  //Blocs
   sl.registerFactory<ModuleBloc>(
     () => ModuleBloc(sl()),
   );
-
+  sl.registerFactory<LessonsBloc>(
+    () => LessonsBloc(sl()),
+  );
+  sl.registerFactory<LessonDetailBloc>(
+    () => LessonDetailBloc(sl()),
+  );
 
 
 

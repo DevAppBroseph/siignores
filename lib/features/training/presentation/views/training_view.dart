@@ -80,14 +80,14 @@ class TrainingView extends StatelessWidget {
                     itemCount: bloc.modules.length,
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      childAspectRatio: 1.15
+                      childAspectRatio: 1.05
                     ), 
                     itemBuilder: (context, i){
                       return ModuleCard(
                         index: i+1,
                         moduleEntity: bloc.modules[i],
                         onTap: (){
-                          context.read<MainScreenBloc>().add(ChangeViewEvent(widget: LessonsView()));
+                          context.read<MainScreenBloc>().add(ChangeViewEvent(widget: LessonsView(moduleEntity: bloc.modules[i], courseId: courseId,)));
                         },
                       );
                     }

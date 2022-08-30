@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:siignores/constants/texts/text_styles.dart';
-import 'package:siignores/features/training/domain/entities/module_entity.dart';
-
 import '../../../../constants/colors/color_styles.dart';
 import '../../../../constants/main_config_app.dart';
 import '../../../../core/services/network/config.dart';
 import '../../../../core/widgets/image/cached_image.dart';
+import '../../domain/entities/module_enitiy.dart';
 
 
 
@@ -22,7 +21,7 @@ class ModuleCard extends StatelessWidget {
       return GestureDetector(
         onTap: onTap, 
         child: Container(
-          margin: EdgeInsets.fromLTRB(9.w, 0, 9.w, 14.h),
+          margin: EdgeInsets.fromLTRB(5.w, 0, 5.w, 10.h),
           padding: EdgeInsets.fromLTRB(14.w, 22.h, 0, 0),
           decoration: BoxDecoration(
             color: ColorStyles.white,
@@ -51,7 +50,6 @@ class ModuleCard extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(moduleEntity.title.toUpperCase(), style: TextStyles.cormorant_black_18_w400,),
-                  SizedBox(height: 10.h,),
                   Text(index.toString(), style: TextStyles.cormorant_black_41_w400,),
                   
                 ],

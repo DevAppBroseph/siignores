@@ -1,0 +1,13 @@
+part of 'lesson_detail_bloc.dart';
+
+class LessonDetailEvent extends Equatable {
+  @override
+  List<Object?> get props => [];
+}
+
+
+class GetLessonDetailEvent extends LessonDetailEvent{
+  final int id;
+  GetLessonDetailEvent({required this.id});
+}
+

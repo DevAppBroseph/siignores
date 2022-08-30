@@ -44,7 +44,7 @@ class ChatRepositoryImpl implements ChatRepository {
         final items = await remoteDataSource.getChat(params);
         return Right(items);
       } catch (e) {
-        print(e);
+        print('$e: eee assasa');
         return Left(ServerFailure(e.toString()));
       }
     } else {

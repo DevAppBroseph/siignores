@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:siignores/features/training/domain/entities/module_entity.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecases/usecase.dart';
+import '../entities/module_enitiy.dart';
 import '../repositories/training/training_repository.dart';
 
 class GetModules implements UseCase<List<ModuleEntity>, int> {
