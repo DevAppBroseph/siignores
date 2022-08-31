@@ -11,3 +11,9 @@ class GetLessonDetailEvent extends LessonDetailEvent{
   GetLessonDetailEvent({required this.id});
 }
 
+class SendHomeworkEvent extends LessonDetailEvent{
+  final List<File> files;
+  final String text;
+  SendHomeworkEvent({required this.files, required this.text});
+}
+

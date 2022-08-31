@@ -21,6 +21,7 @@ abstract class AuthRepository {
   Future<Either<Failure, String?>> getTokenLocal();
 
   Future<Either<Failure, bool>> logout();
+  Future<Either<Failure, bool>> deleteAccount();
   Future<Either<Failure, String?>> setPassword(SetPasswordParams params);
 
   //Forgot password
@@ -28,11 +29,3 @@ abstract class AuthRepository {
   Future<Either<Failure, ResetDataEntity>> verifyCodeResetPassword(VerifyCodeResetPasswordParams params);
   Future<Either<Failure, bool>> resetPassword(ResetPasswordParams params);
 }
-
-// Future<bool> register({required String email, required String firstName, required String lastName});
-//   Future<bool> activationCode(String code);
-//   Future<bool> setPassword(String password);
-
-//   Future<String> login(String email, String password);
-//   Future<UserModel> getUserInfo();
-//   Future<void> logout();

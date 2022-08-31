@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
@@ -13,10 +14,13 @@ import 'package:siignores/features/main/presentation/bloc/main_screen/main_scree
 import 'package:siignores/features/profile/presentation/bloc/profile/profile_bloc.dart';
 import '../../../../constants/colors/color_styles.dart';
 import '../../../../constants/texts/text_styles.dart';
+import '../../../../core/widgets/modals/delete_account_modal.dart';
 import '../../../../core/widgets/modals/privacy_modal.dart';
 import '../../../../core/widgets/modals/take_photo_modal.dart';
 import '../../../../core/widgets/sections/group_section.dart';
 import '../../../../locator.dart';
+import '../../../auth/presentation/bloc/auth/auth_bloc.dart';
+import '../../../chat/presentation/bloc/chat/chat_bloc.dart';
 import '../widgets/profile_photo_picker.dart';
 import 'edit_profile_view.dart';
 
@@ -31,6 +35,7 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
 
   File? avatar;
+  CustomPopupMenuController controller = CustomPopupMenuController();
 
   void changePhotoTap(BuildContext context){
     TakePhotoModal(
@@ -58,6 +63,44 @@ class _ProfileViewState extends State<ProfileView> {
         elevation: 0,
         backgroundColor: MainConfigApp.app.isSiignores ? ColorStyles.primary : ColorStyles.backgroundColor,
         title: Text('Профиль', ),
+        leading: Row(
+          children: [
+            SizedBox(width: 15.w,),
+            CustomPopupMenu(
+              controller: controller,
+              arrowColor: ColorStyles.white,
+              arrowSize: 20,
+              showArrow: true,
+              child: Icon(
+                Icons.more_vert,
+                color: MainConfigApp.app.isSiignores ? ColorStyles.black : ColorStyles.primary,
+                size: 26.w,
+              ),
+              menuBuilder: _buildLongPressMenu,
+              barrierColor: Colors.black.withOpacity(0.5),
+              pressType: PressType.singleClick,
+              
+            )
+          ],
+        ),
+        actions: [
+          Row(
+            children: [
+              GestureDetector(
+                onTap: (){
+                  context.read<ChatBloc>().add(CloseSocketEvent());
+                  context.read<AuthBloc>().add(LogoutEvent());
+                },
+                child: Icon(
+                  Icons.exit_to_app,
+                  color: MainConfigApp.app.isSiignores ? ColorStyles.black : ColorStyles.primary,
+                  size: 26.w,
+                ),
+              ),
+              SizedBox(width: 15.w,)
+            ],
+          )
+        ],
       ),
       body: BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state){
@@ -211,6 +254,47 @@ class _ProfileViewState extends State<ProfileView> {
             ),
           );
         }
+      ),
+    );
+  }
+
+
+
+
+
+
+
+  Widget _buildLongPressMenu() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(14.h),
+      child: Container(
+        width: 180.w,
+        padding: EdgeInsets.symmetric(horizontal: 18.w),
+        color: ColorStyles.white,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            GestureDetector(
+              onTap: (){
+                controller.hideMenu();
+                DeleteAccountModal(
+                  context: context, 
+                  onDelete: (){
+                    Navigator.pop(context);
+                    context.read<AuthBloc>().add(DeleteAccountEvent());
+                  }
+                ).showMyDialog();
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 15.h),
+                child: Text('Удалить аккаунт', style: MainConfigApp.app.isSiignores
+                      ? TextStyles.black_15_w500
+                      : TextStyles.black_15_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),)
+              ),
+            ),
+            
+          ],
+        )
       ),
     );
   }

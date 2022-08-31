@@ -193,7 +193,8 @@ class _RegisterViewState extends State<RegisterView> {
               return errorEmail;
             },
             controller: emailController,
-          )
+          ),
+          SizedBox(height: 150.h,)
           
         ],
       ),
@@ -233,6 +234,7 @@ class _RegisterViewState extends State<RegisterView> {
             },
             controller: codeController,
           ),
+          SizedBox(height: 150.h,)
           
         ],
       ),

@@ -7,6 +7,7 @@ class AuthEvent extends Equatable {
 
 
 class LogoutEvent extends AuthEvent {}
+class DeleteAccountEvent extends AuthEvent {}
 class CheckUserLoggedEvent extends AuthEvent {}
 class GetUserInfoEvent extends AuthEvent {}
 

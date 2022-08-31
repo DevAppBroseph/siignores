@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:siignores/core/utils/helpers/dio_helper.dart';
 import 'package:siignores/features/training/data/models/lesson_detail_model.dart';
@@ -12,6 +13,8 @@ import '../../../domain/entities/module_enitiy.dart';
 import '../../models/course_model.dart';
 import '../../models/lesson_list_model.dart';
 import '../../models/module_model.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:path/path.dart';
 
 abstract class TrainingRemoteDataSource {
   Future<List<CourseEntity>> getCourses();
@@ -19,6 +22,8 @@ abstract class TrainingRemoteDataSource {
 
   Future<List<LessonListEntity>> getLessons(int moduleId);
   Future<LessonDetailEntity> getLesson(int lessonId);
+
+  Future<bool> sendHomework(List<File> files, String text, int lessonId);
 
 }
 
@@ -132,4 +137,41 @@ class TrainingRemoteDataSourceImpl
   }
 
 
+
+
+
+
+
+  //Update user avatar
+  @override
+  Future<bool> sendHomework(List<File> files, String text, int lessonId)async {
+    headers["Authorization"] = "Token ${sl<AuthConfig>().token}";
+    headers["Content-Type"] = "multipart/form-data";
+    List<MultipartFile> multiparts = [];
+    
+    for (int i = 0; i < files.length; i++) {
+      multiparts.add( MultipartFile.fromFileSync(
+        '${files[i].path}',
+        filename: (basename(files[i].path)).toString(),
+        contentType: new MediaType('image', 'jpeg'),
+      ));
+    }
+    var formData = FormData.fromMap({
+      "lesson": lessonId,
+      "text": text,
+      "files": files.isNotEmpty ? multiparts : [],
+    });
+    Response response = await dio.post(Endpoints.addHomework.getPath(),
+        data: formData,
+        options: Options(
+            followRedirects: false,
+            validateStatus: (status) => status! < 499,
+            headers: headers));
+    printRes(response);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw ServerException(message: 'Ошибка с сервером');
+    }
+  }
 }

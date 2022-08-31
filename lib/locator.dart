@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:siignores/features/auth/domain/usecases/activation_code.dart';
+import 'package:siignores/features/auth/domain/usecases/delete_account.dart';
 import 'package:siignores/features/auth/domain/usecases/reset_password.dart';
 import 'package:siignores/features/auth/domain/usecases/send_code_reset_password.dart';
 import 'package:siignores/features/auth/domain/usecases/set_password.dart';
@@ -9,6 +10,7 @@ import 'package:siignores/features/auth/domain/usecases/verify_code_reset_passwo
 import 'package:siignores/features/chat/domain/usecases/get_chat.dart';
 import 'package:siignores/features/chat/domain/usecases/get_chat_tabs.dart';
 import 'package:siignores/features/chat/presentation/bloc/chat_tabs/chat_tabs_bloc.dart';
+import 'package:siignores/features/home/domain/usecases/get_offers.dart';
 import 'package:siignores/features/main/presentation/bloc/main_screen/main_screen_bloc.dart';
 import 'package:siignores/features/profile/domain/repositories/profile/profile_repository.dart';
 import 'package:siignores/features/profile/domain/usecases/update_avatar.dart';
@@ -17,6 +19,7 @@ import 'package:siignores/features/training/domain/usecases/get_courses.dart';
 import 'package:siignores/features/training/domain/usecases/get_lesson.dart';
 import 'package:siignores/features/training/domain/usecases/get_lessons.dart';
 import 'package:siignores/features/training/domain/usecases/get_modules.dart';
+import 'package:siignores/features/training/domain/usecases/send_homework.dart';
 import 'package:siignores/features/training/presentation/bloc/lessons/lessons_bloc.dart';
 import 'package:siignores/features/training/presentation/bloc/modules/module_bloc.dart';
 import 'constants/main_config_app.dart';
@@ -39,6 +42,10 @@ import 'features/chat/data/datasources/chat/remote_datasource.dart';
 import 'features/chat/data/repositories/chat_repository_impl.dart';
 import 'features/chat/domain/repositories/chat/chat_repository.dart';
 import 'features/chat/presentation/bloc/chat/chat_bloc.dart';
+import 'features/home/data/datasources/offers/remote_datasource.dart';
+import 'features/home/data/repositories/offers_repository_impl.dart';
+import 'features/home/domain/repositories/home/offers_repository.dart';
+import 'features/home/presentation/bloc/offers/offers_bloc.dart';
 import 'features/profile/data/datasources/profile/remote_datasource.dart';
 import 'features/profile/data/repositories/profile_repository_impl.dart';
 import 'features/profile/presentation/bloc/profile/profile_bloc.dart';
@@ -94,6 +101,7 @@ void setupInjections() {
   sl.registerLazySingleton(() => Logout(sl()));
   sl.registerLazySingleton(() => Register(sl()));
   sl.registerLazySingleton(() => SetPassword(sl()));
+  sl.registerLazySingleton(() => DeleteAccount(sl()));
 
   sl.registerLazySingleton(() => ResetPassword(sl()));
   sl.registerLazySingleton(() => VerifyCodeResetPassword(sl()));
@@ -101,7 +109,7 @@ void setupInjections() {
 
   //Blocs
   sl.registerFactory<AuthBloc>(
-    () => AuthBloc(sl(), sl(), sl(), sl()),
+    () => AuthBloc(sl(), sl(), sl(), sl(), sl()),
   );
   sl.registerFactory<RegisterBloc>(
     () => RegisterBloc(sl(), sl(), sl()),
@@ -169,6 +177,7 @@ void setupInjections() {
   sl.registerLazySingleton(() => GetModules(sl()));
   sl.registerLazySingleton(() => GetLessons(sl()));
   sl.registerLazySingleton(() => GetLesson(sl()));
+  sl.registerLazySingleton(() => SendHomework(sl()));
 
   //Blocs
   sl.registerFactory<CourseBloc>(
@@ -181,7 +190,7 @@ void setupInjections() {
     () => LessonsBloc(sl()),
   );
   sl.registerFactory<LessonDetailBloc>(
-    () => LessonDetailBloc(sl()),
+    () => LessonDetailBloc(sl(), sl()),
   );
 
 
@@ -214,5 +223,35 @@ void setupInjections() {
   );
   sl.registerFactory<ChatBloc>(
     () => ChatBloc(sl(),)
+  );
+
+
+
+
+
+
+
+
+
+
+
+
+  ///Home
+  // //Datasources
+  sl.registerLazySingleton<OffersRemoteDataSource>(
+    () => OffersRemoteDataSourceImpl(dio: sl()),
+  );
+
+  // //Repositories
+  sl.registerLazySingleton<OffersRepository>(
+    () => OffersRepositoryImpl(sl(), sl(), ),
+  );
+
+  // //UseCases
+  sl.registerLazySingleton(() => GetOffers(sl()));
+
+  //Blocs
+  sl.registerFactory<OffersBloc>(
+    () => OffersBloc(sl()),
   );
 }

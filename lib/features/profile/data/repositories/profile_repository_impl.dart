@@ -47,6 +47,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
         final item = await remoteDataSource.updateAvatar(params.file);
         return Right(item);
       } catch (e) {
+        print('E: ${e}');
         if(e is ServerException){
           return Left(ServerFailure(e.message!));
         }

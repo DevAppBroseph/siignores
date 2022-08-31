@@ -568,6 +568,13 @@ class TextStyles {
       fontWeight: FontWeight.w400,
       color: ColorStyles.black);
 
+  static  TextStyle cormorant_black_13_w500 = TextStyle(
+      fontFamily: MainConfigApp.fontFamily2,
+      fontStyle: FontStyle.normal,
+      fontSize: 13.sp,
+      fontWeight: FontWeight.w500,
+      color: ColorStyles.black);
+
   static  TextStyle cormorant_black_29_w400 = TextStyle(
       fontFamily: MainConfigApp.fontFamily2,
       fontStyle: FontStyle.normal,

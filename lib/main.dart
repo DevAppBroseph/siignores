@@ -11,6 +11,7 @@ import 'features/auth/presentation/bloc/forgot_password/forgot_password_bloc.dar
 import 'features/auth/presentation/views/splash_view.dart';
 import 'features/chat/presentation/bloc/chat/chat_bloc.dart';
 import 'features/chat/presentation/bloc/chat_tabs/chat_tabs_bloc.dart';
+import 'features/home/presentation/bloc/offers/offers_bloc.dart';
 import 'features/main/presentation/bloc/main_screen/main_screen_bloc.dart';
 import 'features/profile/presentation/bloc/profile/profile_bloc.dart';
 import 'features/training/presentation/bloc/course/course_bloc.dart';
@@ -47,6 +48,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (_) => sl<LessonDetailBloc>()),
           BlocProvider(create: (_) => sl<ChatTabsBloc>()),
           BlocProvider(create: (_) => sl<ChatBloc>()),
+          BlocProvider(create: (_) => sl<OffersBloc>()),
         ], 
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
