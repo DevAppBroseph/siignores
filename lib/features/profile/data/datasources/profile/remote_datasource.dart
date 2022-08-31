@@ -1,6 +1,7 @@
 
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:siignores/core/services/network/config.dart';
 import 'package:siignores/features/auth/data/models/user_model.dart';
 import '../../../../../constants/main_config_app.dart';
 import '../../../../../core/error/exceptions.dart';
@@ -67,7 +68,9 @@ class ProfileRemoteDataSourceImpl
             validateStatus: (status) => status! < 499,
             headers: headers));
     if (response.statusCode == 200) {
-      sl<AuthConfig>().userEntity!.avatar = response.data['photo'];
+      response.data['id'] = sl<AuthConfig>().userEntity!.id;
+      response.data['photo'] = Config.url.url+response.data['photo'];
+      sl<AuthConfig>().userEntity = UserModel.fromJson(response.data);
       return true;
     } else {
       throw ServerException(message: 'Ошибка с сервером');

@@ -87,8 +87,10 @@ showModalPrivacyPolicy(
                   ),
                   padding: EdgeInsets.fromLTRB(16.w, 28.h, 16.w, 40.h),
                   child: PrimaryBtn(
-                    onTap: (){},
-                    title: 'Напомнить',
+                    onTap: (){  
+                      Navigator.pop(context);
+                    },
+                    title: 'Хорошо',
 
                   ),
 

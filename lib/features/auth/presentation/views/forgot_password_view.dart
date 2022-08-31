@@ -32,6 +32,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
   String errorCode = 'Введите код';
   String errorPassword = 'Введите пароль'; 
   String errorPasswordCompare = 'Пароли не совпадают'; 
+  String errorPasswordShort = 'Пароль слишком короткий'; 
 
   TextEditingController emailController = TextEditingController();
   TextEditingController codeController = TextEditingController();
@@ -174,6 +175,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
               },
             ),
           ),
+          SizedBox(height: 150.h,)
         ],
       )
     );
@@ -215,6 +217,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
               controller: codeController,
             ),
           ),
+          SizedBox(height: 150.h,)
         ],
       ),
     );
@@ -239,7 +242,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
               hint: '• • • • • • • •',
               title: 'Придумайте пароль',
               validator: (v){
-                if((v ?? '').length > 3){
+                if((v ?? '').length > 8){
                   return null;
                 }
                 return errorPassword;
@@ -255,14 +258,18 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
               hint: '• • • • • • • •',
               title: 'Повторите пароль',
               validator: (v){
-                if((v ?? '').length > 3){
+                if((v ?? '').length == 0){
+                  return errorPassword;
+                }
+                if((v ?? '').length > 8){
                   return null;
                 }
-                return errorPassword;
+                return errorPasswordShort;
               },
               textInputType: TextInputType.visiblePassword,
             )
           ),
+          SizedBox(height: 150.h,)
         ],
       ),
     );

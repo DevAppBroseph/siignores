@@ -8,7 +8,7 @@ class CachedImage extends StatelessWidget {
   final BorderRadius? borderRadius;
   final String? urlImage;
   final double height;
-  final bool isProfilePhoto;
+  final bool? isProfilePhoto;
   final BoxFit fit;
   final Alignment? alignment;
   CachedImage({this.alignment, this.borderRadius, required this.height, required this.urlImage, required this.isProfilePhoto, this.fit = BoxFit.cover});
@@ -44,12 +44,19 @@ class CachedImage extends StatelessWidget {
       ),
       errorWidget: (context, url, error) => ClipRRect(
         borderRadius: borderRadius,
-        child: isProfilePhoto
+        child: isProfilePhoto == null
         ? Image(
           height: height,
           width: MediaQuery.of(context).size.width,
           fit: BoxFit.cover,
-          image: AssetImage(isProfilePhoto ? 'assets/images/profile.jpeg' : 'assets/images/nophoto.png'),
+          image: AssetImage('assets/images/nophoto.png'),
+        ) 
+        : isProfilePhoto!
+        ? Image(
+          height: height,
+          width: MediaQuery.of(context).size.width,
+          fit: BoxFit.cover,
+          image: AssetImage('assets/images/profile.jpeg'),
         ) : Container(
           height: height,
           width: MediaQuery.of(context).size.width,

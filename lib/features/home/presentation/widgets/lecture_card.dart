@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:siignores/constants/main_config_app.dart';
+import 'package:siignores/features/home/domain/entities/offer_entity.dart';
 
 import '../../../../constants/colors/color_styles.dart';
 import '../../../../constants/texts/text_styles.dart';
@@ -9,10 +10,9 @@ import '../../../../constants/texts/text_styles.dart';
 
 class LectureCard extends StatelessWidget {
   final Function() onTap;
-  final String title;
-  final String text;
+  final OfferEntity offerEntity;
   final bool isFirst;
-  const LectureCard({Key? key, required this.onTap, required this.text, required this.title, required this.isFirst}) : super(key: key);
+  const LectureCard({Key? key, required this.onTap, required this.offerEntity, required this.isFirst}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,13 +30,13 @@ class LectureCard extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(MainConfigApp.app.isSiignores ? title : title.toUpperCase(), style: MainConfigApp.app.isSiignores
+            Text(MainConfigApp.app.isSiignores ? offerEntity.header : offerEntity.header.toUpperCase(), style: MainConfigApp.app.isSiignores
               ? TextStyles.cormorant_black_16_w400
               : TextStyles.black_16_w300.copyWith(color: ColorStyles.primary),),
             SizedBox(height: 11.h,),
-            Text(text.toUpperCase(), 
+            Text(offerEntity.description.toUpperCase(), 
               style: MainConfigApp.app.isSiignores
-                ? (text.length > 10 ? TextStyles.cormorant_black_15_w400 : TextStyles.cormorant_black_25_w400)
+                ? (offerEntity.description.length > 10 ? TextStyles.cormorant_black_15_w400 : TextStyles.cormorant_black_25_w400)
                 : TextStyles.white_15_w400,
               textAlign: TextAlign.center,
             )

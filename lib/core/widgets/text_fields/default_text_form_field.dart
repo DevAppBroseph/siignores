@@ -22,9 +22,13 @@ class DefaultTextFormField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final TextInputType? keyboardType;
   final bool white;
+  final Function()? onTap;
+  final FocusNode? focusNode;
   DefaultTextFormField({
     Key? key,
     this.width,
+    this.focusNode,
+    this.onTap,
     this.white = false,
     required this.hint,
     this.title,
@@ -70,6 +74,8 @@ class DefaultTextFormField extends StatelessWidget {
                     )
                   ),
                   TextFormField(
+                    focusNode: focusNode,
+                    onTap: onTap,
                     keyboardType: keyboardType,
                     inputFormatters: inputFormatters,
                     validator: validator,

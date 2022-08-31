@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
@@ -13,16 +16,26 @@ import '../../../../constants/colors/color_styles.dart';
 import '../bloc/auth/auth_bloc.dart';
 import 'forgot_password_view.dart';
 
-class SignInView extends StatelessWidget {
+class SignInView extends StatefulWidget {
   SignInView({Key? key}) : super(key: key);
+
+  @override
+  State<SignInView> createState() => _SignInViewState();
+}
+
+class _SignInViewState extends State<SignInView> {
   final formKey = GlobalKey<FormState>();
 
   String errorEmail = 'Введите email';
   String errorPassword = 'Введите пароль'; 
+  String errorPasswordShort = 'Пароль слишком короткий'; 
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  ScrollController scrollController = ScrollController();
+  bool showBackImage = true;
+  late StreamSubscription<bool> keyboardSub;
 
   void signIn(BuildContext context){
     if(formKey.currentState!.validate()){
@@ -35,11 +48,40 @@ class SignInView extends StatelessWidget {
       );
     }
   }
+
+
+  void scrollToBottom() async {
+    await Future.delayed(Duration(milliseconds: 400));
+    scrollController.animateTo(scrollController.position.maxScrollExtent-80.h,
+        duration: const Duration(milliseconds: 100), curve: Curves.linear);
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    keyboardSub = KeyboardVisibilityController().onChange.listen((event) {
+      print('event: $event');
+      setState(() {
+        showBackImage = !event;
+      });
+      if(event == true){
+        scrollToBottom();
+      }
+    });
+  }
+  @override
+  void dispose() {
+    keyboardSub.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
+          if(showBackImage)
           MainConfigApp.app.isSiignores
           ? Positioned(
             bottom: 0,
@@ -88,6 +130,7 @@ class SignInView extends StatelessWidget {
             )
           ),
           CustomScrollView(
+            controller: scrollController,
             slivers: [
               SliverToBoxAdapter(
                 child: SizedBox(
@@ -127,10 +170,13 @@ class SignInView extends StatelessWidget {
                             margin: EdgeInsets.symmetric(horizontal: 32.w),
                             title: 'Пароль',
                             validator: (v){
-                              if((v ?? '').length > 3){
+                              if((v ?? '').length == 0){
+                                return errorPassword;
+                              }
+                              if((v ?? '').length > 8){
                                 return null;
                               }
-                              return errorPassword;
+                              return errorPasswordShort;
                             },
                             textInputType: TextInputType.visiblePassword,
                             hint: '• • • • • • • •',
