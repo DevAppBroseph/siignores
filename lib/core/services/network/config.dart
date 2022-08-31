@@ -17,7 +17,7 @@ extension ConfigExtension on Config {
       case Config.url:
         return url;
       default:
-        return 'http';
+        return 'https';
     }
   }
 
