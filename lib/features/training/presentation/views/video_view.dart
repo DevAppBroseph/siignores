@@ -19,7 +19,7 @@ class _VideoViewState extends State<VideoView> {
   void initState() {
     super.initState();
     flickManager = FlickManager(
-      videoPlayerController: VideoPlayerController.network('https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4')
+      videoPlayerController: VideoPlayerController.network(widget.url)
     );
 
     seekTo(widget.duration);

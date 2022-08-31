@@ -32,7 +32,8 @@ extension ConfigExtension on Config {
   String get ws {
     return Config.ws.value +
         "://" +
-        Config.baseUrl.value;
+        Config.baseUrl.value +
+        ":8000";
   }
 
   String get urlWithoutApi {
