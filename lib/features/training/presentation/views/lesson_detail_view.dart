@@ -275,11 +275,15 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                                       child: Text.rich(
                                         TextSpan(
                                           text: convertIntToStringTime(time.hour, time.minute, time.second),
-                                          style: TextStyles.black_14_w700,
+                                          style: MainConfigApp.app.isSiignores
+                                            ? TextStyles.black_14_w700
+                                            : TextStyles.black_14_w700.copyWith(fontFamily: MainConfigApp.fontFamily4),
                                             children: <InlineSpan>[
                                               TextSpan(
                                                 text: '- ${time.text}',
-                                                style: TextStyles.black_14_w400,
+                                                style: MainConfigApp.app.isSiignores
+                                                  ? TextStyles.black_14_w400
+                                                  : TextStyles.black_14_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),
                                               )
                                             ]
                                           ),
@@ -332,7 +336,8 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                               ? TextStyles.black_14_w400.copyWith(height: 1.75.h)
                               : TextStyles.black_14_w300.copyWith(height: 1.75.h, fontFamily: MainConfigApp.fontFamily4),)
                           ),
-                          SizedBox(height: 35.h,),
+                          if(bloc.lesson!.files.isNotEmpty)
+                          ...[SizedBox(height: 35.h,),
                           Text('Дополнительные материалы', style: MainConfigApp.app.isSiignores
                             ? TextStyles.black_18_w700
                             : TextStyles.black_18_w300,),
@@ -341,7 +346,7 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                             children: bloc.lesson!.files.map((file) 
                               => _buildFileLink(context, file, FileType.doc)
                             ).toList(),
-                          ),
+                          ),],
                           SizedBox(height: 27.h,),
                           Text('Написать ответ', style: MainConfigApp.app.isSiignores
                             ? TextStyles.black_18_w700
