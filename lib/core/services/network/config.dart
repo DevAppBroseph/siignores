@@ -3,7 +3,7 @@ enum Config { baseUrl, baseScheme, baseAPIpath, url, ws }
 
 const bool isDev = true;
 
-String myUrl = '176.113.83.169';
+String myUrl = 'blogersbackend.gastrosoft.by';
 
 extension ConfigExtension on Config {
   String get value {
