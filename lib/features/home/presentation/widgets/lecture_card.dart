@@ -5,6 +5,8 @@ import 'package:siignores/features/home/domain/entities/offer_entity.dart';
 
 import '../../../../constants/colors/color_styles.dart';
 import '../../../../constants/texts/text_styles.dart';
+import '../../../../core/services/network/config.dart';
+import '../../../../core/widgets/image/cached_image.dart';
 
 
 
@@ -16,6 +18,21 @@ class LectureCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 212.w,
+        margin: EdgeInsets.only(right: 16.w, left: isFirst ? 23.w : 0),
+        child: CachedImage(
+          height: 120.h,
+          urlImage: offerEntity.image == null ? null : Config.url.url+offerEntity.image!,
+          isProfilePhoto: null,
+          borderRadius: BorderRadius.circular(18.h),
+        ),
+      ),
+    );
+    
+    
     return GestureDetector(
       onTap: onTap,
       child: Container(

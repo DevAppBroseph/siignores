@@ -67,35 +67,36 @@ showModalLecture(
                                 borderRadius: BorderRadius.circular(18.h),
                               ),
                             ),
-                            Positioned(
-                              top: 28.h,
-                              left: 19.w,
-                              child: MainConfigApp.app.isSiignores
-                              ? Text('${offerEntity.header} ${offerEntity.description}', style: TextStyles.cormorant_black_16_w400,)
-                              : Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(offerEntity.header.toUpperCase(), style: TextStyles.black_18_w300,),
-                                  SizedBox(height: 12.h,),
-                                  SizedBox(
-                                    width: MediaQuery.of(context).size.width*0.6,
-                                    child: Text(offerEntity.description.toUpperCase(), style: TextStyles.black_30_w300,)
-                                  ),
-                                ],
-                              )
-                            )
+
+                            // Positioned(
+                            //   top: 28.h,
+                            //   left: 19.w,
+                            //   child: MainConfigApp.app.isSiignores
+                            //   ? Text('${offerEntity.header} ${offerEntity.description}', style: TextStyles.cormorant_black_16_w400,)
+                            //   : Column(
+                            //     crossAxisAlignment: CrossAxisAlignment.start,
+                            //     children: [
+                            //       Text(offerEntity.header.toUpperCase(), style: TextStyles.black_18_w300,),
+                            //       SizedBox(height: 12.h,),
+                            //       SizedBox(
+                            //         width: MediaQuery.of(context).size.width*0.6,
+                            //         child: Text(offerEntity.description.toUpperCase(), style: TextStyles.black_30_w300,)
+                            //       ),
+                            //     ],
+                            //   )
+                            // )
                           ],
                         ),
                         SizedBox(height: 22.h,),
                         Text(
-                          'Самое большое количество\nвремени и сил человек тратит на\nпринятие решений', 
+                          '${offerEntity.header}', 
                           style: MainConfigApp.app.isSiignores
                             ? TextStyles.black_18_w700
                             : TextStyles.black_18_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),
                         ),
                         SizedBox(height: 22.h,),
                         Text(
-                          'Решительность и смелость идут за руку с друг\nдругом и помогают  нам в реализации своих\nцелей', 
+                          '${offerEntity.description}', 
                           style: MainConfigApp.app.isSiignores
                             ? TextStyles.black_13_w400
                             : TextStyles.black_13_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),

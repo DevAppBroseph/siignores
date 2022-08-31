@@ -165,7 +165,7 @@ class _ChatViewState extends State<ChatView> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               SizedBox(height: 7.h,),
-                              Text(DateFormat('dd MMMM yyyy', 'ru').format(bloc.chatRoom.messages[i == 0 ? 0 : i-1].time), style: MainConfigApp.app.isSiignores
+                              Text(DateFormat('dd MMMM yyyy', 'ru').format(bloc.chatRoom.messages[i == 0 ? 0 : i].time), style: MainConfigApp.app.isSiignores
                                 ? TextStyles.black_13_w400
                                 : TextStyles.white_13_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
                               SizedBox(height: 27.h,),

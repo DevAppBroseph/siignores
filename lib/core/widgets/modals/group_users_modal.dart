@@ -7,6 +7,7 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:siignores/constants/colors/color_styles.dart';
 import 'package:siignores/constants/main_config_app.dart';
 import 'package:siignores/constants/texts/text_styles.dart';
+import 'package:siignores/core/services/network/config.dart';
 import 'package:siignores/core/widgets/btns/close_modal_btn.dart';
 import 'package:siignores/core/widgets/image/cached_image.dart';
 
@@ -84,7 +85,7 @@ showModalGroupUsers(
                                     width: 50.h,
                                     child: CachedImage(
                                       borderRadius: BorderRadius.circular(50.h),
-                                      urlImage: users[i].avatar,
+                                      urlImage: users[i].avatar == null ? null : Config.url.url+users[i].avatar!,
                                       isProfilePhoto: true,
                                       height: 50.h,
                                     ),
