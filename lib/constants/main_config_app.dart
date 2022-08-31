@@ -21,9 +21,9 @@ extension AppExtension on App {
   String get token {
     switch (this) {
       case App.siignores:
-        return 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuaWNrbmFtZSI6InNpaWdub3JlcyIsInRpbWVzdGFtcCI6IjE2NjE4MTIxNjEuNzQ3NDE3In0.ajIYCpHTRi7palf6wtIThR0XrxDSjXeP89ZF2BqkEtI';
+        return 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuaWNrbmFtZSI6InNpaWdub3JlcyIsInRpbWVzdGFtcCI6IjE2NjE5NjgzOTkuNDkxNTA1MSJ9.mkne5f4wQFViqckEc9UwoJEsH8_zp-pzI4FRurtR2ik';
       case App.secondApp:
-        return 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuaWNrbmFtZSI6InNpaWdub3JlcyIsInRpbWVzdGFtcCI6IjE2NjE4ODU3MjEuNDg5MzM3NCJ9.xUfqRaI8JUAGYJfaf3NyNZhv-aUMKEoJQNi3IeG8oq0';
+        return 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuaWNrbmFtZSI6IklCSyIsInRpbWVzdGFtcCI6IjE2NjE5Njg2MTEuNzcyMDY5NSJ9.iItGnK-ZeikprU8YkjX4UyaUtkb-xAPMMmcV2o6zx6k';
     }
   }
 
