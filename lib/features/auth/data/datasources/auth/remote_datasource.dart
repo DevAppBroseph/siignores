@@ -18,6 +18,7 @@ abstract class AuthenticationRemoteDataSource {
   Future<String> login(String email, String password);
   Future<UserModel> getUserInfo();
   Future<void> logout();
+  Future<bool> deleteAccount();
 
   //Forgot password
   Future<bool> sendCodeForResetPassword(String email);
@@ -53,9 +54,7 @@ class AuthenticationRemoteDataSourceImpl
             followRedirects: false,
             validateStatus: (status) => status! < 599,
             headers: headers));
-    print('DATA: ${response.requestOptions.data}');
     printRes(response);
-    print('RES: ${response.data}');
     if (response.statusCode! >= 200 && response.statusCode! <= 299) {
       return response.data['auth_token'];
     } else if(response.statusCode == 400) {
@@ -83,7 +82,8 @@ class AuthenticationRemoteDataSourceImpl
     printRes(response);
     if (response.statusCode! >= 200 && response.statusCode! < 400) {
       return true;
-    } else if(response.statusCode == 400 && response.data.toString().contains('custom user with this email already exists')){
+    } else if(response.statusCode == 400 && response.data.toString().contains('custom user with this email already exists')
+      || response.statusCode == 400 && response.data.toString().contains('The fields email, app must make a unique set')){
       throw ServerException(message: 'Пользователь с таким email-ом уже существует');
     }else {
       throw ServerException(message: 'Ошибка с сервером');
@@ -184,6 +184,24 @@ class AuthenticationRemoteDataSourceImpl
 
 
 
+
+  @override
+  Future<bool> deleteAccount() async {
+    headers["Authorization"] = "Token ${sl<AuthConfig>().token}";
+    Response response = await dio.delete(Endpoints.deleteUser.getPath(),
+        options: Options(
+            followRedirects: false,
+            validateStatus: (status) => status! < 499,
+            headers: headers));
+    print('DATA: ${response.data}');
+    print('DATA: ${response.statusCode}');
+    printRes(response);
+    if (response.statusCode! >= 200 && response.statusCode! < 400) {
+      return true;
+    } else {
+      throw ServerException(message: 'Ошибка с сервером');
+    }
+  }
 
 
 

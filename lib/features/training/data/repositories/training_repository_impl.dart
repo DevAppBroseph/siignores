@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 import 'package:siignores/core/services/network/network_info.dart';
 import 'package:siignores/features/training/domain/entities/course_entity.dart';
 import 'package:siignores/features/training/domain/entities/lesson_list_entity.dart';
+import 'package:siignores/features/training/domain/usecases/send_homework.dart';
 import '../../../../core/error/failures.dart';
 import '../../domain/entities/lesson_detail_entity.dart';
 import '../../domain/entities/module_enitiy.dart';
@@ -85,6 +86,27 @@ class TrainingRepositoryImpl implements TrainingRepository {
     if (await networkInfo.isConnected) {
       try {
         final item = await remoteDataSource.getLesson(params);
+        return Right(item);
+      } catch (e) {
+        print(e);
+        return Left(ServerFailure(e.toString()));
+      }
+    } else {
+      return Left(NetworkFailure());
+    }
+  }
+
+
+
+  @override
+  Future<Either<Failure, bool>> sendHomework(SendHomeworkParams params) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final item = await remoteDataSource.sendHomework(
+          params.files,
+          params.text,
+          params.lessonId
+        );
         return Right(item);
       } catch (e) {
         print(e);

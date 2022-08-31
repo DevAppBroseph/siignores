@@ -12,12 +12,10 @@ import '../../../../locator.dart';
 
 
 class TopInfoHome extends StatelessWidget {
-  final String text;
-  final String? urlToImage;
   final int notificationCount;
   final Function() onTapByName;
   final Function() onTapNotification;
-  TopInfoHome({Key? key, required this.notificationCount, required this.onTapByName, required this.onTapNotification, required this.text, required this.urlToImage}) : super(key: key);
+  TopInfoHome({Key? key, required this.notificationCount, required this.onTapByName, required this.onTapNotification}) : super(key: key);
   
   @override
   Widget build(BuildContext context) {

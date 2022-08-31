@@ -13,5 +13,9 @@ class LessonDetailErrorState extends LessonDetailState {
   LessonDetailErrorState({required this.message});
 }
 class LessonDetailInternetErrorState extends LessonDetailState{}
-
+class LessonDetailBlankState extends LessonDetailState{}
+class LessonDetailLoaderHideState extends LessonDetailState{
+  final String? message;
+  LessonDetailLoaderHideState({this.message});
+}
 class GotSuccessLessonDetailState extends LessonDetailState{}

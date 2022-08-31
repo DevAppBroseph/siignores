@@ -9,6 +9,7 @@ enum Endpoints {
     //Login and user
   login,
   logout,
+  deleteUser,
   getUserInfo,
   
 
@@ -28,13 +29,18 @@ enum Endpoints {
   getModules,
   getLessons,
   getLesson,
-
+  addHomework,
 
   //Chat
   getChatTabs,
   getChatMessages,
 
   chatWS,
+
+
+
+  //Home
+  getOffers,
 
 }
 
@@ -47,6 +53,8 @@ extension EndpointsExtension on Endpoints {
     switch (this) {
       case Endpoints.register:
         return "$url/auth/users/";
+      case Endpoints.deleteUser:
+        return "$url/users/";
       case Endpoints.activationCode:
         return "$url/auth/users/activation/";
       case Endpoints.getUserInfo:
@@ -81,6 +89,10 @@ extension EndpointsExtension on Endpoints {
         return "$url/chat/${params![0]}/";
       case Endpoints.chatWS:
         return "$ws/ws/${params![0]}";
+      case Endpoints.getOffers:
+        return "$url/course/special_list/";
+      case Endpoints.addHomework:
+        return "$url/course/add_homework/";
       default:
         return '';
     }

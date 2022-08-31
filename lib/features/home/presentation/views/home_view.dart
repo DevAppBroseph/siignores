@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:siignores/constants/main_config_app.dart';
-import 'package:siignores/core/widgets/image/cached_image.dart';
 import 'package:siignores/features/auth/presentation/bloc/auth/auth_bloc.dart';
-import 'package:siignores/features/chat/presentation/bloc/chat/chat_bloc.dart';
 import 'package:siignores/features/home/presentation/widgets/top_info_home.dart';
 import 'package:table_calendar/table_calendar.dart';
-
 import '../../../../constants/colors/color_styles.dart';
 import '../../../../constants/texts/text_styles.dart';
+import '../../../../core/utils/toasts.dart';
 import '../../../../core/widgets/modals/lecture_modal.dart';
 import '../../../../core/widgets/sections/group_section.dart';
 import '../../../main/presentation/bloc/main_screen/main_screen_bloc.dart';
-import '../../../profile/presentation/views/edit_profile_view.dart';
 import '../../../profile/presentation/views/profile_view.dart';
+import '../bloc/offers/offers_bloc.dart';
 import '../widgets/lecture_card.dart';
+import '../widgets/lecture_loading_card.dart';
 import 'calendart_test.dart';
 
 
@@ -40,6 +38,10 @@ class HomeView extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
+    OffersBloc offersBloc = context.read<OffersBloc>();
+    if(offersBloc.state is OffersInitialState){
+      offersBloc.add(GetOffersEvent());
+    }
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -70,31 +72,65 @@ class HomeView extends StatelessWidget {
                     SizedBox(height: 20.h,),
                     TopInfoHome(
                       notificationCount: 3, 
-                      urlToImage: 'https://aikidojo.lv/wp-content/uploads/2019/08/nophoto.jpg',
                       onTapByName: (){
                         context.read<MainScreenBloc>().add(ChangeViewEvent(widget: ProfileView()));
                       }, 
                       onTapNotification: (){
                         
                       }, 
-                      text: 'Name Lastname'
                     ),
                     SizedBox(height: 28.h,),
                     Container(
                       height: 120.h,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: _list.map((e) 
-                          => LectureCard(
-                            onTap: (){
-                              showModalLecture(context);
-                            },
-                            title: e['title'] ?? '',
-                            text: e['desc'] ?? '',
-                            isFirst: _list.first['title'] == e['title'],
-                          )
-                        ).toList()
-                      ),
+                      child: BlocConsumer<OffersBloc, OffersState>(
+                        listener: (context, state){
+                          if(state is OffersErrorState){
+                            showAlertToast(state.message);
+                          }
+                          if(state is OffersInternetErrorState){
+                            context.read<AuthBloc>().add(InternetErrorEvent());
+                          }
+                        },
+                        builder: (context, state){
+                          if(state is OffersInitialState || state is OffersLoadingState){
+                            return ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: [1, 2, 3, 4].map((e) 
+                                => LectureLoadingCard(
+                                  isFirst: e == 1
+                                )
+                              ).toList()
+                            );
+                          }
+                          if(state is GotSuccessOffersState){
+                            if(offersBloc.offers.isEmpty){
+                              return Container(
+                                height: 120.h,
+                                width: 412.w,
+                                margin: EdgeInsets.only(right: 16.w, left: 23.w),
+                                decoration: BoxDecoration(
+                                  color: ColorStyles.backgroundColor,
+                                  borderRadius: BorderRadius.circular(13.h)
+                                ),
+                                alignment: Alignment.center,
+                                child: Text('Пока нет спец. предложений', style: MainConfigApp.app.isSiignores
+                                    ? TextStyles.black_15_w700
+                                    : TextStyles.white_15_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
+                              );
+                            }
+                          }
+                          return ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: offersBloc.offers.map((offer) 
+                              => LectureCard(
+                                onTap: () => showModalLecture(context, offer),
+                                offerEntity: offer,
+                                isFirst: offersBloc.offers.indexOf(offer) == 0,
+                              )
+                            ).toList()
+                          );
+                        },
+                      )
                     ),
                     SizedBox(height: 27.h,),
                     GroupSection()

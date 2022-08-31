@@ -1,3 +1,7 @@
+import 'dart:io';
+import 'dart:math';
+import 'package:path/path.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +15,7 @@ import 'package:siignores/core/utils/helpers/url_launcher.dart';
 import 'package:siignores/core/widgets/btns/back_btn.dart';
 import 'package:siignores/core/widgets/btns/primary_btn.dart';
 import 'package:siignores/core/widgets/image/cached_image.dart';
+import 'package:siignores/core/widgets/loaders/overlay_loader.dart';
 import 'package:siignores/features/main/presentation/bloc/main_screen/main_screen_bloc.dart';
 import 'package:siignores/features/training/data/models/lesson_detail_model.dart';
 import 'package:siignores/features/training/domain/entities/module_enitiy.dart';
@@ -48,7 +53,36 @@ class _LessonDetailViewState extends State<LessonDetailView> {
 
   bool showAllText = false;
   bool showVideo = false;
+  final formKey = GlobalKey<FormState>();
 
+  TextEditingController textController = TextEditingController();
+  String errorAnswer = 'Введите ответ'; 
+
+  List<File> files = [];
+
+  Future<void> selectFiles() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
+ 
+    if (result != null) {
+      List<File> selectedFiles = result.paths.map((path) 
+        => File(path ?? Random().nextInt(1000).toString())).toList();
+      setState(() {
+        files.addAll(selectedFiles);
+      });
+    }
+  }
+
+  void sendHomework(BuildContext context){
+    if(formKey.currentState!.validate()){
+      showLoaderWrapper(context);
+      context.read<LessonDetailBloc>().add(SendHomeworkEvent(
+        files: files, 
+        text: textController.text.trim()
+      ));
+
+     
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +101,16 @@ class _LessonDetailViewState extends State<LessonDetailView> {
 
           if(state is LessonDetailInternetErrorState){
             context.read<AuthBloc>().add(InternetErrorEvent());
+          }
+          if(state is LessonDetailLoaderHideState){
+            Loader.hide();
+            if(state.message != null){
+              showSuccessAlertToast(state.message!);
+            }
+             setState(() {
+              textController.clear();
+              files.clear();
+            });
           }
         },
         builder: (context, state){
@@ -199,7 +243,7 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                           ],
                           SizedBox(height: 30.h,),
 
-                          if(MainConfigApp.app.isSiignores)
+                          if(bloc.lesson!.times.isNotEmpty)
                           ...[
                           Text('Тайминг', style: MainConfigApp.app.isSiignores
                             ? TextStyles.black_18_w700
@@ -303,33 +347,59 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                             ? TextStyles.black_18_w700
                             : TextStyles.black_18_w300,),
                           SizedBox(height: 13.h,),
-                          DefaultTextFormField(
-                            hint: 'Написать ответ',
-                            white: true,
+                          Form(
+                            key: formKey,
+                            child: DefaultTextFormField(
+                              controller: textController,
+                              validator: (v){
+                                if((v ?? '').length > 1){
+                                  return null;
+                                }
+                                return errorAnswer;
+                              },
+                              hint: 'Написать ответ',
+                              white: true,
+                            ),
                           ),
                           SizedBox(height: 22.h,),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: ColorStyles.black,
-                              borderRadius: BorderRadius.circular(8.h),
+                          GestureDetector(
+                            onTap: selectFiles,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: ColorStyles.black,
+                                borderRadius: BorderRadius.circular(8.h),
+                              ),
+                              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  SvgPicture.asset('assets/svg/link_file.svg'),
+                                  SizedBox(width: 13.w,),
+                                  Text('Прикрепить файлы', style: MainConfigApp.app.isSiignores
+                                    ? TextStyles.white_12_w700
+                                    : TextStyles.white_12_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),)
+                                ],
+                              ),
                             ),
-                            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                SvgPicture.asset('assets/svg/link_file.svg'),
-                                SizedBox(width: 13.w,),
-                                Text('Прикрепить файлы', style: MainConfigApp.app.isSiignores
-                                  ? TextStyles.white_12_w700
-                                  : TextStyles.white_12_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),)
-                              ],
-                            ),
+                          ),
+                          SizedBox(height: 10.h,),
+                          Column(
+                            children: files.map((file) 
+                              => Container(
+                                margin: EdgeInsets.symmetric(vertical: 5.h),
+                                child: Text('- ${basename(file.path)}', style: MainConfigApp.app.isSiignores
+                                  ? TextStyles.black_13_w400.copyWith(decoration: TextDecoration.underline)
+                                  : TextStyles.black_13_w400.copyWith(decoration: TextDecoration.underline, fontFamily: MainConfigApp.fontFamily4),),
+                              )
+                            ).toList(),
                           ),
                           SizedBox(height: 40.h,),
                           PrimaryBtn(
                             width: MediaQuery.of(context).size.width,
                             title: 'Отправить задание', 
-                            onTap: (){}
+                            onTap: () {
+                              sendHomework(context);
+                            }
                           ),
                           SizedBox(height: 155.h,),
                         ],

@@ -39,6 +39,7 @@ dependencies:
   video_player:
   flick_video_player:
   flutter_keyboard_visibility:
+  file_picker: ^5.0.1
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
