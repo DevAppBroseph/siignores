@@ -43,6 +43,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     if(event is StartSocketEvent){
 
       try{
+        print('URL: ${Endpoints.chatWS.getPath(params: [sl<AuthConfig>().token])}');
         channel = WebSocketChannel.connect(
           Uri.parse(Endpoints.chatWS.getPath(params: [sl<AuthConfig>().token])),
         );

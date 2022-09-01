@@ -18,9 +18,6 @@ class ChatTabsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ChatTabsBloc bloc = context.read<ChatTabsBloc>();
-    if(bloc.state is ChatTabsInitialState){
-      bloc.add(GetChatTabsEvent());
-    }
     return Scaffold(
       appBar: AppBar(
         elevation: 1.h,

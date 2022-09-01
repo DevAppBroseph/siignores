@@ -11,7 +11,8 @@ import '../../../constants/colors/color_styles.dart';
 
 class BackAppbarBtn extends StatelessWidget {
   final Function() onTap;
-  const BackAppbarBtn({Key? key, required this.onTap}) : super(key: key);
+  final bool black;
+  const BackAppbarBtn({Key? key, required this.onTap, this.black = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +23,7 @@ class BackAppbarBtn extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: SvgPicture.asset(
           'assets/svg/back_appbar.svg',
-          color: MainConfigApp.app.isSiignores ? null : ColorStyles.white,
+          color: black ? ColorStyles.black : (MainConfigApp.app.isSiignores ? null : ColorStyles.white),
         )
       ),
     );

@@ -35,7 +35,6 @@ class _MainViewState extends State<MainView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // context.read<ChatTabsBloc>().add(GetChatTabsEvent());
   }
 
   @override

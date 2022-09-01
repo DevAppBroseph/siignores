@@ -20,6 +20,9 @@ class CoursesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     CourseBloc bloc = context.read<CourseBloc>();
+    if(bloc.state is CourseInitialState){
+      bloc.add(GetCoursesEvent());
+    }
     return BlocConsumer<CourseBloc, CourseState>(
         listener: (context, state){
           if(state is CourseErrorState){
