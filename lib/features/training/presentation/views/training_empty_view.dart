@@ -65,7 +65,7 @@ class TrainingEmptyView extends StatelessWidget {
               children: [
                 SvgPicture.asset('assets/svg/telegram_first.svg'),
                 SizedBox(width: 8.w,),
-                Text('@siignores', style: TextStyles.black_17_w700.copyWith(color: ColorStyles.telegram, fontFamily: MainConfigApp.fontFamily1))
+                Text(MainConfigApp.app.isSiignores ? '@siignores' : '@burn_katrina', style: TextStyles.black_17_w700.copyWith(color: ColorStyles.telegram, fontFamily: MainConfigApp.fontFamily1))
               ],
             ),
           ),

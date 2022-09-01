@@ -3,7 +3,7 @@ class MainConfigApp {
 
   static App app = App.secondApp;
 
-  static String telegram = 'https://t.me/siignores';
+  static String telegram = MainConfigApp.app.isSiignores ? 'https://t.me/siignores' : 'https://t.me/burn_katrina';
 
   //UI
   // static String defaultNoImage = 'assets/images/default_no_image.jpeg';
