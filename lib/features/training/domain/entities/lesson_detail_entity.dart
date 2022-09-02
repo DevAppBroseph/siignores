@@ -8,6 +8,7 @@ class LessonDetailEntity extends Equatable {
   final String text;
   final String question;
   final String? image;
+  final String? backImage;
   final String? video;
   final List<TimeOfVideo> times;
   final List<LessonFile> files;
@@ -22,6 +23,7 @@ class LessonDetailEntity extends Equatable {
     required this.question,
     required this.times,
     required this.files,
+    required this.backImage
   });
 
 

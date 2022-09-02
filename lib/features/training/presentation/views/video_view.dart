@@ -69,7 +69,6 @@ class _VideoViewState extends State<VideoView> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              height: 200.h,
               child: FlickVideoPlayer(
                 flickManager: flickManager,
                 flickVideoWithControls: FlickVideoWithControls(
