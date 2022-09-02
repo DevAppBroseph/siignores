@@ -24,7 +24,12 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
         (failure) => errorCheck(failure),
         (data){
           selectedModuleId = event.id;
-          lessons = data;
+          for(var i = 0; i < data.length; i++){
+            if(i == 0 || data[i].status == 'complete' || data[i-1].status == 'complete'){
+              data[i].isOpen = true;
+            }
+            lessons.add(data[i]);
+          }
           return GotSuccessLessonsState();
         }
       );

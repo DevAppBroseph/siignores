@@ -1,15 +1,19 @@
 import 'package:dio/dio.dart';
+import 'package:siignores/core/utils/helpers/dio_helper.dart';
 import 'package:siignores/features/home/domain/entities/progress_entity.dart';
 import '../../../../../core/error/exceptions.dart';
 import '../../../../../core/services/database/auth_params.dart';
 import '../../../../../core/services/network/endpoints.dart';
 import '../../../../../locator.dart';
 import '../../../domain/entities/calendar_entity.dart';
+import '../../../domain/entities/notification_entity.dart';
 import '../../models/calendar_model.dart';
+import '../../models/notification_model.dart';
 import '../../models/progress_model.dart';
 
 abstract class HomeRemoteDataSource {
   Future<List<CalendarEntity>> getCalendar();
+  Future<List<NotificationEntity>> getNotifications();
   Future<List<ProgressEntity>> getProgress();
 
 }
@@ -62,6 +66,31 @@ class HomeRemoteDataSourceImpl
     if (response.statusCode == 200) {
       List<ProgressEntity> data = (response.data as List)
             .map((json) => ProgressModel.fromJson(json))
+            .toList();
+      return data;
+    } else {
+      throw ServerException(message: 'Ошибка с сервером');
+    }
+  }
+
+
+
+
+
+  //Get notifications
+  @override
+  Future<List<NotificationEntity>> getNotifications() async {
+    headers["Authorization"] = "Token ${sl<AuthConfig>().token}";
+
+    Response response = await dio.get(Endpoints.notifications.getPath(),
+        options: Options(
+            followRedirects: false,
+            validateStatus: (status) => status! < 499,
+            headers: headers));
+    printRes(response);
+    if (response.statusCode == 200) {
+      List<NotificationEntity> data = (response.data['chats'] as List)
+            .map((json) => NotificationModel.fromJson(json))
             .toList();
       return data;
     } else {

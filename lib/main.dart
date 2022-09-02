@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:siignores/constants/main_config_app.dart';
 import 'package:siignores/features/auth/presentation/bloc/register/register_bloc.dart';
+import 'package:siignores/features/home/presentation/bloc/notifications/notifications_bloc.dart';
 import 'constants/colors/color_styles.dart';
 import 'constants/texts/text_styles.dart';
 import 'features/auth/presentation/bloc/auth/auth_bloc.dart';
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (_) => sl<OffersBloc>()),
           BlocProvider(create: (_) => sl<ProgressBloc>()),
           BlocProvider(create: (_) => sl<CalendarBloc>()),
+          BlocProvider(create: (_) => sl<NotificationsBloc>()),
         ], 
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
