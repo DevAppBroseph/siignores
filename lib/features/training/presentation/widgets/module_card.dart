@@ -31,8 +31,8 @@ class ModuleCard extends StatelessWidget {
           child: Stack(
             children: [
               Positioned(
-                bottom: 5.h,
-                right: 5.h,
+                bottom: 0,
+                right: 0,
                 child: Container(
                     width: MediaQuery.of(context).size.width/2,
                     child: CachedImage(
@@ -40,7 +40,7 @@ class ModuleCard extends StatelessWidget {
                       isProfilePhoto: false,
                       alignment: Alignment.bottomRight,
                       fit: BoxFit.contain,
-                      borderRadius: BorderRadius.zero,
+                      borderRadius: BorderRadius.only(bottomRight: Radius.circular(14.h)),
                       urlImage: moduleEntity.image == null ? null : Config.url.url+moduleEntity.image!
                     ),
                   )

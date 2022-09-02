@@ -139,7 +139,7 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                         height: MediaQuery.of(context).size.width,
                         borderRadius: BorderRadius.zero,
                         isProfilePhoto: true,
-                        urlImage: bloc.lesson?.image == null ? null : Config.url.url+bloc.lesson!.image!,
+                        urlImage: bloc.lesson?.backImage == null ? null : Config.url.url+bloc.lesson!.backImage!,
                       ),
                       expandedTitleScale: 1,
                       centerTitle: true,
