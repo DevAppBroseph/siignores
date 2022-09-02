@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,8 +26,21 @@ import 'features/training/presentation/bloc/lessons/lessons_bloc.dart';
 import 'features/training/presentation/bloc/modules/module_bloc.dart';
 import 'locator.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
+  await FirebaseMessaging.instance.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
+
+  print('key is ' + (await FirebaseMessaging.instance.getToken()).toString());
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitDown,
     DeviceOrientation.portraitUp,
@@ -56,6 +71,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (_) => sl<OffersBloc>()),
           BlocProvider(create: (_) => sl<ProgressBloc>()),
           BlocProvider(create: (_) => sl<CalendarBloc>()),
+          BlocProvider(create: (_) => sl<NotificationsBloc>()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

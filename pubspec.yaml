@@ -35,6 +35,12 @@ dependencies:
   shared_preferences: ^2.0.15
   flutter_secure_storage: ^5.1.0
 
+  #Firebase
+  firebase_auth: ^3.3.11
+  firebase_core: ^1.11.0
+  firebase_analytics: ^8.3.4
+  firebase_messaging: ^11.2.5
+
   web_socket_channel:
   video_player:
   flick_video_player:
