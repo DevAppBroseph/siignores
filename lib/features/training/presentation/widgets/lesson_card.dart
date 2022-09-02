@@ -60,14 +60,20 @@ class LessonCard extends StatelessWidget {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(lessonListEntity.title.toUpperCase(), style: TextStyles.cormorant_black_18_w400,),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width*0.6,
+                        child: Text(lessonListEntity.title.toUpperCase(), style: TextStyles.cormorant_black_18_w400,)
+                      ),
                       SizedBox(width: 10.h,),
                       getStatusWidget(lessonListEntity),
                       SizedBox(width: 10.h,),
                     ],
                   ),
                   SizedBox(height: 5.h,),
-                  Text(lessonListEntity.miniDesc, style: TextStyles.cormorant_black_25_w400,),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width*0.6,
+                    child: Text(lessonListEntity.miniDesc, style: TextStyles.cormorant_black_25_w400,),
+                  ),
                   SizedBox(height: 8.h,),
                   isCompleted
                   ? Container(
@@ -142,7 +148,10 @@ class LessonCard extends StatelessWidget {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text(lessonListEntity.title.toUpperCase(), style: TextStyles.black_15_w300,),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width*0.7,
+                            child: Text(lessonListEntity.title.toUpperCase(), style: TextStyles.black_15_w300,)
+                          ),
                           SizedBox(width: 10.h,),
                           getStatusWidget(lessonListEntity),
 
@@ -153,6 +162,7 @@ class LessonCard extends StatelessWidget {
                         width: MediaQuery.of(context).size.width*0.6,
                         child: Text(lessonListEntity.miniDesc, style: TextStyles.black_20_w300,),
                       ),
+                      SizedBox(height: 10.h,),
                     ],
                   ),
                 ],
