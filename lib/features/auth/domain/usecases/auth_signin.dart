@@ -20,8 +20,9 @@ class AuthSignIn implements UseCase<String, AuthSignParams> {
 class AuthSignParams extends Equatable {
   final String email;
   final String password;
+  final String fcmToken;
 
-  AuthSignParams({required this.email, required this.password});
+  AuthSignParams({required this.email, required this.password, required this.fcmToken});
 
   @override
   List<Object> get props => [email, password];
