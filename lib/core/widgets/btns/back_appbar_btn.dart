@@ -11,18 +11,19 @@ import '../../../constants/colors/color_styles.dart';
 
 class BackAppbarBtn extends StatelessWidget {
   final Function() onTap;
-  const BackAppbarBtn({Key? key, required this.onTap}) : super(key: key);
+  final bool black;
+  const BackAppbarBtn({Key? key, required this.onTap, this.black = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Bounce(
-      onPressed: onTap,
-      duration: Duration(milliseconds: 110),
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.translucent,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 15.h),
         child: SvgPicture.asset(
           'assets/svg/back_appbar.svg',
-          color: MainConfigApp.app.isSiignores ? null : ColorStyles.white,
+          color: black ? ColorStyles.black : (MainConfigApp.app.isSiignores ? null : ColorStyles.white),
         )
       ),
     );

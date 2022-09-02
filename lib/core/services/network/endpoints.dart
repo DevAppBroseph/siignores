@@ -41,6 +41,10 @@ enum Endpoints {
 
   //Home
   getOffers,
+  
+  getCalendar,
+  progress,
+  notifications
 
 }
 
@@ -93,6 +97,12 @@ extension EndpointsExtension on Endpoints {
         return "$url/course/special_list/";
       case Endpoints.addHomework:
         return "$url/course/add_homework/";
+      case Endpoints.progress:
+        return "$url/course/progress/";
+      case Endpoints.getCalendar:
+        return "$url/course/student_calendar/";
+      case Endpoints.notifications:
+        return "$url/notifications/";
       default:
         return '';
     }

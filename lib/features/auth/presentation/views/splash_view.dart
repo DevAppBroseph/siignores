@@ -6,10 +6,12 @@ import 'package:siignores/core/services/database/auth_params.dart';
 import 'package:siignores/features/auth/presentation/views/sign_in_view.dart';
 import 'package:siignores/features/chat/presentation/bloc/chat/chat_bloc.dart';
 import 'package:siignores/features/main/presentation/views/main_view.dart';
-import 'package:siignores/features/training/presentation/bloc/course/course_bloc.dart';
 import '../../../../constants/colors/color_styles.dart';
 import '../../../../core/utils/toasts.dart';
 import '../../../../locator.dart';
+import '../../../chat/presentation/bloc/chat_tabs/chat_tabs_bloc.dart';
+import '../../../home/presentation/bloc/notifications/notifications_bloc.dart';
+import '../../../home/presentation/bloc/progress/progress_bloc.dart';
 import '../bloc/auth/auth_bloc.dart';
 
 
@@ -51,7 +53,9 @@ class _SplashViewState extends State<SplashView> {
         }
         if(state is CheckedState){
           if(sl<AuthConfig>().authenticatedOption == AuthenticatedOption.authenticated){
-            context.read<CourseBloc>().add(GetCoursesEvent());
+            context.read<ProgressBloc>().add(GetProgressEvent());
+            context.read<ChatTabsBloc>().add(GetChatTabsEvent());
+            context.read<NotificationsBloc>().add(GetNotificationsEvent());
             context.read<ChatBloc>().add(StartSocketEvent());
           }
         }
@@ -68,7 +72,18 @@ class _SplashViewState extends State<SplashView> {
         
         if(state is CheckedState || state is BlankState || state is ErrorState){
           if(sl<AuthConfig>().authenticatedOption == AuthenticatedOption.authenticated){
-            return MainView();
+            return BlocConsumer<ChatBloc, ChatState>(
+              listener: (context, state){
+                if(state is NewNotificationState){
+                  setState(() {
+                    context.read<NotificationsBloc>().notifications.add(state.notificationEntity);
+                  });
+                }
+              },
+              builder: (context, state) {
+                return MainView();
+              }
+            );
           }else{
             return SignInView();
           }

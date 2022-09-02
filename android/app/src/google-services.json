@@ -1,0 +1,486 @@
+{
+  "project_info": {
+    "project_number": "960152891906",
+    "project_id": "gastrosoft-bcb27",
+    "storage_bucket": "gastrosoft-bcb27.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:960152891906:android:2266b9e9f9c63e77acad1b",
+        "android_client_info": {
+          "package_name": "by.gastrosoft.freshzone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "960152891906-o89shhsto4fbt0aovqr2lce7la603lkh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBy0pyNklTH9IBgDDZHZon7dqiTxCbJf3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "960152891906-o89shhsto4fbt0aovqr2lce7la603lkh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "960152891906-1o1lol1qlk5604fa618qvqe62ll5dv3o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gastrosoft.amiyammy"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:960152891906:android:a24f49c1d73c3959acad1b",
+        "android_client_info": {
+          "package_name": "by.gastrosoft.grillkebab"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "960152891906-o89shhsto4fbt0aovqr2lce7la603lkh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBy0pyNklTH9IBgDDZHZon7dqiTxCbJf3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "960152891906-o89shhsto4fbt0aovqr2lce7la603lkh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "960152891906-1o1lol1qlk5604fa618qvqe62ll5dv3o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gastrosoft.amiyammy"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:960152891906:android:502540ed886ea8e2acad1b",
+        "android_client_info": {
+          "package_name": "by.gastrosoft.svoe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "960152891906-o89shhsto4fbt0aovqr2lce7la603lkh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBy0pyNklTH9IBgDDZHZon7dqiTxCbJf3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "960152891906-o89shhsto4fbt0aovqr2lce7la603lkh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "960152891906-1o1lol1qlk5604fa618qvqe62ll5dv3o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gastrosoft.amiyammy"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:960152891906:android:a29109a248c26bc6acad1b",
+        "android_client_info": {
+          "package_name": "com.broseph.ibk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "960152891906-o89shhsto4fbt0aovqr2lce7la603lkh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBy0pyNklTH9IBgDDZHZon7dqiTxCbJf3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "960152891906-o89shhsto4fbt0aovqr2lce7la603lkh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "960152891906-1o1lol1qlk5604fa618qvqe62ll5dv3o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gastrosoft.amiyammy"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:960152891906:android:e50fcc735fde5dcbacad1b",
+        "android_client_info": {
+          "package_name": "com.gastrosoft.amiyammy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "960152891906-o89shhsto4fbt0aovqr2lce7la603lkh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBy0pyNklTH9IBgDDZHZon7dqiTxCbJf3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "960152891906-o89shhsto4fbt0aovqr2lce7la603lkh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "960152891906-1o1lol1qlk5604fa618qvqe62ll5dv3o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gastrosoft.amiyammy"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:960152891906:android:97449c8b02c384ecacad1b",
+        "android_client_info": {
+          "package_name": "com.gastrosoft.boborolls"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "960152891906-o89shhsto4fbt0aovqr2lce7la603lkh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBy0pyNklTH9IBgDDZHZon7dqiTxCbJf3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "960152891906-o89shhsto4fbt0aovqr2lce7la603lkh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "960152891906-1o1lol1qlk5604fa618qvqe62ll5dv3o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gastrosoft.amiyammy"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:960152891906:android:7d4e1f343966fe59acad1b",
+        "android_client_info": {
+          "package_name": "com.gastrosoft.cinnabonby"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "960152891906-o89shhsto4fbt0aovqr2lce7la603lkh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBy0pyNklTH9IBgDDZHZon7dqiTxCbJf3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "960152891906-o89shhsto4fbt0aovqr2lce7la603lkh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "960152891906-1o1lol1qlk5604fa618qvqe62ll5dv3o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gastrosoft.amiyammy"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:960152891906:android:9d1c5b9416d2b7f8acad1b",
+        "android_client_info": {
+          "package_name": "com.gastrosoft.grillkebab"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "960152891906-ke87kf88hpfuti7c0lh9fo54mijvdtas.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gastrosoft.grillkebab",
+            "certificate_hash": "82b9d9a6f5c19dc4a13ae0d3f903440ad0002307"
+          }
+        },
+        {
+          "client_id": "960152891906-o89shhsto4fbt0aovqr2lce7la603lkh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBy0pyNklTH9IBgDDZHZon7dqiTxCbJf3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "960152891906-o89shhsto4fbt0aovqr2lce7la603lkh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "960152891906-1o1lol1qlk5604fa618qvqe62ll5dv3o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gastrosoft.amiyammy"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:960152891906:android:e20dc347eb7be9daacad1b",
+        "android_client_info": {
+          "package_name": "com.gastrosoft.muka"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "960152891906-o89shhsto4fbt0aovqr2lce7la603lkh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBy0pyNklTH9IBgDDZHZon7dqiTxCbJf3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "960152891906-o89shhsto4fbt0aovqr2lce7la603lkh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "960152891906-1o1lol1qlk5604fa618qvqe62ll5dv3o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gastrosoft.amiyammy"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:960152891906:android:d9de42b188eb7ab7acad1b",
+        "android_client_info": {
+          "package_name": "com.gastrosoft.okpirog"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "960152891906-o89shhsto4fbt0aovqr2lce7la603lkh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBy0pyNklTH9IBgDDZHZon7dqiTxCbJf3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "960152891906-o89shhsto4fbt0aovqr2lce7la603lkh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "960152891906-1o1lol1qlk5604fa618qvqe62ll5dv3o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gastrosoft.amiyammy"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:960152891906:android:ee783b4cf7e3e0c6acad1b",
+        "android_client_info": {
+          "package_name": "com.gastrosoft.oxDetox"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "960152891906-o89shhsto4fbt0aovqr2lce7la603lkh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBy0pyNklTH9IBgDDZHZon7dqiTxCbJf3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "960152891906-o89shhsto4fbt0aovqr2lce7la603lkh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "960152891906-1o1lol1qlk5604fa618qvqe62ll5dv3o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gastrosoft.amiyammy"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:960152891906:android:b75896f41074a190acad1b",
+        "android_client_info": {
+          "package_name": "com.gastrosoft.vp.lab"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "960152891906-o89shhsto4fbt0aovqr2lce7la603lkh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBy0pyNklTH9IBgDDZHZon7dqiTxCbJf3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "960152891906-o89shhsto4fbt0aovqr2lce7la603lkh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "960152891906-1o1lol1qlk5604fa618qvqe62ll5dv3o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gastrosoft.amiyammy"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:960152891906:android:68292f3403698800acad1b",
+        "android_client_info": {
+          "package_name": "dev.broseph.ibk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "960152891906-o89shhsto4fbt0aovqr2lce7la603lkh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBy0pyNklTH9IBgDDZHZon7dqiTxCbJf3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "960152891906-o89shhsto4fbt0aovqr2lce7la603lkh.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "960152891906-1o1lol1qlk5604fa618qvqe62ll5dv3o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gastrosoft.amiyammy"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

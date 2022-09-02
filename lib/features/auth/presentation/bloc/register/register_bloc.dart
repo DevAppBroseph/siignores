@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:siignores/core/services/database/auth_params.dart';
 import 'package:siignores/features/auth/domain/usecases/activation_code.dart';
 import 'package:siignores/features/auth/domain/usecases/register.dart';
@@ -16,86 +17,83 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final ActivationCode activationCode;
   final Register register;
 
-  RegisterBloc(this.activationCode, this.register, this.setPassword) : super(RegisterInitialState());
+  RegisterBloc(this.activationCode, this.register, this.setPassword)
+      : super(RegisterInitialState());
 
   CurrentStage currentStage = CurrentStage.first;
   String email = '';
   @override
-  Stream<RegisterState> mapEventToState(RegisterEvent event) async*{
-    if(event is RegisterByInfoEvent){
+  Stream<RegisterState> mapEventToState(RegisterEvent event) async* {
+    if (event is RegisterByInfoEvent) {
       yield RegisterBlankState();
-      var registered = await register(RegisterParams(email: event.email, firstName: event.firstName, lastName: event.lastName));
-      yield registered.fold(
-        (failure) => errorCheck(failure),
-        (success) {
-          if(success){
-            email = event.email;
-            currentStage = CurrentStage.second;
-            return RegisterViewState();
-          }
-          return RegisterErrorState(message: 'Повторите попытку');
-        }
-        
+      var registered = await register(
+        RegisterParams(
+          email: event.email,
+          firstName: event.firstName,
+          lastName: event.lastName,
+          fcmToken: (await FirebaseMessaging.instance.getToken())!,
+        ),
       );
+      yield registered.fold((failure) => errorCheck(failure), (success) {
+        if (success) {
+          email = event.email;
+          currentStage = CurrentStage.second;
+          return RegisterViewState();
+        }
+        return RegisterErrorState(message: 'Повторите попытку');
+      });
     }
 
-    if(event is RegisterActivationCodeEvent){
+    if (event is RegisterActivationCodeEvent) {
       yield RegisterBlankState();
-      var activated = await activationCode(ActivationCodeParams(email: email, code: event.code));
-      yield activated.fold(
-        (failure) => errorCheck(failure),
-        (success) {
-          if(success){
-            currentStage = CurrentStage.third;
-            return RegisterViewState();
-          }
-          return RegisterErrorState(message: 'Повторите попытку');
+      var activated = await activationCode(
+          ActivationCodeParams(email: email, code: event.code));
+      yield activated.fold((failure) => errorCheck(failure), (success) {
+        if (success) {
+          currentStage = CurrentStage.third;
+          return RegisterViewState();
         }
-        
-      );
+        return RegisterErrorState(message: 'Повторите попытку');
+      });
     }
-    if(event is RegisterSignInEvent){
+    if (event is RegisterSignInEvent) {
       yield RegisterBlankState();
       yield RegisterToSetPassswordViewState();
     }
 
-    if(event is RegisterSetPasswordEvent){
-      var activated = await setPassword(SetPasswordParams(email: email, password: event.password));
-      yield activated.fold(
-        (failure) => errorCheck(failure),
-        (token) {
-          if(token != null){
-            currentStage = CurrentStage.first;
-            sl<AuthConfig>().token = token;
-            return RegisterCompletedState();
-          }
-          return RegisterErrorState(message: 'Повторите попытку');
+    if (event is RegisterSetPasswordEvent) {
+      var activated = await setPassword(
+          SetPasswordParams(email: email, password: event.password));
+      yield activated.fold((failure) => errorCheck(failure), (token) {
+        if (token != null) {
+          currentStage = CurrentStage.first;
+          sl<AuthConfig>().token = token;
+          return RegisterCompletedState();
         }
-        
-      );
+        return RegisterErrorState(message: 'Повторите попытку');
+      });
     }
 
-
-    if(event is RegisterBackEvent){
+    if (event is RegisterBackEvent) {
       yield RegisterBlankState();
-      if(currentStage == CurrentStage.third){
+      if (currentStage == CurrentStage.third) {
         currentStage = CurrentStage.second;
-      }else if(currentStage == CurrentStage.second){
+      } else if (currentStage == CurrentStage.second) {
         currentStage = CurrentStage.first;
       }
       yield RegisterViewState();
     }
   }
-  
 
-
-
-  RegisterState errorCheck(Failure failure){
-    if(failure == ConnectionFailure() || failure == NetworkFailure()){
+  RegisterState errorCheck(Failure failure) {
+    if (failure == ConnectionFailure() || failure == NetworkFailure()) {
       return RegisterErrorState(message: 'internet_error');
-    }else if(failure is ServerFailure){
-      return RegisterErrorState(message: failure.message.length < 100 ? failure.message : 'Ошибка сервера');
-    }else{
+    } else if (failure is ServerFailure) {
+      return RegisterErrorState(
+          message: failure.message.length < 100
+              ? failure.message
+              : 'Ошибка сервера');
+    } else {
       return RegisterErrorState(message: 'Повторите попытку');
     }
   }

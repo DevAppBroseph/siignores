@@ -1,4 +1,3 @@
-// ignore: import_of_legacy_library_into_null_safe
 import 'package:dartz/dartz.dart';
 import 'package:siignores/core/services/network/network_info.dart';
 import 'package:siignores/features/home/domain/entities/offer_entity.dart';

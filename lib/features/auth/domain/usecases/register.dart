@@ -21,8 +21,14 @@ class RegisterParams extends Equatable {
   final String email;
   final String firstName;
   final String lastName;
+  final String fcmToken;
 
-  RegisterParams({required this.email, required this.firstName, required this.lastName});
+  RegisterParams({
+    required this.email,
+    required this.firstName,
+    required this.lastName,
+    required this.fcmToken,
+  });
 
   @override
   List<Object> get props => [email, firstName, lastName];

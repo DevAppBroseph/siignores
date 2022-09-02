@@ -10,6 +10,8 @@ import 'package:siignores/features/auth/domain/usecases/verify_code_reset_passwo
 import 'package:siignores/features/chat/domain/usecases/get_chat.dart';
 import 'package:siignores/features/chat/domain/usecases/get_chat_tabs.dart';
 import 'package:siignores/features/chat/presentation/bloc/chat_tabs/chat_tabs_bloc.dart';
+import 'package:siignores/features/home/domain/usecases/get_calendar.dart';
+import 'package:siignores/features/home/domain/usecases/get_notifications.dart';
 import 'package:siignores/features/home/domain/usecases/get_offers.dart';
 import 'package:siignores/features/main/presentation/bloc/main_screen/main_screen_bloc.dart';
 import 'package:siignores/features/profile/domain/repositories/profile/profile_repository.dart';
@@ -42,10 +44,17 @@ import 'features/chat/data/datasources/chat/remote_datasource.dart';
 import 'features/chat/data/repositories/chat_repository_impl.dart';
 import 'features/chat/domain/repositories/chat/chat_repository.dart';
 import 'features/chat/presentation/bloc/chat/chat_bloc.dart';
+import 'features/home/data/datasources/home/remote_datasource.dart';
 import 'features/home/data/datasources/offers/remote_datasource.dart';
+import 'features/home/data/repositories/home_repository_impl.dart';
 import 'features/home/data/repositories/offers_repository_impl.dart';
+import 'features/home/domain/repositories/home/home_repository.dart';
 import 'features/home/domain/repositories/home/offers_repository.dart';
+import 'features/home/domain/usecases/get_progress.dart';
+import 'features/home/presentation/bloc/calendar/calendar_bloc.dart';
+import 'features/home/presentation/bloc/notifications/notifications_bloc.dart';
 import 'features/home/presentation/bloc/offers/offers_bloc.dart';
+import 'features/home/presentation/bloc/progress/progress_bloc.dart';
 import 'features/profile/data/datasources/profile/remote_datasource.dart';
 import 'features/profile/data/repositories/profile_repository_impl.dart';
 import 'features/profile/presentation/bloc/profile/profile_bloc.dart';
@@ -241,17 +250,35 @@ void setupInjections() {
   sl.registerLazySingleton<OffersRemoteDataSource>(
     () => OffersRemoteDataSourceImpl(dio: sl()),
   );
+  sl.registerLazySingleton<HomeRemoteDataSource>(
+    () => HomeRemoteDataSourceImpl(dio: sl()),
+  );
 
   // //Repositories
   sl.registerLazySingleton<OffersRepository>(
     () => OffersRepositoryImpl(sl(), sl(), ),
   );
+  sl.registerLazySingleton<HomeRepository>(
+    () => HomeRepositoryImpl(sl(), sl(), ),
+  );
 
   // //UseCases
   sl.registerLazySingleton(() => GetOffers(sl()));
+  sl.registerLazySingleton(() => GetCalendar(sl()));
+  sl.registerLazySingleton(() => GetProgress(sl()));
+  sl.registerLazySingleton(() => GetNotifications(sl()));
 
   //Blocs
   sl.registerFactory<OffersBloc>(
     () => OffersBloc(sl()),
+  );
+  sl.registerFactory<CalendarBloc>(
+    () => CalendarBloc(sl()),
+  );
+  sl.registerFactory<ProgressBloc>(
+    () => ProgressBloc(sl()),
+  );
+  sl.registerFactory<NotificationsBloc>(
+    () => NotificationsBloc(sl()),
   );
 }
