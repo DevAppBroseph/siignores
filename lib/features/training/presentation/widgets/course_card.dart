@@ -34,16 +34,16 @@ class CourseCard extends StatelessWidget {
           child: Stack(
             children: [
               Positioned(
-                bottom: 5.h,
-                right: 5.h,
+                bottom: 0,
+                right: 0,
                 child: Container(
-                    width: MediaQuery.of(context).size.width/3.5,
+                    width: MediaQuery.of(context).size.width/2.6,
                     child: CachedImage(
                       height: 100.w,
                       alignment: Alignment.bottomRight,
                       isProfilePhoto: false,
+                      borderRadius: BorderRadius.only(bottomRight: Radius.circular(14.h)),
                       fit: BoxFit.contain,
-                      borderRadius: BorderRadius.zero,
                       urlImage: courseEntity.image == null ? null : Config.url.url+courseEntity.image!
                     ),
                   )
@@ -78,16 +78,16 @@ class CourseCard extends StatelessWidget {
           child: Stack(
             children: [
               Positioned(
-                bottom: 5.h,
-                right: 5.h,
+                bottom: 0,
+                right: 0,
                 child: Container(
-                    width: MediaQuery.of(context).size.width/3.5,
+                    width: MediaQuery.of(context).size.width/2.6,
                     child: CachedImage(
                       height: 100.w,
                       alignment: Alignment.bottomRight,
                       isProfilePhoto: false,
                       fit: BoxFit.contain,
-                      borderRadius: BorderRadius.zero,
+                      borderRadius: BorderRadius.only(bottomRight: Radius.circular(14.h)),
                       urlImage: courseEntity.image == null ? null : Config.url.url+courseEntity.image!
                     ),
                   )
