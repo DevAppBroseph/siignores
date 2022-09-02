@@ -27,8 +27,8 @@ class _SignInViewState extends State<SignInView> {
   final formKey = GlobalKey<FormState>();
 
   String errorEmail = 'Введите email';
-  String errorPassword = 'Введите пароль'; 
-  String errorPasswordShort = 'Пароль слишком короткий'; 
+  String errorPassword = 'Введите пароль';
+  String errorPasswordShort = 'Пароль слишком короткий';
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -37,25 +37,21 @@ class _SignInViewState extends State<SignInView> {
   bool showBackImage = true;
   late StreamSubscription<bool> keyboardSub;
 
-  void signIn(BuildContext context){
-    if(formKey.currentState!.validate()){
+  void signIn(BuildContext context) {
+    if (formKey.currentState!.validate()) {
       showLoaderWrapper(context);
-      context.read<AuthBloc>().add(
-        SignInEvent(
-          email: emailController.text.trim(),
-          password: passwordController.text.trim(),
-        )
-      );
+      context.read<AuthBloc>().add(SignInEvent(
+            email: emailController.text.trim(),
+            password: passwordController.text.trim(),
+          ));
     }
   }
 
-
   void scrollToBottom() async {
-    await Future.delayed(Duration(milliseconds: 400));
-    scrollController.animateTo(scrollController.position.maxScrollExtent-80.h,
+    await Future.delayed(const Duration(milliseconds: 400));
+    scrollController.animateTo(scrollController.position.maxScrollExtent - 80.h,
         duration: const Duration(milliseconds: 100), curve: Curves.linear);
   }
-
 
   @override
   void initState() {
@@ -65,11 +61,12 @@ class _SignInViewState extends State<SignInView> {
       setState(() {
         showBackImage = !event;
       });
-      if(event == true){
+      if (event == true) {
         scrollToBottom();
       }
     });
   }
+
   @override
   void dispose() {
     keyboardSub.cancel();
@@ -81,54 +78,47 @@ class _SignInViewState extends State<SignInView> {
     return Scaffold(
       body: Stack(
         children: [
-          if(showBackImage)
-          MainConfigApp.app.isSiignores
-          ? Positioned(
-            bottom: 0,
-            right: 10,
-            child: Stack(
-              children: [
-                Image(
-                  width: MediaQuery.of(context).size.width*0.9,
-                  image: AssetImage('assets/images/back_login.png')
-                ),
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  bottom: 0,
-                  child: Container(
-                    width: 40,
-                    decoration: BoxDecoration(
-                      color: ColorStyles.backgroundColor
+          if (showBackImage)
+            MainConfigApp.app.isSiignores
+                ? Positioned(
+                    bottom: 0,
+                    right: 10,
+                    child: Stack(
+                      children: [
+                        Image(
+                            width: MediaQuery.of(context).size.width * 0.9,
+                            image: AssetImage('assets/images/back_login.png')),
+                        Positioned(
+                            top: 0,
+                            left: 0,
+                            bottom: 0,
+                            child: Container(
+                              width: 40,
+                              decoration: BoxDecoration(
+                                  color: ColorStyles.backgroundColor),
+                            )),
+                        Positioned(
+                            top: 0,
+                            left: 40,
+                            right: -50,
+                            bottom: 0,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                gradient: RadialGradient(
+                                  colors: [
+                                    Color.fromRGBO(240, 238, 236, 0.2),
+                                    ColorStyles.backgroundColor
+                                  ],
+                                ),
+                              ),
+                            ))
+                      ],
                     ),
                   )
-                ),
-                Positioned(
-                  top: 0,
-                  left: 40,
-                  right: -50,
-                  bottom: 0,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: RadialGradient(
-                        colors: [
-                          Color.fromRGBO(240, 238, 236, 0.2),
-                          ColorStyles.backgroundColor
-                        ],
-                      ),
-                    ),
-                  )
-                )
-              ],
-            ),
-          )
-          : Positioned(
-            bottom: -20.h,
-            child: Image.asset(
-              'assets/images/sign_in_back.png',
-              width: MediaQuery.of(context).size.width
-            )
-          ),
+                : Positioned(
+                    bottom: -20.h,
+                    child: Image.asset('assets/images/sign_in_back.png',
+                        width: MediaQuery.of(context).size.width)),
           CustomScrollView(
             controller: scrollController,
             slivers: [
@@ -141,21 +131,27 @@ class _SignInViewState extends State<SignInView> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Padding(
-                          padding:
-                              EdgeInsets.only(left: 100.w, right: 100.w, top: 100.h),
+                          padding: EdgeInsets.only(
+                              left: 100.w, right: 100.w, top: 100.h),
                           child: SvgPicture.asset(
-                            MainConfigApp.app.isSiignores ? 'assets/svg/logotype.svg' : 'assets/svg/logotype2.svg',
-                            width: MainConfigApp.app.isSiignores ? 174.w : 113.w,
+                            MainConfigApp.app.isSiignores
+                                ? 'assets/svg/logotype.svg'
+                                : 'assets/svg/logotype2.svg',
+                            width:
+                                MainConfigApp.app.isSiignores ? 174.w : 113.w,
                             height: MainConfigApp.app.isSiignores ? 39.h : null,
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(top: MainConfigApp.app.isSiignores ? 66.h : 27.h),
+                          padding: EdgeInsets.only(
+                              top: MainConfigApp.app.isSiignores ? 66.h : 27.h),
                           child: DefaultTextFormField(
                             margin: EdgeInsets.symmetric(horizontal: 32.w),
                             title: 'E-mail',
-                            validator: (v){
-                              if(RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(v ?? '')){
+                            validator: (v) {
+                              if (RegExp(
+                                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                  .hasMatch(v ?? '')) {
                                 return null;
                               }
                               return errorEmail;
@@ -169,11 +165,11 @@ class _SignInViewState extends State<SignInView> {
                           child: DefaultTextFormField(
                             margin: EdgeInsets.symmetric(horizontal: 32.w),
                             title: 'Пароль',
-                            validator: (v){
-                              if((v ?? '').length == 0){
+                            validator: (v) {
+                              if ((v ?? '').length == 0) {
                                 return errorPassword;
                               }
-                              if((v ?? '').length > 8){
+                              if ((v ?? '').length > 8) {
                                 return null;
                               }
                               return errorPasswordShort;
@@ -190,13 +186,22 @@ class _SignInViewState extends State<SignInView> {
                             child: InkWell(
                               borderRadius: BorderRadius.circular(5),
                               onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPasswordView()));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ForgotPasswordView()));
                               },
                               child: Text(
                                 'Забыли пароль?',
-                                style: MainConfigApp.app.isSiignores 
-                                ? TextStyles.black_15_w400.copyWith(color: ColorStyles.black.withOpacity(0.5))
-                                : TextStyles.black_15_w400.copyWith(color: ColorStyles.white.withOpacity(0.5), fontFamily: MainConfigApp.fontFamily4),
+                                style: MainConfigApp.app.isSiignores
+                                    ? TextStyles.black_15_w400.copyWith(
+                                        color:
+                                            ColorStyles.black.withOpacity(0.5))
+                                    : TextStyles.black_15_w400.copyWith(
+                                        color:
+                                            ColorStyles.white.withOpacity(0.5),
+                                        fontFamily: MainConfigApp.fontFamily4),
                                 textAlign: TextAlign.center,
                               ),
                             ),
@@ -212,8 +217,9 @@ class _SignInViewState extends State<SignInView> {
                           child: Text(
                             'У Вас нет аккаунта?',
                             style: MainConfigApp.app.isSiignores
-                              ? TextStyles.black_14_w400
-                              : TextStyles.white_16_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),
+                                ? TextStyles.black_14_w400
+                                : TextStyles.white_16_w400.copyWith(
+                                    fontFamily: MainConfigApp.fontFamily4),
                             textAlign: TextAlign.center,
                           ),
                         ),
@@ -221,12 +227,18 @@ class _SignInViewState extends State<SignInView> {
                           padding: const EdgeInsets.only(top: 5),
                           child: InkWell(
                             borderRadius: BorderRadius.circular(5),
-                            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterView())),
+                            onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => RegisterView())),
                             child: Text(
                               'Зарегистрируйтесь',
                               style: MainConfigApp.app.isSiignores
-                                ? TextStyles.black_14_w700.copyWith(color: ColorStyles.text_color)
-                                : TextStyles.white_16_w400.copyWith(fontFamily: MainConfigApp.fontFamily4, color: ColorStyles.primary),
+                                  ? TextStyles.black_14_w700
+                                      .copyWith(color: ColorStyles.text_color)
+                                  : TextStyles.white_16_w400.copyWith(
+                                      fontFamily: MainConfigApp.fontFamily4,
+                                      color: ColorStyles.primary),
                               textAlign: TextAlign.center,
                             ),
                           ),
