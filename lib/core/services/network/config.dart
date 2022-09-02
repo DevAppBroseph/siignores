@@ -4,6 +4,7 @@ enum Config { baseUrl, baseScheme, baseAPIpath, url, ws }
 const bool isDev = true;
 
 String myUrl = 'blogersbackend.gastrosoft.by';
+String myUrlIP = '176.113.83.169';
 
 extension ConfigExtension on Config {
   String get value {
@@ -32,7 +33,7 @@ extension ConfigExtension on Config {
   String get ws {
     return Config.ws.value +
         "://" +
-        Config.baseUrl.value +
+        myUrlIP +
         ":8000";
   }
 

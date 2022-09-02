@@ -43,7 +43,8 @@ enum Endpoints {
   getOffers,
   
   getCalendar,
-  progress
+  progress,
+  notifications
 
 }
 
@@ -100,6 +101,8 @@ extension EndpointsExtension on Endpoints {
         return "$url/course/progress/";
       case Endpoints.getCalendar:
         return "$url/course/student_calendar/";
+      case Endpoints.notifications:
+        return "$url/notifications/";
       default:
         return '';
     }

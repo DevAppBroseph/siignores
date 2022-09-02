@@ -19,6 +19,7 @@ import 'package:siignores/core/widgets/loaders/overlay_loader.dart';
 import 'package:siignores/features/main/presentation/bloc/main_screen/main_screen_bloc.dart';
 import 'package:siignores/features/training/data/models/lesson_detail_model.dart';
 import 'package:siignores/features/training/domain/entities/module_enitiy.dart';
+import 'package:siignores/features/training/presentation/bloc/lessons/lessons_bloc.dart';
 import 'package:siignores/features/training/presentation/views/lessons_view.dart';
 import 'package:siignores/features/training/presentation/views/video_view.dart';
 import '../../../../constants/colors/color_styles.dart';
@@ -107,7 +108,8 @@ class _LessonDetailViewState extends State<LessonDetailView> {
             if(state.message != null){
               showSuccessAlertToast(state.message!);
             }
-             setState(() {
+            context.read<LessonsBloc>().add(GetLessonsEvent(id: widget.moduleEntity.id));
+            setState(() {
               textController.clear();
               files.clear();
             });
@@ -344,7 +346,7 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: bloc.lesson!.files.map((file) 
-                              => _buildFileLink(context, file, FileType.doc)
+                              => _buildFileLink(context, file, getFileType(file.file))
                             ).toList(),
                           ),],
                           SizedBox(height: 27.h,),
@@ -445,7 +447,7 @@ class _LessonDetailViewState extends State<LessonDetailView> {
           children: [
             fileType.iconFile,
             SizedBox(width: 12.w,),
-            Text(file.file.replaceAll(RegExp('/media/'), ''), style: MainConfigApp.app.isSiignores
+            Text(truncateWithEllipsisLast(32, file.file.replaceAll(RegExp('/media/'), '')), style: MainConfigApp.app.isSiignores
               ? TextStyles.black_13_w400.copyWith(decoration: TextDecoration.underline)
               : TextStyles.black_13_w400.copyWith(decoration: TextDecoration.underline, fontFamily: MainConfigApp.fontFamily4))
           ],
@@ -478,4 +480,16 @@ extension FileTypeExtension on FileType{
         );
     }
   }
+}
+
+
+
+
+FileType getFileType(String nameOfFile){
+  if(nameOfFile.contains('.pdf')){
+    return FileType.pdf;
+  }else if(nameOfFile.contains('.doc')){
+    return FileType.doc;
+  }
+  return FileType.image;
 }
