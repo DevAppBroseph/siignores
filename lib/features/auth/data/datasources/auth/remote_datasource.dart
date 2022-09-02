@@ -18,9 +18,9 @@ abstract class AuthenticationRemoteDataSource {
     required String fcmToken,
   });
   Future<bool> activationCode(String email, String code);
-  Future<String?> setPassword(String email, String password);
+  Future<String?> setPassword(String email, String password, String fcmToken);
 
-  Future<String> login(String email, String password);
+  Future<String> login(String email, String password, String fcmToken);
   Future<UserModel> getUserInfo();
   Future<void> logout();
   Future<bool> deleteAccount();
@@ -42,11 +42,15 @@ class AuthenticationRemoteDataSourceImpl
   };
 
   @override
-  Future<String> login(String email, String password) async {
+  Future<String> login(String email, String password, String fcmToken) async {
     print('appp; ${MainConfigApp.app.token}');
     headers.remove("Authorization");
-    var formData = jsonEncode(
-        {"email": email, "password": password, "app": MainConfigApp.app.token});
+    var formData = jsonEncode({
+      "email": email, 
+      "password": password, 
+      "fcm_token": fcmToken,
+      "app": MainConfigApp.app.token
+    });
     Response response = await dio.post(Endpoints.login.getPath(),
         data: formData,
         options: Options(
@@ -154,10 +158,14 @@ class AuthenticationRemoteDataSourceImpl
   }
 
   @override
-  Future<String?> setPassword(String email, String password) async {
+  Future<String?> setPassword(String email, String password, String fcmToken) async {
     headers.remove("Authorization");
-    var formData = FormData.fromMap(
-        {"email": email, "password": password, "app": MainConfigApp.app.token});
+    var formData = FormData.fromMap({
+        "email": email, 
+        "password": password, 
+        "fcm_token": fcmToken,
+        "app": MainConfigApp.app.token
+      });
 
     Response response = await dio.post(Endpoints.setPassword.getPath(),
         data: formData,
