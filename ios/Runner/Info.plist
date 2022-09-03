@@ -30,8 +30,20 @@
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
-		<key>NSAllowsArbitraryLoadsInWebContent</key>
-		<true/>
+		<key>NSAllowsArbitraryLoadsForMedia</key>
+        <true/>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>blogersbackend.gastrosoft.by</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
+		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>Разрешите доступ к камере, чтобы добавить или изменить фото профиля.</string>
