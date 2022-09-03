@@ -40,7 +40,7 @@ class ModuleCard extends StatelessWidget {
                 child: CachedImage(
                   height: null,
                   isProfilePhoto: false,
-                  fit: BoxFit.contain,
+                  fit: BoxFit.cover,
                   borderRadius: BorderRadius.circular(14.h),
                   alignment: Alignment.bottomRight,
                   urlImage: moduleEntity.image == null ? null : Config.url.url+moduleEntity.image!
@@ -99,7 +99,7 @@ class ModuleCard extends StatelessWidget {
                 child: CachedImage(
                   height: null,
                   isProfilePhoto: false,
-                  fit: BoxFit.contain,
+                  fit: BoxFit.cover,
                   borderRadius: BorderRadius.circular(14.h),
                   alignment: Alignment.bottomRight,
                   urlImage: moduleEntity.image == null ? null : Config.url.url+moduleEntity.image!

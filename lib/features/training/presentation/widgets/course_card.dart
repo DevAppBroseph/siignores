@@ -80,7 +80,7 @@ class CourseCard extends StatelessWidget {
                   bottom: 0,
                   right: 0,
                   child: Container(
-                    width: MediaQuery.of(context).size.width / 3.5,
+                    width: MediaQuery.of(context).size.width/2.6,
                     child: CachedImage(
                       height: 140.h,
                       alignment: Alignment.bottomRight,
