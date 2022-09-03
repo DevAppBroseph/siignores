@@ -25,9 +25,13 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
         (data){
           selectedModuleId = event.id;
           lessons.clear();
-          print('LENGH: ${data.length}');
           for(var i = 0; i < data.length; i++){
-            if(i == 0 || data[i].status == 'complete' || data[i-1].status == 'complete'){
+            if(i == 0){
+              data[i].isOpen = true;
+            }else if(data[i].status == 'complete' 
+              || data[i-1].status == 'complete' 
+              || data[i].question == null
+              || data[i-1].question == null && !lessons.any((element) => element.isOpen == false)){
               data[i].isOpen = true;
             }
             lessons.add(data[i]);
