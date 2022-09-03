@@ -7,8 +7,9 @@ class LessonDetailEntity extends Equatable {
   final int lessonNumber;
   final String title;
   final String text;
-  final String question;
+  final String? question;
   final String? image;
+  final String? status;
   final String? backImage;
   final String? video;
   final List<TimeOfVideo> times;
@@ -22,6 +23,7 @@ class LessonDetailEntity extends Equatable {
     required this.lessonNumber,
     required this.text,
     required this.video,
+    required this.status,
     required this.question,
     required this.times,
     required this.files,
@@ -29,5 +31,5 @@ class LessonDetailEntity extends Equatable {
   });
 
   @override
-  List<Object> get props => [id, title, moduleId, text, question];
+  List<Object> get props => [id, title, moduleId, text];
 }

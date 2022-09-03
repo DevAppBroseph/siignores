@@ -100,6 +100,7 @@ class _LessonDetailViewState extends State<LessonDetailView> {
           if (state.message != null) {
             showSuccessAlertToast(state.message!);
           }
+          bloc.add(GetLessonDetailEvent(id: widget.lessonId));
           context
               .read<LessonsBloc>()
               .add(GetLessonsEvent(id: widget.moduleEntity.id));
@@ -459,9 +460,9 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                                 borderRadius: BorderRadius.circular(13.h)),
                             padding: EdgeInsets.all(20.h),
                             child: Text(
-                              bloc.lesson?.question != null
+                              bloc.lesson?.question == null
                                   ? 'Задания пока нет'
-                                  : bloc.lesson!.question,
+                                  : bloc.lesson!.question!,
                               style: MainConfigApp.app.isSiignores
                                   ? TextStyles.black_14_w400
                                       .copyWith(height: 1.75.h)
@@ -489,7 +490,8 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                                   .toList(),
                             ),
                           ],
-                          SizedBox(
+                          if((bloc.lesson!.status == null || bloc.lesson!.status == 'failed') && bloc.lesson?.question != null)
+                          ...[SizedBox(
                             height: 27.h,
                           ),
                           Text(
@@ -577,7 +579,7 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                               title: 'Отправить задание',
                               onTap: () {
                                 sendHomework(context);
-                              }),
+                              })],
                           SizedBox(
                             height: 155.h,
                           ),

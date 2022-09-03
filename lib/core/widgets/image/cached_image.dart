@@ -7,7 +7,7 @@ import '../../../constants/colors/color_styles.dart';
 class CachedImage extends StatelessWidget {
   final BorderRadius? borderRadius;
   final String? urlImage;
-  final double height;
+  final double? height;
   final bool? isProfilePhoto;
   final BoxFit fit;
   final Alignment? alignment;
