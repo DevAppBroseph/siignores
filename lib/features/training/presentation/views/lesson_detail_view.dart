@@ -32,56 +32,48 @@ import '../../../../core/widgets/text_fields/default_text_form_field.dart';
 import '../../../auth/presentation/bloc/auth/auth_bloc.dart';
 import '../bloc/lesson_detail/lesson_detail_bloc.dart';
 
-
-
 class LessonDetailView extends StatefulWidget {
   final int lessonId;
   final ModuleEntity moduleEntity;
   final int courseId;
   LessonDetailView(
-    {
-      required this.courseId,
+      {required this.courseId,
       required this.lessonId,
-      required this.moduleEntity
-    }
-  );
+      required this.moduleEntity});
 
   @override
   State<LessonDetailView> createState() => _LessonDetailViewState();
 }
 
 class _LessonDetailViewState extends State<LessonDetailView> {
-
   bool showAllText = false;
   bool showVideo = false;
   final formKey = GlobalKey<FormState>();
 
   TextEditingController textController = TextEditingController();
-  String errorAnswer = 'Введите ответ'; 
+  String errorAnswer = 'Введите ответ';
 
   List<File> files = [];
 
   Future<void> selectFiles() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
- 
+    FilePickerResult? result =
+        await FilePicker.platform.pickFiles(allowMultiple: true);
+
     if (result != null) {
-      List<File> selectedFiles = result.paths.map((path) 
-        => File(path ?? Random().nextInt(1000).toString())).toList();
+      List<File> selectedFiles = result.paths
+          .map((path) => File(path ?? Random().nextInt(1000).toString()))
+          .toList();
       setState(() {
         files.addAll(selectedFiles);
       });
     }
   }
 
-  void sendHomework(BuildContext context){
-    if(formKey.currentState!.validate()){
+  void sendHomework(BuildContext context) {
+    if (formKey.currentState!.validate()) {
       showLoaderWrapper(context);
-      context.read<LessonDetailBloc>().add(SendHomeworkEvent(
-        files: files, 
-        text: textController.text.trim()
-      ));
-
-     
+      context.read<LessonDetailBloc>().add(
+          SendHomeworkEvent(files: files, text: textController.text.trim()));
     }
   }
 
@@ -89,277 +81,432 @@ class _LessonDetailViewState extends State<LessonDetailView> {
   Widget build(BuildContext context) {
     print('ID: ${widget.lessonId}');
     LessonDetailBloc bloc = context.read<LessonDetailBloc>();
-    if(bloc.selectedLessonId != widget.lessonId){
+    if (bloc.selectedLessonId != widget.lessonId) {
       bloc.add(GetLessonDetailEvent(id: widget.lessonId));
     }
     return Scaffold(
-      body: BlocConsumer<LessonDetailBloc, LessonDetailState>(
-        listener: (context, state){
-          if(state is LessonDetailErrorState){
-            Loader.hide();
-            showAlertToast(state.message);
-          }
+        body: BlocConsumer<LessonDetailBloc, LessonDetailState>(
+      listener: (context, state) {
+        if (state is LessonDetailErrorState) {
+          Loader.hide();
+          showAlertToast(state.message);
+        }
 
-          if(state is LessonDetailInternetErrorState){
-            context.read<AuthBloc>().add(InternetErrorEvent());
+        if (state is LessonDetailInternetErrorState) {
+          context.read<AuthBloc>().add(InternetErrorEvent());
+        }
+        if (state is LessonDetailLoaderHideState) {
+          Loader.hide();
+          if (state.message != null) {
+            showSuccessAlertToast(state.message!);
           }
-          if(state is LessonDetailLoaderHideState){
-            Loader.hide();
-            if(state.message != null){
-              showSuccessAlertToast(state.message!);
-            }
-            context.read<LessonsBloc>().add(GetLessonsEvent(id: widget.moduleEntity.id));
-            setState(() {
-              textController.clear();
-              files.clear();
-            });
-          }
-        },
-        builder: (context, state){
-          if(state is LessonDetailInitialState || state is LessonDetailLoadingState){
-            return  Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                LoaderV1(),
-                SizedBox(height: 75.h,)
-              ],
-            );
-          }
-          return Stack(
+          context
+              .read<LessonsBloc>()
+              .add(GetLessonsEvent(id: widget.moduleEntity.id));
+          setState(() {
+            textController.clear();
+            files.clear();
+          });
+        }
+      },
+      builder: (context, state) {
+        if (state is LessonDetailInitialState ||
+            state is LessonDetailLoadingState) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CustomScrollView(
-                physics: ClampingScrollPhysics(),
-                slivers: [
-                  SliverAppBar(
-                    collapsedHeight: 100.h,
-                    expandedHeight: 375.h,
-                    leading: SizedBox.shrink(),
-                    flexibleSpace: FlexibleSpaceBar(
-                      background: CachedImage(
-                        height: MediaQuery.of(context).size.width,
-                        borderRadius: BorderRadius.zero,
-                        isProfilePhoto: true,
-                        urlImage: bloc.lesson?.backImage == null ? null : Config.url.url+bloc.lesson!.backImage!,
-                      ),
-                      expandedTitleScale: 1,
-                      centerTitle: true,
-                      title: bloc.lesson!.video != null
-                      ? Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Bounce(
-                            duration: Duration(microseconds: 110),
-                            onPressed: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => VideoView(
-                                url: Config.url.url + bloc.lesson!.video!,
-                                duration: null,
-                              )));
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: MainConfigApp.app.isSiignores ? ColorStyles.white.withOpacity(0.5) : ColorStyles.primary,
-                                borderRadius: BorderRadius.circular(MainConfigApp.app.isSiignores ? 40.h : 8.h)
-                              ),
-                              padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 14.h),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Container(
-                                    width: 38.h,
-                                    height: 38.h,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(50.h),
-                                      color: ColorStyles.white
-                                    ),
-                                    padding: EdgeInsets.symmetric(horizontal: 12.w),
-                                    child: SvgPicture.asset('assets/svg/play.svg',),
-                                  ),
-                                  SizedBox(width: 7.w,),
-                                  Text(MainConfigApp.app.isSiignores ? 'Смотреть урок' : 'Смотреть урок'.toUpperCase(), style: MainConfigApp.app.isSiignores
-                                    ? TextStyles.black_16_w700
-                                    : TextStyles.black_14_w300,)
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ) : null,
+              LoaderV1(),
+              SizedBox(
+                height: 75.h,
+              )
+            ],
+          );
+        }
+        // print("Back Image is: ${Config.url.url + bloc.lesson!.backImage!}");
+        return Stack(
+          children: [
+            CustomScrollView(
+              physics: ClampingScrollPhysics(),
+              slivers: [
+                SliverAppBar(
+                  collapsedHeight: 100.h,
+                  expandedHeight: 375.h,
+                  leading: const SizedBox.shrink(),
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: CachedImage(
+                      height: MediaQuery.of(context).size.width,
+                      borderRadius: BorderRadius.zero,
+                      isProfilePhoto: true,
+                      urlImage: bloc.lesson?.backImage != null
+                          ? Config.url.url + bloc.lesson!.backImage!
+                          : null,
                     ),
-                    
-                    bottom: PreferredSize(
-                      preferredSize: Size.fromHeight(30.h),
-                      child: Container(
-                        height: 30.h,
-                        decoration: BoxDecoration(
-                          color: MainConfigApp.app.isSiignores ? ColorStyles.backgroundColor : ColorStyles.white2,
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(28.h),
-                            topRight: Radius.circular(28.h),
-                          ),
+                    expandedTitleScale: 1,
+                    centerTitle: true,
+                    title: bloc.lesson!.video != null
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Bounce(
+                                duration: Duration(microseconds: 110),
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              VideoView(
+                                                url: Config.url.url +
+                                                    bloc.lesson!.video!,
+                                                duration: null,
+                                              )));
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: MainConfigApp.app.isSiignores
+                                          ? ColorStyles.white.withOpacity(0.5)
+                                          : ColorStyles.primary,
+                                      borderRadius: BorderRadius.circular(
+                                          MainConfigApp.app.isSiignores
+                                              ? 40.h
+                                              : 8.h)),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 15.w, vertical: 14.h),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Container(
+                                        width: 38.h,
+                                        height: 38.h,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(50.h),
+                                            color: ColorStyles.white),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 12.w),
+                                        child: SvgPicture.asset(
+                                          'assets/svg/play.svg',
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 7.w,
+                                      ),
+                                      Text(
+                                        MainConfigApp.app.isSiignores
+                                            ? 'Смотреть урок'
+                                            : 'Смотреть урок'.toUpperCase(),
+                                        style: MainConfigApp.app.isSiignores
+                                            ? TextStyles.black_16_w700
+                                            : TextStyles.black_14_w300,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        : null,
+                  ),
+                  bottom: PreferredSize(
+                    preferredSize: Size.fromHeight(30.h),
+                    child: Container(
+                      height: 30.h,
+                      decoration: BoxDecoration(
+                        color: MainConfigApp.app.isSiignores
+                            ? ColorStyles.backgroundColor
+                            : ColorStyles.white2,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(28.h),
+                          topRight: Radius.circular(28.h),
                         ),
                       ),
                     ),
-
                   ),
-
-                  SliverToBoxAdapter(
-                    child: Container(
+                ),
+                SliverToBoxAdapter(
+                  child: Container(
                       padding: EdgeInsets.symmetric(horizontal: 22.w),
-                      color: MainConfigApp.app.isSiignores ? ColorStyles.backgroundColor : ColorStyles.white2,
+                      color: MainConfigApp.app.isSiignores
+                          ? ColorStyles.backgroundColor
+                          : ColorStyles.white2,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Урок 2', style: MainConfigApp.app.isSiignores
-                            ? TextStyles.black_16_w700
-                            : TextStyles.black_16_w300,),
-                          SizedBox(height: 6.h,),
-                          Text(bloc.lesson!.title, style: MainConfigApp.app.isSiignores
-                            ? TextStyles.black_24_w700
-                            : TextStyles.black_24_w300,),
-                          SizedBox(height: 16.h,),
-                          if(!showAllText)
-                          Text(truncateWithEllipsis(170, bloc.lesson!.text), 
-                            style: MainConfigApp.app.isSiignores
-                              ? TextStyles.black_14_w400.copyWith(height: 1.75.h)
-                              : TextStyles.black_14_w300.copyWith(height: 1.75.h, fontFamily: MainConfigApp.fontFamily4),),
-                          if(showAllText)
-                          Text(bloc.lesson!.text, 
-                            style: MainConfigApp.app.isSiignores
-                              ? TextStyles.black_14_w400.copyWith(height: 1.75.h)
-                              : TextStyles.black_14_w300.copyWith(height: 1.75.h, fontFamily: MainConfigApp.fontFamily4),),
-                          if(bloc.lesson!.text.length > 100)
-                          ...[SizedBox(height: 3.h,),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                showAllText = !showAllText;
-                              });
-                            },
-                            child: Text(!showAllText ? 'Еще' : 'Закрыть', style: MainConfigApp.app.isSiignores
-                              ? TextStyles.black_14_w700
-                              .copyWith(decorationStyle: TextDecorationStyle.dashed, decoration: TextDecoration.underline)
-                              : TextStyles.black_14_w300
-                              .copyWith(decorationStyle: TextDecorationStyle.dashed, decoration: TextDecoration.underline, fontFamily: MainConfigApp.fontFamily4),),
-                          ),
-                          ],
-                          SizedBox(height: 30.h,),
-
-                          if(bloc.lesson!.times.isNotEmpty)
-                          ...[
-                          Text('Тайминг', style: MainConfigApp.app.isSiignores
-                            ? TextStyles.black_18_w700
-                            : TextStyles.black_18_w300,),
-                          SizedBox(height: 15.h,),
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              color: ColorStyles.white,
-                              borderRadius: BorderRadius.circular(13.h)
+                          if (MainConfigApp.app.isSiignores)
+                            Text(
+                              'Урок ${bloc.lesson?.lessonNumber}',
+                              style: MainConfigApp.app.isSiignores
+                                  ? TextStyles.black_16_w700
+                                  : TextStyles.black_16_w300,
                             ),
-                            padding: EdgeInsets.only(left: 16.w, top: 15.h, bottom: 22.h),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ...bloc.lesson!.times.map((time) 
-                                => Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(right: 16.w, top: bloc.lesson!.times.indexOf(time) == 0 ? 0 : 15.h),
-                                    child: GestureDetector(
-                                      onTap: (){
-                                        Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => VideoView(
-                                          url: Config.url.url + bloc.lesson!.video!,
-                                          duration: Duration(hours: time.hour, minutes: time.minute, seconds: time.second),
-                                        )));
-                                      },
-                                      child: Text.rich(
-                                        TextSpan(
-                                          text: convertIntToStringTime(time.hour, time.minute, time.second),
-                                          style: MainConfigApp.app.isSiignores
-                                            ? TextStyles.black_14_w700
-                                            : TextStyles.black_14_w700.copyWith(fontFamily: MainConfigApp.fontFamily4),
-                                            children: <InlineSpan>[
-                                              TextSpan(
-                                                text: '- ${time.text}',
-                                                style: MainConfigApp.app.isSiignores
-                                                  ? TextStyles.black_14_w400
-                                                  : TextStyles.black_14_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),
-                                              )
-                                            ]
+                          if (MainConfigApp.app.isSiignores)
+                            SizedBox(
+                              height: 6.h,
+                            ),
+                          Text(
+                            bloc.lesson!.title,
+                            style: MainConfigApp.app.isSiignores
+                                ? TextStyles.black_24_w700
+                                : TextStyles.black_24_w300,
+                          ),
+                          SizedBox(
+                            height: 16.h,
+                          ),
+                          if (!showAllText)
+                            Text(
+                              truncateWithEllipsis(170, bloc.lesson!.text),
+                              style: MainConfigApp.app.isSiignores
+                                  ? TextStyles.black_14_w400
+                                      .copyWith(height: 1.75.h)
+                                  : TextStyles.black_14_w300.copyWith(
+                                      height: 1.75.h,
+                                      fontFamily: MainConfigApp.fontFamily4),
+                            ),
+                          if (showAllText)
+                            Text(
+                              bloc.lesson!.text,
+                              style: MainConfigApp.app.isSiignores
+                                  ? TextStyles.black_14_w400
+                                      .copyWith(height: 1.75.h)
+                                  : TextStyles.black_14_w300.copyWith(
+                                      height: 1.75.h,
+                                      fontFamily: MainConfigApp.fontFamily4),
+                            ),
+                          if (bloc.lesson!.text.length > 100) ...[
+                            SizedBox(
+                              height: 3.h,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  showAllText = !showAllText;
+                                });
+                              },
+                              child: Text(
+                                !showAllText ? 'Еще' : 'Закрыть',
+                                style: MainConfigApp.app.isSiignores
+                                    ? TextStyles.black_14_w700.copyWith(
+                                        decorationStyle:
+                                            TextDecorationStyle.dashed,
+                                        decoration: TextDecoration.underline)
+                                    : TextStyles.black_14_w300.copyWith(
+                                        decorationStyle:
+                                            TextDecorationStyle.dashed,
+                                        decoration: TextDecoration.underline,
+                                        fontFamily: MainConfigApp.fontFamily4),
+                              ),
+                            ),
+                          ],
+                          SizedBox(
+                            height: 30.h,
+                          ),
+                          if (bloc.lesson!.times.isNotEmpty) ...[
+                            Text(
+                              'Тайминг',
+                              style: MainConfigApp.app.isSiignores
+                                  ? TextStyles.black_18_w700
+                                  : TextStyles.black_18_w300,
+                            ),
+                            SizedBox(
+                              height: 15.h,
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                  color: ColorStyles.white,
+                                  borderRadius: BorderRadius.circular(13.h)),
+                              padding: EdgeInsets.only(
+                                  left: 16.w, top: 15.h, bottom: 22.h),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ...bloc.lesson!.times
+                                      .map((time) => Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                    right: 16.w,
+                                                    top: bloc.lesson!.times
+                                                                .indexOf(
+                                                                    time) ==
+                                                            0
+                                                        ? 0
+                                                        : 15.h),
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (BuildContext
+                                                                    context) =>
+                                                                VideoView(
+                                                                  url: Config
+                                                                          .url
+                                                                          .url +
+                                                                      bloc.lesson!
+                                                                          .video!,
+                                                                  duration: Duration(
+                                                                      hours: time
+                                                                          .hour,
+                                                                      minutes: time
+                                                                          .minute,
+                                                                      seconds: time
+                                                                          .second),
+                                                                )));
+                                                  },
+                                                  child: Text.rich(
+                                                    TextSpan(
+                                                        text:
+                                                            convertIntToStringTime(
+                                                                time.hour,
+                                                                time.minute,
+                                                                time.second),
+                                                        style: MainConfigApp
+                                                                .app.isSiignores
+                                                            ? TextStyles
+                                                                .black_14_w700
+                                                            : TextStyles
+                                                                .black_14_w700
+                                                                .copyWith(
+                                                                    fontFamily:
+                                                                        MainConfigApp
+                                                                            .fontFamily4),
+                                                        children: <InlineSpan>[
+                                                          TextSpan(
+                                                            text:
+                                                                '- ${time.text}',
+                                                            style: MainConfigApp
+                                                                    .app
+                                                                    .isSiignores
+                                                                ? TextStyles
+                                                                    .black_14_w400
+                                                                : TextStyles
+                                                                    .black_14_w400
+                                                                    .copyWith(
+                                                                    fontFamily:
+                                                                        MainConfigApp
+                                                                            .fontFamily4,
+                                                                  ),
+                                                          )
+                                                        ]),
+                                                  ),
+                                                ),
+                                              ),
+                                              if (bloc.lesson!.times
+                                                      .indexOf(time) !=
+                                                  (bloc.lesson!.times.length -
+                                                      1)) ...[
+                                                SizedBox(
+                                                  height: 15.h,
+                                                ),
+                                                Container(
+                                                  width: MediaQuery.of(context)
+                                                      .size
+                                                      .width,
+                                                  height: 1.h,
+                                                  color: ColorStyles.black
+                                                      .withOpacity(0.1),
+                                                ),
+                                              ]
+                                            ],
+                                          ))
+                                      .toList(),
+                                  if (false) ...[
+                                    SizedBox(
+                                      height: 18.h,
+                                    ),
+                                    Bounce(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(26.h),
+                                              color:
+                                                  ColorStyles.backgroundColor),
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 30.w, vertical: 8.h),
+                                          child: Text(
+                                            'Развернуть',
+                                            style: TextStyles.black_15_w700,
                                           ),
                                         ),
-                                    ),
-                                    ),
-                                    if(bloc.lesson!.times.indexOf(time) != (bloc.lesson!.times.length-1))
-                                    ...[SizedBox(height: 15.h,),
-                                    Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      height: 1.h,
-                                      color: ColorStyles.black.withOpacity(0.1),
-                                    ),]
-                                  ],
-                                )).toList(),
-                              
-                                
-                                if(false)
-                                ...[SizedBox(height: 18.h,),
-                                Bounce(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(26.h),
-                                      color: ColorStyles.backgroundColor
-                                    ),
-                                    padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 8.h),
-                                    child: Text('Развернуть', style: TextStyles.black_15_w700,),
-                                  ), 
-                                  duration: const Duration(milliseconds: 110), 
-                                  onPressed: (){}
-                                )]
-                              ],
+                                        duration:
+                                            const Duration(milliseconds: 110),
+                                        onPressed: () {})
+                                  ]
+                                ],
+                              ),
                             ),
-                          ),
-                          SizedBox(height: 35.h,),
+                            SizedBox(
+                              height: 35.h,
+                            ),
                           ],
-                          Text('Задание', style: MainConfigApp.app.isSiignores
-                            ? TextStyles.black_18_w700
-                            : TextStyles.black_18_w300,),
-                          SizedBox(height: 15.h,),
+                          Text(
+                            'Задание',
+                            style: MainConfigApp.app.isSiignores
+                                ? TextStyles.black_18_w700
+                                : TextStyles.black_18_w300,
+                          ),
+                          SizedBox(
+                            height: 15.h,
+                          ),
                           Container(
                             width: MediaQuery.of(context).size.width,
                             decoration: BoxDecoration(
-                              color: ColorStyles.white,
-                              borderRadius: BorderRadius.circular(13.h)
-                            ),
+                                color: ColorStyles.white,
+                                borderRadius: BorderRadius.circular(13.h)),
                             padding: EdgeInsets.all(20.h),
-                            child: Text(bloc.lesson!.question, 
+                            child: Text(
+                              bloc.lesson?.question != null
+                                  ? 'Задания пока нет'
+                                  : bloc.lesson!.question,
                               style: MainConfigApp.app.isSiignores
-                              ? TextStyles.black_14_w400.copyWith(height: 1.75.h)
-                              : TextStyles.black_14_w300.copyWith(height: 1.75.h, fontFamily: MainConfigApp.fontFamily4),)
+                                  ? TextStyles.black_14_w400
+                                      .copyWith(height: 1.75.h)
+                                  : TextStyles.black_14_w300.copyWith(
+                                      height: 1.75.h,
+                                      fontFamily: MainConfigApp.fontFamily4,
+                                    ),
+                            ),
                           ),
-                          if(bloc.lesson!.files.isNotEmpty)
-                          ...[SizedBox(height: 35.h,),
-                          Text('Дополнительные материалы', style: MainConfigApp.app.isSiignores
-                            ? TextStyles.black_18_w700
-                            : TextStyles.black_18_w300,),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: bloc.lesson!.files.map((file) 
-                              => _buildFileLink(context, file, getFileType(file.file))
-                            ).toList(),
-                          ),],
-                          SizedBox(height: 27.h,),
-                          Text('Написать ответ', style: MainConfigApp.app.isSiignores
-                            ? TextStyles.black_18_w700
-                            : TextStyles.black_18_w300,),
-                          SizedBox(height: 13.h,),
+                          if (bloc.lesson!.files.isNotEmpty) ...[
+                            SizedBox(
+                              height: 35.h,
+                            ),
+                            Text(
+                              'Дополнительные материалы',
+                              style: MainConfigApp.app.isSiignores
+                                  ? TextStyles.black_18_w700
+                                  : TextStyles.black_18_w300,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: bloc.lesson!.files
+                                  .map((file) => _buildFileLink(
+                                      context, file, getFileType(file.file)))
+                                  .toList(),
+                            ),
+                          ],
+                          SizedBox(
+                            height: 27.h,
+                          ),
+                          Text(
+                            'Написать ответ',
+                            style: MainConfigApp.app.isSiignores
+                                ? TextStyles.black_18_w700
+                                : TextStyles.black_18_w300,
+                          ),
+                          SizedBox(
+                            height: 13.h,
+                          ),
                           Form(
                             key: formKey,
                             child: DefaultTextFormField(
                               controller: textController,
-                              validator: (v){
-                                if((v ?? '').length > 1){
+                              validator: (v) {
+                                if ((v ?? '').length > 1) {
                                   return null;
                                 }
                                 return errorAnswer;
@@ -368,7 +515,9 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                               white: true,
                             ),
                           ),
-                          SizedBox(height: 22.h,),
+                          SizedBox(
+                            height: 22.h,
+                          ),
                           GestureDetector(
                             onTap: selectFiles,
                             child: Container(
@@ -376,68 +525,89 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                                 color: ColorStyles.black,
                                 borderRadius: BorderRadius.circular(8.h),
                               ),
-                              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 12.w, vertical: 10.h),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   SvgPicture.asset('assets/svg/link_file.svg'),
-                                  SizedBox(width: 13.w,),
-                                  Text('Прикрепить файлы', style: MainConfigApp.app.isSiignores
-                                    ? TextStyles.white_12_w700
-                                    : TextStyles.white_12_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),)
+                                  SizedBox(
+                                    width: 13.w,
+                                  ),
+                                  Text(
+                                    'Прикрепить файлы',
+                                    style: MainConfigApp.app.isSiignores
+                                        ? TextStyles.white_12_w700
+                                        : TextStyles.white_12_w400.copyWith(
+                                            fontFamily:
+                                                MainConfigApp.fontFamily4),
+                                  )
                                 ],
                               ),
                             ),
                           ),
-                          SizedBox(height: 10.h,),
+                          SizedBox(
+                            height: 10.h,
+                          ),
                           Column(
-                            children: files.map((file) 
-                              => Container(
-                                margin: EdgeInsets.symmetric(vertical: 5.h),
-                                child: Text('- ${basename(file.path)}', style: MainConfigApp.app.isSiignores
-                                  ? TextStyles.black_13_w400.copyWith(decoration: TextDecoration.underline)
-                                  : TextStyles.black_13_w400.copyWith(decoration: TextDecoration.underline, fontFamily: MainConfigApp.fontFamily4),),
-                              )
-                            ).toList(),
+                            children: files
+                                .map((file) => Container(
+                                      margin:
+                                          EdgeInsets.symmetric(vertical: 5.h),
+                                      child: Text(
+                                        '- ${basename(file.path)}',
+                                        style: MainConfigApp.app.isSiignores
+                                            ? TextStyles.black_13_w400.copyWith(
+                                                decoration:
+                                                    TextDecoration.underline)
+                                            : TextStyles.black_13_w400.copyWith(
+                                                decoration:
+                                                    TextDecoration.underline,
+                                                fontFamily:
+                                                    MainConfigApp.fontFamily4),
+                                      ),
+                                    ))
+                                .toList(),
                           ),
-                          SizedBox(height: 40.h,),
+                          SizedBox(
+                            height: 40.h,
+                          ),
                           PrimaryBtn(
-                            width: MediaQuery.of(context).size.width,
-                            title: 'Отправить задание', 
-                            onTap: () {
-                              sendHomework(context);
-                            }
+                              width: MediaQuery.of(context).size.width,
+                              title: 'Отправить задание',
+                              onTap: () {
+                                sendHomework(context);
+                              }),
+                          SizedBox(
+                            height: 155.h,
                           ),
-                          SizedBox(height: 155.h,),
                         ],
-                      )
-                    ),
-                  )
-                ],
-              ),
-
-              Positioned(
-                top: 58 .h,
-                left: 22.w,
-                child: BackBtn(
-                  onTap: () => context.read<MainScreenBloc>().add(ChangeViewEvent(widget: LessonsView(
-                    courseId: widget.courseId,
-                    moduleEntity: widget.moduleEntity,
-                  )))
-                ),
-              ),
-
-            ],
-          );
-        },
-      )
-    );
+                      )),
+                )
+              ],
+            ),
+            Positioned(
+              top: 58.h,
+              left: 22.w,
+              child: BackBtn(
+                  onTap: () =>
+                      context.read<MainScreenBloc>().add(ChangeViewEvent(
+                              widget: LessonsView(
+                            courseId: widget.courseId,
+                            moduleEntity: widget.moduleEntity,
+                          )))),
+            ),
+          ],
+        );
+      },
+    ));
   }
 
-  Widget _buildFileLink(BuildContext context, LessonFile file, FileType fileType){
+  Widget _buildFileLink(
+      BuildContext context, LessonFile file, FileType fileType) {
     return GestureDetector(
-      onTap: (){
-        launchURL(Config.url.url+file.file);
+      onTap: () {
+        launchURL(Config.url.url + file.file);
       },
       child: Padding(
         padding: EdgeInsets.only(top: 13.h),
@@ -446,10 +616,18 @@ class _LessonDetailViewState extends State<LessonDetailView> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             fileType.iconFile,
-            SizedBox(width: 12.w,),
-            Text(truncateWithEllipsisLast(32, file.file.replaceAll(RegExp('/media/'), '')), style: MainConfigApp.app.isSiignores
-              ? TextStyles.black_13_w400.copyWith(decoration: TextDecoration.underline)
-              : TextStyles.black_13_w400.copyWith(decoration: TextDecoration.underline, fontFamily: MainConfigApp.fontFamily4))
+            SizedBox(
+              width: 12.w,
+            ),
+            Text(
+                truncateWithEllipsisLast(
+                    32, file.file.replaceAll(RegExp('/media/'), '')),
+                style: MainConfigApp.app.isSiignores
+                    ? TextStyles.black_13_w400
+                        .copyWith(decoration: TextDecoration.underline)
+                    : TextStyles.black_13_w400.copyWith(
+                        decoration: TextDecoration.underline,
+                        fontFamily: MainConfigApp.fontFamily4))
           ],
         ),
       ),
@@ -457,14 +635,10 @@ class _LessonDetailViewState extends State<LessonDetailView> {
   }
 }
 
-enum FileType {
-  doc,
-  image,
-  pdf
-}
+enum FileType { doc, image, pdf }
 
-extension FileTypeExtension on FileType{
-  Widget get iconFile{
+extension FileTypeExtension on FileType {
+  Widget get iconFile {
     switch (this) {
       case FileType.doc:
         return SvgPicture.asset(
@@ -476,19 +650,18 @@ extension FileTypeExtension on FileType{
         );
       default:
         return SvgPicture.asset(
-          MainConfigApp.app.isSiignores ? 'assets/svg/pdf.svg' : 'assets/svg/pdf2.svg',
+          MainConfigApp.app.isSiignores
+              ? 'assets/svg/pdf.svg'
+              : 'assets/svg/pdf2.svg',
         );
     }
   }
 }
 
-
-
-
-FileType getFileType(String nameOfFile){
-  if(nameOfFile.contains('.pdf')){
+FileType getFileType(String nameOfFile) {
+  if (nameOfFile.contains('.pdf')) {
     return FileType.pdf;
-  }else if(nameOfFile.contains('.doc')){
+  } else if (nameOfFile.contains('.doc')) {
     return FileType.doc;
   }
   return FileType.image;
