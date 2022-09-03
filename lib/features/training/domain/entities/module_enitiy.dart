@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 class ModuleEntity extends Equatable {
   final int id;
   final String title;
-  final String description;
+  final String? description;
   final String? image;
 
   ModuleEntity({

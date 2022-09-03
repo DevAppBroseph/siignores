@@ -131,7 +131,7 @@ class ModuleCard extends StatelessWidget {
                       ? TextStyles.cormorant_black_18_w400
                       : TextStyles.white_16_w300,),
                     SizedBox(height: 5.h,),
-                    Text(moduleEntity.description, style: TextStyles.grey_10_w400
+                    Text(moduleEntity.description ?? '', style: TextStyles.grey_10_w400
                       .copyWith(color: ColorStyles.grey929292, fontFamily: MainConfigApp.fontFamily4 ),),
                     
                   ],
