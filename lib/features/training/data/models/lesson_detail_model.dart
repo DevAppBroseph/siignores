@@ -7,8 +7,9 @@ class LessonDetailModel extends LessonDetailEntity {
     required int lessonNumber,
     required String title,
     required String text,
-    required String question,
+    required String? question,
     required String? image,
+    required String? status,
     required String? video,
     required String? backImage,
     required List<TimeOfVideo> times,
@@ -25,6 +26,7 @@ class LessonDetailModel extends LessonDetailEntity {
           files: files,
           backImage: backImage,
           lessonNumber: lessonNumber,
+          status: status
         );
 
   factory LessonDetailModel.fromJson(Map<String, dynamic> json) =>
@@ -32,6 +34,7 @@ class LessonDetailModel extends LessonDetailEntity {
           id: json['id'] ?? 1,
           title: json['name'],
           image: json['image'],
+          status: json['status'],
           moduleId: json['module'],
           text: json['text'],
           lessonNumber: json['in_module_id'],

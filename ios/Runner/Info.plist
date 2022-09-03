@@ -31,7 +31,7 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 		<key>NSAllowsArbitraryLoadsForMedia</key>
-        <true/>
+		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
 			<key>blogersbackend.gastrosoft.by</key>

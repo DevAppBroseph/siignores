@@ -7,6 +7,7 @@ class LessonListModel extends LessonListEntity{
     required String title,
     required String text,
     required String? image,
+    required String? question,
     required String? status,
     required String miniDesc
 
@@ -15,6 +16,7 @@ class LessonListModel extends LessonListEntity{
     title: title,
     image: image,
     moduleId: moduleId,
+    question: question,
     text: text,
     status: status,
     miniDesc: miniDesc
@@ -24,6 +26,7 @@ class LessonListModel extends LessonListEntity{
     id: json['id'] ?? 1,
     title: json['name'],
     image: json['image'],
+    question: json['question'],
     moduleId: json['module'],
     text: json['text'],
     status: json['status'],

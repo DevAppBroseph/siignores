@@ -4,7 +4,7 @@ class ModuleModel extends ModuleEntity{
   ModuleModel({
     required int id,
     required String title,
-    required String description,
+    required String? description,
     required String? image,
 
   }) : super(
