@@ -85,6 +85,7 @@ class TrainingView extends StatelessWidget {
                     itemBuilder: (context, i){
                       return ModuleCard(
                         index: i+1,
+                        back: i == 0 || i == 1,
                         moduleEntity: bloc.modules[i],
                         onTap: (){
                           context.read<MainScreenBloc>().add(ChangeViewEvent(widget: LessonsView(moduleEntity: bloc.modules[i], courseId: courseId,)));

@@ -108,6 +108,7 @@ class _LessonDetailViewState extends State<LessonDetailView> {
             if(state.message != null){
               showSuccessAlertToast(state.message!);
             }
+            bloc.add(GetLessonDetailEvent(id: widget.lessonId));
             context.read<LessonsBloc>().add(GetLessonsEvent(id: widget.moduleEntity.id));
             setState(() {
               textController.clear();
@@ -236,17 +237,17 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                                 showAllText = !showAllText;
                               });
                             },
-                            child: Text(!showAllText ? 'Еще' : 'Закрыть', style: MainConfigApp.app.isSiignores
+                            child: Text(!showAllText ? 'Еще' : 'Скрыть', style: MainConfigApp.app.isSiignores
                               ? TextStyles.black_14_w700
                               .copyWith(decorationStyle: TextDecorationStyle.dashed, decoration: TextDecoration.underline)
                               : TextStyles.black_14_w300
                               .copyWith(decorationStyle: TextDecorationStyle.dashed, decoration: TextDecoration.underline, fontFamily: MainConfigApp.fontFamily4),),
                           ),
                           ],
-                          SizedBox(height: 30.h,),
 
                           if(bloc.lesson!.times.isNotEmpty)
                           ...[
+                          SizedBox(height: 30.h,),
                           Text('Тайминг', style: MainConfigApp.app.isSiignores
                             ? TextStyles.black_18_w700
                             : TextStyles.black_18_w300,),
@@ -319,9 +320,9 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                                 )]
                               ],
                             ),
-                          ),
-                          SizedBox(height: 35.h,),
-                          ],
+                          ),],
+                          if(bloc.lesson!.question != null)
+                          ...[SizedBox(height: 35.h,),
                           Text('Задание', style: MainConfigApp.app.isSiignores
                             ? TextStyles.black_18_w700
                             : TextStyles.black_18_w300,),
@@ -333,11 +334,11 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                               borderRadius: BorderRadius.circular(13.h)
                             ),
                             padding: EdgeInsets.all(20.h),
-                            child: Text(bloc.lesson!.question, 
+                            child: Text(bloc.lesson!.question!, 
                               style: MainConfigApp.app.isSiignores
                               ? TextStyles.black_14_w400.copyWith(height: 1.75.h)
                               : TextStyles.black_14_w300.copyWith(height: 1.75.h, fontFamily: MainConfigApp.fontFamily4),)
-                          ),
+                          )],
                           if(bloc.lesson!.files.isNotEmpty)
                           ...[SizedBox(height: 35.h,),
                           Text('Дополнительные материалы', style: MainConfigApp.app.isSiignores
@@ -350,7 +351,8 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                             ).toList(),
                           ),],
                           SizedBox(height: 27.h,),
-                          Text('Написать ответ', style: MainConfigApp.app.isSiignores
+                          if((bloc.lesson!.status == null || bloc.lesson!.status == 'failed') && bloc.lesson!.question != null)
+                          ...[Text('Написать ответ', style: MainConfigApp.app.isSiignores
                             ? TextStyles.black_18_w700
                             : TextStyles.black_18_w300,),
                           SizedBox(height: 13.h,),
@@ -407,7 +409,7 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                             onTap: () {
                               sendHomework(context);
                             }
-                          ),
+                          ),],
                           SizedBox(height: 155.h,),
                         ],
                       )
