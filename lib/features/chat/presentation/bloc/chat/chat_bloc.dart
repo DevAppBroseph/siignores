@@ -5,11 +5,12 @@ import 'package:equatable/equatable.dart';
 import 'package:siignores/core/services/network/endpoints.dart';
 import 'package:siignores/features/chat/data/models/chat_message_model.dart';
 import 'package:siignores/features/chat/domain/entities/chat_room_entity.dart';
+import 'package:siignores/features/home/domain/entities/notification_entity.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import '../../../../../core/error/failures.dart';
 import '../../../../../core/services/database/auth_params.dart';
 import '../../../../../locator.dart';
-import '../../../domain/entities/chat_message_entity.dart';
+import '../../../../home/data/models/notification_model.dart';
 import '../../../domain/usecases/get_chat.dart';
 part 'chat_event.dart';
 part 'chat_state.dart';
@@ -54,12 +55,24 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       if(channel != null){
         channel!.stream.listen((event) {
           print('EVENT WS: $event');
-          if(jsonDecode(event)['chat_id'] == currentChatId){
+
+          if(jsonDecode(event)['type'] == 'notification'){
+            add(NewNotificationEvent(notificationEntity: NotificationModel(
+              id: 0,
+              message: jsonDecode(event)['type'] ?? 'message',
+              time: DateTime.now()
+            )));
+          }else if(jsonDecode(event)['chat_id'] == currentChatId){
             chatRoom.messages.add(ChatMessageModel.fromJson(jsonDecode(event)));
             add(ChatSetStateEvent());
           }
         });
       }
+    }
+
+    if(event is NewNotificationEvent){
+      yield ChatBlankState();
+      yield NewNotificationState(notificationEntity: event.notificationEntity);
     }
 
 

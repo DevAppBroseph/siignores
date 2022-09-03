@@ -13,8 +13,6 @@ import '../../../main/presentation/bloc/main_screen/main_screen_bloc.dart';
 import '../bloc/modules/module_bloc.dart';
 import '../widgets/module_card.dart';
 
-
-
 class TrainingView extends StatelessWidget {
   final int courseId;
   TrainingView({required this.courseId});
@@ -22,83 +20,100 @@ class TrainingView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ModuleBloc bloc = context.read<ModuleBloc>();
-    if(bloc.selectedCourseId != courseId){
+    if (bloc.selectedCourseId != courseId) {
       bloc.add(GetModulesEvent(id: courseId));
     }
     return Scaffold(
-      appBar: AppBar(
-        elevation: 1.h,
-        title: Text('Тренинг'),
-        leading: BackAppbarBtn(
-          onTap: () => context.read<MainScreenBloc>().add(ChangeViewEvent(view: 1)),
-        )
-      ),
-      body: BlocConsumer<ModuleBloc, ModuleState>(
-        listener: (context, state){
-          if(state is ModuleErrorState){
-            Loader.hide();
-            showAlertToast(state.message);
-          }
+        appBar: AppBar(
+            elevation: 1.h,
+            title: Text('Тренинг'),
+            leading: BackAppbarBtn(
+              onTap: () =>
+                  context.read<MainScreenBloc>().add(ChangeViewEvent(view: 1)),
+            )),
+        body: BlocConsumer<ModuleBloc, ModuleState>(
+          listener: (context, state) {
+            if (state is ModuleErrorState) {
+              Loader.hide();
+              showAlertToast(state.message);
+            }
 
-          if(state is ModuleInternetErrorState){
-            context.read<AuthBloc>().add(InternetErrorEvent());
-          }
-        },
-        builder: (context, state){
-          if(state is ModuleInitialState || state is ModuleLoadingState){
-            return  Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                LoaderV1(),
-                SizedBox(height: 75.h,)
-              ],
-            );
-          }
-          if(state is GotSuccessModuleState){
-            if(bloc.modules.isEmpty){
+            if (state is ModuleInternetErrorState) {
+              context.read<AuthBloc>().add(InternetErrorEvent());
+            }
+          },
+          builder: (context, state) {
+            if (state is ModuleInitialState || state is ModuleLoadingState) {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text('Пока нет модулей', style: MainConfigApp.app.isSiignores
-                    ? TextStyles.black_15_w700
-                    : TextStyles.white_15_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
-                  SizedBox(height: 75.h, width: MediaQuery.of(context).size.width,)
+                  LoaderV1(),
+                  SizedBox(
+                    height: 75.h,
+                  )
                 ],
               );
             }
-          }
-          return SingleChildScrollView(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.w),
-              child: Column(
-                children: [
-                  SizedBox(height: 15.h,),
-                  GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: bloc.modules.length,
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 1.05
-                    ), 
-                    itemBuilder: (context, i){
-                      return ModuleCard(
-                        index: i+1,
-                        moduleEntity: bloc.modules[i],
-                        onTap: (){
-                          context.read<MainScreenBloc>().add(ChangeViewEvent(widget: LessonsView(moduleEntity: bloc.modules[i], courseId: courseId,)));
-                        },
-                      );
-                    }
-                  ),
-                  SizedBox(height: 30.h,),
-                ],
+            if (state is GotSuccessModuleState) {
+              if (bloc.modules.isEmpty) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Пока нет модулей',
+                      style: MainConfigApp.app.isSiignores
+                          ? TextStyles.black_15_w700
+                          : TextStyles.white_15_w400
+                              .copyWith(fontFamily: MainConfigApp.fontFamily4),
+                    ),
+                    SizedBox(
+                      height: 75.h,
+                      width: MediaQuery.of(context).size.width,
+                    )
+                  ],
+                );
+              }
+            }
+            return SingleChildScrollView(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 15.w),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 15.h,
+                    ),
+                    GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: bloc.modules.length,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2, childAspectRatio: 1.05),
+                        itemBuilder: (context, i) {
+                          return ModuleCard(
+                            index: i + 1,
+                            back: i == 0 || i == 1,
+                            moduleEntity: bloc.modules[i],
+                            onTap: () {
+                              context
+                                  .read<MainScreenBloc>()
+                                  .add(ChangeViewEvent(
+                                      widget: LessonsView(
+                                    moduleEntity: bloc.modules[i],
+                                    courseId: courseId,
+                                  )));
+                            },
+                          );
+                        }),
+                    SizedBox(
+                      height: 30.h,
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        },
-      )
-    );
+            );
+          },
+        ));
   }
 }

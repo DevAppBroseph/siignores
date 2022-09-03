@@ -6,13 +6,21 @@ class LessonListEntity extends Equatable {
   final String title;
   final String text;
   final String? image;
+  final String? question;
+  final String miniDesc;
+  String? status;
+  bool isOpen;
 
   LessonListEntity({
     required this.id,
     required this.title,
     required this.image,
     required this.moduleId,
+    required this.question,
     required this.text,
+    required this.status,
+    required this.miniDesc,
+    this.isOpen = false
   });
 
 

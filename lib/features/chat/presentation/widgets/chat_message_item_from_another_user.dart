@@ -4,6 +4,7 @@ import 'package:siignores/constants/main_config_app.dart';
 import 'package:siignores/features/chat/domain/entities/chat_message_entity.dart';
 import '../../../../constants/colors/color_styles.dart';
 import '../../../../constants/texts/text_styles.dart';
+import '../../../../core/services/network/config.dart';
 import '../../../../core/widgets/image/cached_image.dart';
 
 
@@ -26,7 +27,7 @@ class ChatMessageItemFromAnotherUser extends StatelessWidget {
                 child: CachedImage(
                   height: 34.w,
                   borderRadius: BorderRadius.circular(34.w),
-                  urlImage: 'https://aikidojo.lv/wp-content/uploads/2019/08/nophoto.jpg',
+                  urlImage: chatMessage.from.avatar == null ? null : Config.url.url+chatMessage.from.avatar!,
                   isProfilePhoto: true,
                 ),
               ),

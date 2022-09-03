@@ -7,21 +7,30 @@ class LessonListModel extends LessonListEntity{
     required String title,
     required String text,
     required String? image,
+    required String? question,
+    required String? status,
+    required String miniDesc
 
   }) : super(
     id: id, 
     title: title,
     image: image,
     moduleId: moduleId,
-    text: text
+    question: question,
+    text: text,
+    status: status,
+    miniDesc: miniDesc
   );
 
   factory LessonListModel.fromJson(Map<String, dynamic> json) => LessonListModel(
     id: json['id'] ?? 1,
     title: json['name'],
     image: json['image'],
+    question: json['question'],
     moduleId: json['module'],
-    text: json['text']
+    text: json['text'],
+    status: json['status'],
+    miniDesc: json['short_desc'] ?? ''
     
   );
 }

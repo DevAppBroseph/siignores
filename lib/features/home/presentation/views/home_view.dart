@@ -82,12 +82,8 @@ class _HomeViewState extends State<HomeView> {
                   children: [
                     SizedBox(height: 20.h,),
                     TopInfoHome(
-                      notificationCount: 3, 
                       onTapByName: (){
                         context.read<MainScreenBloc>().add(ChangeViewEvent(widget: ProfileView()));
-                      }, 
-                      onTapNotification: (){
-                        
                       }, 
                     ),
                     SizedBox(height: 28.h,),

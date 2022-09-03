@@ -21,3 +21,7 @@ class SendMessageEvent extends ChatEvent{
 
 
 class ChatSetStateEvent extends ChatEvent{}
+class NewNotificationEvent extends ChatEvent{
+  final NotificationEntity notificationEntity;
+  NewNotificationEvent({required this.notificationEntity});
+}

@@ -11,11 +11,16 @@ import '../../../../../core/services/network/endpoints.dart';
 import '../../../../../locator.dart';
 
 abstract class AuthenticationRemoteDataSource {
-  Future<bool> register({required String email, required String firstName, required String lastName});
+  Future<bool> register({
+    required String email,
+    required String firstName,
+    required String lastName,
+    required String fcmToken,
+  });
   Future<bool> activationCode(String email, String code);
-  Future<String?> setPassword(String email, String password);
+  Future<String?> setPassword(String email, String password, String fcmToken);
 
-  Future<String> login(String email, String password);
+  Future<String> login(String email, String password, String fcmToken);
   Future<UserModel> getUserInfo();
   Future<void> logout();
   Future<bool> deleteAccount();
@@ -24,8 +29,6 @@ abstract class AuthenticationRemoteDataSource {
   Future<bool> sendCodeForResetPassword(String email);
   Future<ResetDataEntity> verifyCodeForResetPassword(String email, String code);
   Future<bool> resetPassword(ResetDataEntity resetDataEntity, String password);
-  
-
 }
 
 class AuthenticationRemoteDataSourceImpl
@@ -38,14 +41,14 @@ class AuthenticationRemoteDataSourceImpl
     "Content-Type": "application/json"
   };
 
-
   @override
-  Future<String> login(String email, String password) async {
+  Future<String> login(String email, String password, String fcmToken) async {
     print('appp; ${MainConfigApp.app.token}');
     headers.remove("Authorization");
     var formData = jsonEncode({
       "email": email, 
-      "password": password,
+      "password": password, 
+      "fcm_token": fcmToken,
       "app": MainConfigApp.app.token
     });
     Response response = await dio.post(Endpoints.login.getPath(),
@@ -57,7 +60,7 @@ class AuthenticationRemoteDataSourceImpl
     printRes(response);
     if (response.statusCode! >= 200 && response.statusCode! <= 299) {
       return response.data['auth_token'];
-    } else if(response.statusCode == 400) {
+    } else if (response.statusCode == 400) {
       throw ServerException(message: 'Не правильный логин или пароль');
     } else {
       throw ServerException(message: 'Ошибка с сервером');
@@ -65,13 +68,19 @@ class AuthenticationRemoteDataSourceImpl
   }
 
   @override
-  Future<bool> register({required String email, required String firstName, required String lastName}) async {
+  Future<bool> register({
+    required String email,
+    required String firstName,
+    required String lastName,
+    required String fcmToken,
+  }) async {
     headers.remove("Authorization");
     var formData = FormData.fromMap({
-      "email": email, 
+      "email": email,
       "firstname": firstName,
       "lastname": lastName,
-      "app": MainConfigApp.app.token
+      "app": MainConfigApp.app.token,
+      "fcm_token": fcmToken,
     });
     Response response = await dio.post(Endpoints.register.getPath(),
         data: formData,
@@ -82,14 +91,20 @@ class AuthenticationRemoteDataSourceImpl
     printRes(response);
     if (response.statusCode! >= 200 && response.statusCode! < 400) {
       return true;
-    } else if(response.statusCode == 400 && response.data.toString().contains('custom user with this email already exists')
-      || response.statusCode == 400 && response.data.toString().contains('The fields email, app must make a unique set')){
-      throw ServerException(message: 'Пользователь с таким email-ом уже существует');
-    }else {
+    } else if (response.statusCode == 400 &&
+            response.data
+                .toString()
+                .contains('custom user with this email already exists') ||
+        response.statusCode == 400 &&
+            response.data
+                .toString()
+                .contains('The fields email, app must make a unique set')) {
+      throw ServerException(
+          message: 'Пользователь с таким email-ом уже существует');
+    } else {
       throw ServerException(message: 'Ошибка с сервером');
     }
   }
-
 
   @override
   Future<UserModel> getUserInfo() async {
@@ -104,22 +119,25 @@ class AuthenticationRemoteDataSourceImpl
     printRes(response);
     if (response.statusCode == 200) {
       return UserModel.fromJson(response.data);
-    } else if(response.statusCode == 401) {
-      return UserModel(firstName: 'unauthorized', lastLogin: null, lastName: '', email: '', avatar: null, id: 0);
+    } else if (response.statusCode == 401) {
+      return UserModel(
+          firstName: 'unauthorized',
+          lastLogin: null,
+          lastName: '',
+          email: '',
+          avatar: null,
+          id: 0);
     } else {
       throw ServerException(message: 'Ошибка с сервером');
     }
   }
 
-
-
-
-   @override
+  @override
   Future<bool> activationCode(String email, String code) async {
     headers.remove("Authorization");
     var formData = FormData.fromMap({
-      "email": email, 
-      "registration_code": int.parse(code), 
+      "email": email,
+      "registration_code": int.parse(code),
       "app": MainConfigApp.app.token
     });
 
@@ -132,22 +150,22 @@ class AuthenticationRemoteDataSourceImpl
     printRes(response);
     if (response.statusCode! >= 200 && response.statusCode! < 400) {
       return true;
-    } else if(response.statusCode == 400) {
+    } else if (response.statusCode == 400) {
       throw ServerException(message: 'Не правильный код');
     } else {
       throw ServerException(message: 'Ошибка с сервером');
     }
   }
 
-
-   @override
-  Future<String?> setPassword(String email, String password) async {
+  @override
+  Future<String?> setPassword(String email, String password, String fcmToken) async {
     headers.remove("Authorization");
     var formData = FormData.fromMap({
-      "email": email, 
-      "password": password, 
-      "app": MainConfigApp.app.token
-    });
+        "email": email, 
+        "password": password, 
+        "fcm_token": fcmToken,
+        "app": MainConfigApp.app.token
+      });
 
     Response response = await dio.post(Endpoints.setPassword.getPath(),
         data: formData,
@@ -163,10 +181,7 @@ class AuthenticationRemoteDataSourceImpl
     }
   }
 
-
-
-
-   @override
+  @override
   Future<void> logout() async {
     headers["Authorization"] = "Token ${sl<AuthConfig>().token}";
 
@@ -177,13 +192,6 @@ class AuthenticationRemoteDataSourceImpl
             headers: headers));
     printRes(response);
   }
-
-
-
-
-
-
-
 
   @override
   Future<bool> deleteAccount() async {
@@ -203,22 +211,16 @@ class AuthenticationRemoteDataSourceImpl
     }
   }
 
-
-
-
-
-
   //Forgot password
 
-   @override
+  @override
   Future<bool> sendCodeForResetPassword(String email) async {
     headers.remove("Authorization");
-    var formData = FormData.fromMap({
-      "email": email, 
-      "app": MainConfigApp.app.token
-    });
+    var formData =
+        FormData.fromMap({"email": email, "app": MainConfigApp.app.token});
 
-    Response response = await dio.post(Endpoints.sendCodeForResetPassword.getPath(),
+    Response response = await dio.post(
+        Endpoints.sendCodeForResetPassword.getPath(),
         data: formData,
         options: Options(
             followRedirects: false,
@@ -227,24 +229,25 @@ class AuthenticationRemoteDataSourceImpl
     printRes(response);
     if (response.statusCode! >= 200 && response.statusCode! < 400) {
       return true;
-    } else if(response.statusCode! == 400){
-      throw ServerException(message: 'Пользователь с таким email-ом не существует');
+    } else if (response.statusCode! == 400) {
+      throw ServerException(
+          message: 'Пользователь с таким email-ом не существует');
     } else {
       throw ServerException(message: 'Ошибка с сервером');
     }
   }
 
-
-
-   @override
-  Future<ResetDataEntity> verifyCodeForResetPassword(String email, String code) async {
+  @override
+  Future<ResetDataEntity> verifyCodeForResetPassword(
+      String email, String code) async {
     headers.remove("Authorization");
     var formData = jsonEncode({
-      "email": email, 
-      "registration_code": int.parse(code), 
+      "email": email,
+      "registration_code": int.parse(code),
       "app": MainConfigApp.app.token
     });
-    Response response = await dio.post(Endpoints.verifyCodeForResetPassword.getPath(),
+    Response response = await dio.post(
+        Endpoints.verifyCodeForResetPassword.getPath(),
         data: formData,
         options: Options(
             followRedirects: false,
@@ -256,21 +259,21 @@ class AuthenticationRemoteDataSourceImpl
         uid: response.data['uid'],
         token: response.data['token'],
       );
-    } else if(response.statusCode == 400) {
+    } else if (response.statusCode == 400) {
       throw ServerException(message: 'Не правильный код');
     } else {
       throw ServerException(message: 'Ошибка с сервером');
     }
   }
 
-
-   @override
-  Future<bool> resetPassword(ResetDataEntity resetDataEntity, String password) async {
+  @override
+  Future<bool> resetPassword(
+      ResetDataEntity resetDataEntity, String password) async {
     headers.remove("Authorization");
     var formData = FormData.fromMap({
-      "uid": resetDataEntity.uid, 
-      "token": resetDataEntity.token, 
-      "new_password": password, 
+      "uid": resetDataEntity.uid,
+      "token": resetDataEntity.token,
+      "new_password": password,
       "app": MainConfigApp.app.token
     });
 
@@ -287,6 +290,4 @@ class AuthenticationRemoteDataSourceImpl
       throw ServerException(message: 'Ошибка с сервером');
     }
   }
-
-
 }

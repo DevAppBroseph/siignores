@@ -23,16 +23,16 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(
       this.remoteDataSource, this.networkInfo, this.localDataSource);
 
-
-  
   @override
-  Future<Either<Failure, bool>> activationCode(ActivationCodeParams params) async {
+  Future<Either<Failure, bool>> activationCode(
+      ActivationCodeParams params) async {
     if (await networkInfo.isConnected) {
       try {
-        final isSent = await remoteDataSource.activationCode(params.email, params.code);
+        final isSent =
+            await remoteDataSource.activationCode(params.email, params.code);
         return Right(isSent);
       } catch (e) {
-        if(e is ServerException){
+        if (e is ServerException) {
           return Left(ServerFailure(e.message!));
         }
         return Left(ServerFailure(e.toString()));
@@ -41,20 +41,19 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(NetworkFailure());
     }
   }
-
-  
 
   @override
   Future<Either<Failure, String?>> setPassword(SetPasswordParams params) async {
     if (await networkInfo.isConnected) {
       try {
-        final token = await remoteDataSource.setPassword(params.email, params.password);
-        if(token != null){
+        final token =
+            await remoteDataSource.setPassword(params.email, params.password, params.fcmToken);
+        if (token != null) {
           localDataSource.saveToken(token);
         }
         return Right(token);
       } catch (e) {
-        if(e is ServerException){
+        if (e is ServerException) {
           return Left(ServerFailure(e.message!));
         }
         return Left(ServerFailure(e.toString()));
@@ -64,13 +63,12 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
-  
-
   @override
   Future<Either<Failure, String>> authSignIn(AuthSignParams params) async {
     if (await networkInfo.isConnected) {
       try {
-        String token = await remoteDataSource.login(params.email, params.password);
+        String token =
+            await remoteDataSource.login(params.email, params.password, params.fcmToken);
         bool isSavedToken = await localDataSource.saveToken(token);
         if (isSavedToken) {
           return Right(token);
@@ -78,7 +76,7 @@ class AuthRepositoryImpl implements AuthRepository {
           return Left(CacheFailure());
         }
       } catch (e) {
-        if(e is ServerException){
+        if (e is ServerException) {
           return Left(ServerFailure(e.message!));
         }
         return Left(ServerFailure(e.toString()));
@@ -98,7 +96,7 @@ class AuthRepositoryImpl implements AuthRepository {
         return Right(userModel);
       } catch (e) {
         print(e);
-        if(e is ServerException){
+        if (e is ServerException) {
           return Left(ServerFailure(e.message!));
         }
         return Left(ServerFailure(e.toString()));
@@ -107,8 +105,6 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(NetworkFailure());
     }
   }
-
-
 
   @override
   Future<Either<Failure, String?>> getTokenLocal() async {
@@ -119,8 +115,6 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(CacheFailure());
     }
   }
-
-
 
   @override
   Future<Either<Failure, bool>> logout() async {
@@ -137,8 +131,6 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
-
-
   @override
   Future<Either<Failure, bool>> register(RegisterParams params) async {
     if (await networkInfo.isConnected) {
@@ -146,12 +138,13 @@ class AuthRepositoryImpl implements AuthRepository {
         final isSent = await remoteDataSource.register(
           firstName: params.firstName,
           lastName: params.lastName,
-          email: params.email
+          email: params.email,
+          fcmToken: params.fcmToken,
         );
         return Right(isSent);
       } catch (e) {
         print(e);
-        if(e is ServerException){
+        if (e is ServerException) {
           return Left(ServerFailure(e.message!));
         }
         return Left(ServerFailure(e.toString()));
@@ -160,22 +153,18 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(NetworkFailure());
     }
   }
-
-
-
-
-
-
 
   //Forgot password
   @override
-  Future<Either<Failure, bool>> sendCodeResetPassword(SendCodeResetPasswordParams params) async {
+  Future<Either<Failure, bool>> sendCodeResetPassword(
+      SendCodeResetPasswordParams params) async {
     if (await networkInfo.isConnected) {
       try {
-        final isSent = await remoteDataSource.sendCodeForResetPassword(params.email);
+        final isSent =
+            await remoteDataSource.sendCodeForResetPassword(params.email);
         return Right(isSent);
       } catch (e) {
-        if(e is ServerException){
+        if (e is ServerException) {
           return Left(ServerFailure(e.message!));
         }
         return Left(ServerFailure(e.toString()));
@@ -186,13 +175,15 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, ResetDataEntity>> verifyCodeResetPassword(VerifyCodeResetPasswordParams params) async {
+  Future<Either<Failure, ResetDataEntity>> verifyCodeResetPassword(
+      VerifyCodeResetPasswordParams params) async {
     if (await networkInfo.isConnected) {
       try {
-        final verify = await remoteDataSource.verifyCodeForResetPassword(params.email, params.code);
+        final verify = await remoteDataSource.verifyCodeForResetPassword(
+            params.email, params.code);
         return Right(verify);
       } catch (e) {
-        if(e is ServerException){
+        if (e is ServerException) {
           return Left(ServerFailure(e.message!));
         }
         return Left(ServerFailure(e.toString()));
@@ -203,13 +194,15 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> resetPassword(ResetPasswordParams params) async {
+  Future<Either<Failure, bool>> resetPassword(
+      ResetPasswordParams params) async {
     if (await networkInfo.isConnected) {
       try {
-        final reset = await remoteDataSource.resetPassword(params.resetDataEntity, params.password);
+        final reset = await remoteDataSource.resetPassword(
+            params.resetDataEntity, params.password);
         return Right(reset);
       } catch (e) {
-        if(e is ServerException){
+        if (e is ServerException) {
           return Left(ServerFailure(e.message!));
         }
         return Left(ServerFailure(e.toString()));
@@ -218,13 +211,6 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(NetworkFailure());
     }
   }
-
-
-
-
-
-
-
 
   @override
   Future<Either<Failure, bool>> deleteAccount() async {
@@ -233,7 +219,7 @@ class AuthRepositoryImpl implements AuthRepository {
         final isDeleted = await remoteDataSource.deleteAccount();
         return Right(isDeleted);
       } catch (e) {
-        if(e is ServerException){
+        if (e is ServerException) {
           return Left(ServerFailure(e.message!));
         }
         return Left(ServerFailure(e.toString()));
@@ -243,4 +229,3 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 }
-

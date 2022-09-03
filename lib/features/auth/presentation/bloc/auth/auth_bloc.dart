@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:siignores/core/usecases/usecase.dart';
 import 'package:siignores/features/auth/domain/usecases/activation_code.dart';
 import 'package:siignores/features/auth/domain/usecases/auth_signin.dart';
@@ -79,7 +80,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     if(event is SignInEvent){
       yield BlankState();
       print('SignInEvent in bloc');
-      var authGetToken = await authSignIn(AuthSignParams(email: event.email, password: event.password));
+      var authGetToken = await authSignIn(AuthSignParams(
+        email: event.email, 
+        password: event.password, 
+        fcmToken: (await FirebaseMessaging.instance.getToken())!,
+      ));
       yield authGetToken.fold(
         (failure) => errorCheck(failure),
         (String token) {

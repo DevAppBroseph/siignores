@@ -7,7 +7,7 @@ import '../../../constants/colors/color_styles.dart';
 class CachedImage extends StatelessWidget {
   final BorderRadius? borderRadius;
   final String? urlImage;
-  final double height;
+  final double? height;
   final bool? isProfilePhoto;
   final BoxFit fit;
   final Alignment? alignment;
@@ -28,7 +28,8 @@ class CachedImage extends StatelessWidget {
           image: imageProvider,
         ),
       ),
-      placeholder: (context, url) => Container(
+      placeholder: (context, url) => isProfilePhoto == null || isProfilePhoto! 
+      ? Container(
         height: height,
         width: double.infinity,
         decoration: BoxDecoration(
@@ -41,7 +42,7 @@ class CachedImage extends StatelessWidget {
             size: 35,
           ),
         ),
-      ),
+      ) : SizedBox.shrink(),
       errorWidget: (context, url, error) => ClipRRect(
         borderRadius: borderRadius,
         child: isProfilePhoto == null

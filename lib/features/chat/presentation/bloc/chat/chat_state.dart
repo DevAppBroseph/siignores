@@ -17,3 +17,7 @@ class ChatInternetErrorState extends ChatState{}
 class GotSuccessChatState extends ChatState{}
 class ChatBlankState extends ChatState{}
 class ChatSetStateState extends ChatState{}
+class NewNotificationState extends ChatState{
+  final NotificationEntity notificationEntity;
+  NewNotificationState({required this.notificationEntity});
+}
