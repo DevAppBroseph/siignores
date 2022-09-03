@@ -63,7 +63,11 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
     if (event is RegisterSetPasswordEvent) {
       var activated = await setPassword(
-          SetPasswordParams(email: email, password: event.password));
+          SetPasswordParams(
+            email: email, 
+            password: event.password,
+            fcmToken: (await FirebaseMessaging.instance.getToken())!
+          ));
       yield activated.fold((failure) => errorCheck(failure), (token) {
         if (token != null) {
           currentStage = CurrentStage.first;

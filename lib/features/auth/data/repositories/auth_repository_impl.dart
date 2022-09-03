@@ -47,7 +47,7 @@ class AuthRepositoryImpl implements AuthRepository {
     if (await networkInfo.isConnected) {
       try {
         final token =
-            await remoteDataSource.setPassword(params.email, params.password);
+            await remoteDataSource.setPassword(params.email, params.password, params.fcmToken);
         if (token != null) {
           localDataSource.saveToken(token);
         }
@@ -68,7 +68,7 @@ class AuthRepositoryImpl implements AuthRepository {
     if (await networkInfo.isConnected) {
       try {
         String token =
-            await remoteDataSource.login(params.email, params.password);
+            await remoteDataSource.login(params.email, params.password, params.fcmToken);
         bool isSavedToken = await localDataSource.saveToken(token);
         if (isSavedToken) {
           return Right(token);

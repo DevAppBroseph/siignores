@@ -20,8 +20,9 @@ class SetPassword implements UseCase<String?, SetPasswordParams> {
 class SetPasswordParams extends Equatable {
   final String email;
   final String password;
+  final String fcmToken;
 
-  SetPasswordParams({required this.email, required this.password});
+  SetPasswordParams({required this.email, required this.password, required this.fcmToken});
 
   @override
   List<Object> get props => [email, password];
