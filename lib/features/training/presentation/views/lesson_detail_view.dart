@@ -124,6 +124,7 @@ class _LessonDetailViewState extends State<LessonDetailView> {
           );
         }
         // print("Back Image is: ${Config.url.url + bloc.lesson!.backImage!}");
+        print('Question is: ${bloc.lesson?.question}');
         return Stack(
           children: [
             CustomScrollView(
@@ -444,34 +445,43 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                               height: 35.h,
                             ),
                           ],
-                          Text(
-                            'Задание',
-                            style: MainConfigApp.app.isSiignores
-                                ? TextStyles.black_18_w700
-                                : TextStyles.black_18_w300,
-                          ),
-                          SizedBox(
-                            height: 15.h,
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                                color: ColorStyles.white,
-                                borderRadius: BorderRadius.circular(13.h)),
-                            padding: EdgeInsets.all(20.h),
-                            child: Text(
-                              bloc.lesson?.question == null
-                                  ? 'Задания пока нет'
-                                  : bloc.lesson!.question!,
+                          if (bloc.lesson?.question != 'null' &&
+                              bloc.lesson?.question != null &&
+                              bloc.lesson?.question != '')
+                            Text(
+                              'Задание',
                               style: MainConfigApp.app.isSiignores
-                                  ? TextStyles.black_14_w400
-                                      .copyWith(height: 1.75.h)
-                                  : TextStyles.black_14_w300.copyWith(
-                                      height: 1.75.h,
-                                      fontFamily: MainConfigApp.fontFamily4,
-                                    ),
+                                  ? TextStyles.black_18_w700
+                                  : TextStyles.black_18_w300,
                             ),
-                          ),
+                          if (bloc.lesson?.question != 'null' &&
+                              bloc.lesson?.question != null &&
+                              bloc.lesson?.question != '')
+                            SizedBox(
+                              height: 15.h,
+                            ),
+                          if (bloc.lesson?.question != 'null' &&
+                              bloc.lesson?.question != null &&
+                              bloc.lesson?.question != '')
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                  color: ColorStyles.white,
+                                  borderRadius: BorderRadius.circular(13.h)),
+                              padding: EdgeInsets.all(20.h),
+                              child: Text(
+                                bloc.lesson?.question == null
+                                    ? 'Задания пока нет'
+                                    : bloc.lesson!.question!,
+                                style: MainConfigApp.app.isSiignores
+                                    ? TextStyles.black_14_w400
+                                        .copyWith(height: 1.75.h)
+                                    : TextStyles.black_14_w300.copyWith(
+                                        height: 1.75.h,
+                                        fontFamily: MainConfigApp.fontFamily4,
+                                      ),
+                              ),
+                            ),
                           if (bloc.lesson!.files.isNotEmpty) ...[
                             SizedBox(
                               height: 35.h,
@@ -490,96 +500,104 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                                   .toList(),
                             ),
                           ],
-                          if((bloc.lesson!.status == null || bloc.lesson!.status == 'failed') && bloc.lesson?.question != null)
-                          ...[SizedBox(
-                            height: 27.h,
-                          ),
-                          Text(
-                            'Написать ответ',
-                            style: MainConfigApp.app.isSiignores
-                                ? TextStyles.black_18_w700
-                                : TextStyles.black_18_w300,
-                          ),
-                          SizedBox(
-                            height: 13.h,
-                          ),
-                          Form(
-                            key: formKey,
-                            child: DefaultTextFormField(
-                              controller: textController,
-                              validator: (v) {
-                                if ((v ?? '').length > 1) {
-                                  return null;
-                                }
-                                return errorAnswer;
-                              },
-                              hint: 'Написать ответ',
-                              white: true,
+                          if ((bloc.lesson!.status == null ||
+                                  bloc.lesson!.status == 'failed') &&
+                              (bloc.lesson?.question != 'null' &&
+                                  bloc.lesson?.question != null &&
+                                  bloc.lesson?.question != '')) ...[
+                            SizedBox(
+                              height: 27.h,
                             ),
-                          ),
-                          SizedBox(
-                            height: 22.h,
-                          ),
-                          GestureDetector(
-                            onTap: selectFiles,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: ColorStyles.black,
-                                borderRadius: BorderRadius.circular(8.h),
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 12.w, vertical: 10.h),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  SvgPicture.asset('assets/svg/link_file.svg'),
-                                  SizedBox(
-                                    width: 13.w,
-                                  ),
-                                  Text(
-                                    'Прикрепить файлы',
-                                    style: MainConfigApp.app.isSiignores
-                                        ? TextStyles.white_12_w700
-                                        : TextStyles.white_12_w400.copyWith(
-                                            fontFamily:
-                                                MainConfigApp.fontFamily4),
-                                  )
-                                ],
+                            Text(
+                              'Написать ответ',
+                              style: MainConfigApp.app.isSiignores
+                                  ? TextStyles.black_18_w700
+                                  : TextStyles.black_18_w300,
+                            ),
+                            SizedBox(
+                              height: 13.h,
+                            ),
+                            Form(
+                              key: formKey,
+                              child: DefaultTextFormField(
+                                controller: textController,
+                                validator: (v) {
+                                  if ((v ?? '').length > 1) {
+                                    return null;
+                                  }
+                                  return errorAnswer;
+                                },
+                                hint: 'Написать ответ',
+                                white: true,
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            height: 10.h,
-                          ),
-                          Column(
-                            children: files
-                                .map((file) => Container(
-                                      margin:
-                                          EdgeInsets.symmetric(vertical: 5.h),
-                                      child: Text(
-                                        '- ${basename(file.path)}',
-                                        style: MainConfigApp.app.isSiignores
-                                            ? TextStyles.black_13_w400.copyWith(
-                                                decoration:
-                                                    TextDecoration.underline)
-                                            : TextStyles.black_13_w400.copyWith(
-                                                decoration:
-                                                    TextDecoration.underline,
-                                                fontFamily:
-                                                    MainConfigApp.fontFamily4),
-                                      ),
-                                    ))
-                                .toList(),
-                          ),
-                          SizedBox(
-                            height: 40.h,
-                          ),
-                          PrimaryBtn(
-                              width: MediaQuery.of(context).size.width,
-                              title: 'Отправить задание',
-                              onTap: () {
-                                sendHomework(context);
-                              })],
+                            SizedBox(
+                              height: 22.h,
+                            ),
+                            GestureDetector(
+                              onTap: selectFiles,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: ColorStyles.black,
+                                  borderRadius: BorderRadius.circular(8.h),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 12.w, vertical: 10.h),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    SvgPicture.asset(
+                                        'assets/svg/link_file.svg'),
+                                    SizedBox(
+                                      width: 13.w,
+                                    ),
+                                    Text(
+                                      'Прикрепить файлы',
+                                      style: MainConfigApp.app.isSiignores
+                                          ? TextStyles.white_12_w700
+                                          : TextStyles.white_12_w400.copyWith(
+                                              fontFamily:
+                                                  MainConfigApp.fontFamily4),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            Column(
+                              children: files
+                                  .map((file) => Container(
+                                        margin:
+                                            EdgeInsets.symmetric(vertical: 5.h),
+                                        child: Text(
+                                          '- ${basename(file.path)}',
+                                          style: MainConfigApp.app.isSiignores
+                                              ? TextStyles.black_13_w400
+                                                  .copyWith(
+                                                      decoration: TextDecoration
+                                                          .underline)
+                                              : TextStyles.black_13_w400
+                                                  .copyWith(
+                                                      decoration: TextDecoration
+                                                          .underline,
+                                                      fontFamily: MainConfigApp
+                                                          .fontFamily4),
+                                        ),
+                                      ))
+                                  .toList(),
+                            ),
+                            SizedBox(
+                              height: 40.h,
+                            ),
+                            PrimaryBtn(
+                                width: MediaQuery.of(context).size.width,
+                                title: 'Отправить задание',
+                                onTap: () {
+                                  sendHomework(context);
+                                })
+                          ],
                           SizedBox(
                             height: 155.h,
                           ),

@@ -3,7 +3,9 @@ class MainConfigApp {
 
   static App app = App.secondApp;
 
-  static String telegram = MainConfigApp.app.isSiignores ? 'https://t.me/siignores' : 'https://t.me/burn_katrina';
+  static String telegram = MainConfigApp.app.isSiignores
+      ? 'https://t.me/siignores'
+      : 'https://t.me/burn_katrina';
 
   static String hintEmail = MainConfigApp.app.isSiignores ? 'mail@siignores.com' : 'obraztsova@mail.ru';
   static String hintFirstname = MainConfigApp.app.isSiignores ? 'Юлия' : 'Екатерина';

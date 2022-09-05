@@ -31,23 +31,23 @@ class CourseCard extends StatelessWidget {
           child: Stack(
             children: [
               Positioned(
-                bottom: 0,
-                right: 0,
-                child: Container(
-                  width: MediaQuery.of(context).size.width/2.6,
-                  child: CachedImage(
-                    height: 140.h,
-                    alignment: Alignment.bottomRight,
-                    isProfilePhoto: false,
-                    borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(14.h),
-                      topRight: Radius.circular(14.h),
-                    ),
-                    fit: BoxFit.contain,
-                    urlImage: courseEntity.image == null ? null : Config.url.url+courseEntity.image!
-                  ),
-                )
-              ),
+                  bottom: 0,
+                  right: 0,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width / 2.6,
+                    child: CachedImage(
+                        height: 140.h,
+                        alignment: Alignment.bottomRight,
+                        isProfilePhoto: false,
+                        borderRadius: BorderRadius.only(
+                          bottomRight: Radius.circular(14.h),
+                          topRight: Radius.circular(14.h),
+                        ),
+                        fit: BoxFit.contain,
+                        urlImage: courseEntity.image == null
+                            ? null
+                            : Config.url.url + courseEntity.image!),
+                  )),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
@@ -80,20 +80,20 @@ class CourseCard extends StatelessWidget {
                   bottom: 0,
                   right: 0,
                   child: Container(
-                    width: MediaQuery.of(context).size.width/2.6,
+                    width: MediaQuery.of(context).size.width / 2.6,
                     child: CachedImage(
-                      height: 140.h,
-                      alignment: Alignment.bottomRight,
-                      isProfilePhoto: false,
-                      fit: BoxFit.contain,
-                      borderRadius: BorderRadius.only(
-                        bottomRight: Radius.circular(14.h),
-                        topRight: Radius.circular(14.h),
-                      ),
-                      urlImage: courseEntity.image == null ? null : Config.url.url+courseEntity.image!
-                    ),
-                  )
-              ),
+                        height: 140.h,
+                        alignment: Alignment.bottomRight,
+                        isProfilePhoto: false,
+                        fit: BoxFit.contain,
+                        borderRadius: BorderRadius.only(
+                          bottomRight: Radius.circular(14.h),
+                          topRight: Radius.circular(14.h),
+                        ),
+                        urlImage: courseEntity.image == null
+                            ? null
+                            : Config.url.url + courseEntity.image!),
+                  )),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,

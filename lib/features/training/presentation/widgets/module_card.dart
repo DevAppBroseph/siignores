@@ -7,18 +7,22 @@ import '../../../../core/services/network/config.dart';
 import '../../../../core/widgets/image/cached_image.dart';
 import '../../domain/entities/module_enitiy.dart';
 
-
-
 class ModuleCard extends StatelessWidget {
   final Function() onTap;
   final int index;
   final ModuleEntity moduleEntity;
   final bool back;
-  const ModuleCard({Key? key,required this.back, required this.onTap, required this.moduleEntity, this.index = 1}) : super(key: key);
+  const ModuleCard(
+      {Key? key,
+      required this.back,
+      required this.onTap,
+      required this.moduleEntity,
+      this.index = 1})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if(MainConfigApp.app.isSiignores) {
+    if (MainConfigApp.app.isSiignores) {
       return GestureDetector(
         onTap: (){
           if(moduleEntity.perm){
@@ -29,51 +33,56 @@ class ModuleCard extends StatelessWidget {
           margin: EdgeInsets.fromLTRB(5.w, 0, 5.w, 10.h),
           padding: EdgeInsets.zero,
           decoration: BoxDecoration(
-            color: ColorStyles.white,
-            borderRadius: BorderRadius.circular(14.h)
-          ),
-          
+              color: ColorStyles.white,
+              borderRadius: BorderRadius.circular(14.h)),
           child: Stack(
             children: [
               back
-              ? Positioned(
-                bottom: 0,
-                right: 0,
-                top: 0,
-                left: 0,
-                child: CachedImage(
-                  height: null,
-                  isProfilePhoto: false,
-                  fit: BoxFit.cover,
-                  borderRadius: BorderRadius.circular(14.h),
-                  alignment: Alignment.bottomRight,
-                  urlImage: moduleEntity.image == null ? null : Config.url.url+moduleEntity.image!
-                ),
-              )
-              : Positioned(
-                bottom: 0,
-                right: 0,
-                child: Container(
-                    width: MediaQuery.of(context).size.width/2,
-                    child: CachedImage(
-                      height: 80.w,
-                      isProfilePhoto: false,
-                      fit: BoxFit.contain,
-                      borderRadius: BorderRadius.only(bottomRight: Radius.circular(14.h)),
-                      alignment: Alignment.bottomRight,
-                      urlImage: moduleEntity.image == null ? null : Config.url.url+moduleEntity.image!
-                    ),
-                  )
-              ),
+                  ? Positioned(
+                      bottom: 0,
+                      right: 0,
+                      top: 0,
+                      left: 0,
+                      child: CachedImage(
+                          height: null,
+                          isProfilePhoto: false,
+                          fit: BoxFit.cover,
+                          borderRadius: BorderRadius.circular(14.h),
+                          alignment: Alignment.bottomRight,
+                          urlImage: moduleEntity.image == null
+                              ? null
+                              : Config.url.url + moduleEntity.image!),
+                    )
+                  : Positioned(
+                      bottom: 0,
+                      right: 0,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width / 2,
+                        child: CachedImage(
+                            height: 80.w,
+                            isProfilePhoto: false,
+                            fit: BoxFit.contain,
+                            borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(14.h)),
+                            alignment: Alignment.bottomRight,
+                            urlImage: moduleEntity.image == null
+                                ? null
+                                : Config.url.url + moduleEntity.image!),
+                      )),
               Padding(
                 padding: EdgeInsets.fromLTRB(14.w, 22.h, 0, 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(moduleEntity.title.toUpperCase(), style: TextStyles.cormorant_black_18_w400,),
-                    Text(index.toString(), style: TextStyles.cormorant_black_41_w400,),
-                    
+                    Text(
+                      moduleEntity.title.toUpperCase(),
+                      style: TextStyles.cormorant_black_18_w400,
+                    ),
+                    Text(
+                      index.toString(),
+                      style: TextStyles.cormorant_black_41_w400,
+                    ),
                   ],
                 ),
               ),
@@ -90,7 +99,7 @@ class ModuleCard extends StatelessWidget {
           ),
         ),
       );
-    }else{
+    } else {
       return GestureDetector(
         onTap: (){
           if(moduleEntity.perm){
@@ -101,56 +110,64 @@ class ModuleCard extends StatelessWidget {
           margin: EdgeInsets.fromLTRB(9.w, 0, 9.w, 14.h),
           padding: EdgeInsets.zero,
           decoration: BoxDecoration(
-            color: ColorStyles.black2,
-            borderRadius: BorderRadius.circular(14.h)
-          ),
-          
+              color: ColorStyles.black2,
+              borderRadius: BorderRadius.circular(14.h)),
           child: Stack(
             children: [
               back
-              ? Positioned(
-                bottom: 0,
-                right: 0,
-                top: 0,
-                left: 0,
-                child: CachedImage(
-                  height: null,
-                  isProfilePhoto: false,
-                  fit: BoxFit.cover,
-                  borderRadius: BorderRadius.circular(14.h),
-                  alignment: Alignment.bottomRight,
-                  urlImage: moduleEntity.image == null ? null : Config.url.url+moduleEntity.image!
-                ),
-              )
-              : Positioned(
-                bottom: 0,
-                right: 0,
-                left: 14.w,
-                child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: CachedImage(
-                      height: 80.w,
-                      isProfilePhoto: false,
-                      fit: BoxFit.contain,
-                      borderRadius: BorderRadius.only(bottomRight: Radius.circular(14.h)),
-                      alignment: Alignment.bottomRight,
-                      urlImage: moduleEntity.image == null ? null : Config.url.url+moduleEntity.image!
-                    ),
-                  )
-              ),
+                  ? Positioned(
+                      bottom: 0,
+                      right: 0,
+                      top: 0,
+                      left: 0,
+                      child: CachedImage(
+                          height: null,
+                          isProfilePhoto: false,
+                          fit: BoxFit.cover,
+                          borderRadius: BorderRadius.circular(14.h),
+                          alignment: Alignment.bottomRight,
+                          urlImage: moduleEntity.image == null
+                              ? null
+                              : Config.url.url + moduleEntity.image!),
+                    )
+                  : Positioned(
+                      bottom: 0,
+                      right: 0,
+                      left: 14.w,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: CachedImage(
+                            height: 80.w,
+                            isProfilePhoto: false,
+                            fit: BoxFit.contain,
+                            borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(14.h)),
+                            alignment: Alignment.bottomRight,
+                            urlImage: moduleEntity.image == null
+                                ? null
+                                : Config.url.url + moduleEntity.image!),
+                      )),
               Padding(
                 padding: EdgeInsets.fromLTRB(14.w, 22.h, 0, 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(moduleEntity.title.toUpperCase(), style: MainConfigApp.app.isSiignores
-                      ? TextStyles.cormorant_black_18_w400
-                      : TextStyles.white_16_w300,),
-                    SizedBox(height: 5.h,),
-                    Text(moduleEntity.description ?? '', style: TextStyles.grey_10_w400
-                      .copyWith(color: ColorStyles.grey929292, fontFamily: MainConfigApp.fontFamily4 ),),
-                    
+                    Text(
+                      moduleEntity.title.toUpperCase(),
+                      style: MainConfigApp.app.isSiignores
+                          ? TextStyles.cormorant_black_18_w400
+                          : TextStyles.white_16_w300,
+                    ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                    Text(
+                      moduleEntity.description ?? '',
+                      style: TextStyles.grey_10_w400.copyWith(
+                          color: ColorStyles.grey929292,
+                          fontFamily: MainConfigApp.fontFamily4),
+                    ),
                   ],
                 ),
               ),
