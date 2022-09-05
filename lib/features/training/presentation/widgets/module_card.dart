@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:siignores/constants/texts/text_styles.dart';
+import 'package:siignores/core/utils/toasts.dart';
 import '../../../../constants/colors/color_styles.dart';
 import '../../../../constants/main_config_app.dart';
 import '../../../../core/services/network/config.dart';
@@ -27,6 +28,8 @@ class ModuleCard extends StatelessWidget {
         onTap: (){
           if(moduleEntity.perm){
             onTap();
+          }else{
+            showSuccessAlertToast('Модуль недоступен');
           }
         }, 
         child: Container(
@@ -104,6 +107,8 @@ class ModuleCard extends StatelessWidget {
         onTap: (){
           if(moduleEntity.perm){
             onTap();
+          }else{
+            showSuccessAlertToast('Модуль недоступен');
           }
         }, 
         child: Container(

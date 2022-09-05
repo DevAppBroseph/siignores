@@ -10,6 +10,7 @@ void showAlertToast(String msg) {
       gravity: ToastGravity.TOP,
       backgroundColor: ColorStyles.black,
       textColor: Colors.white,
+      timeInSecForIosWeb: 1,
       toastLength: Toast.LENGTH_LONG,
       fontSize: 16,);
 }
@@ -17,10 +18,10 @@ void showAlertToast(String msg) {
 void showSuccessAlertToast(String msg) {
   Fluttertoast.showToast(
       msg: '$msg',
-      timeInSecForIosWeb: 2,
+      timeInSecForIosWeb: 1,
       gravity: ToastGravity.TOP,
       backgroundColor: MainConfigApp.app.isSiignores ? ColorStyles.green_accent : ColorStyles.primary,
       textColor: MainConfigApp.app.isSiignores ? Colors.white : ColorStyles.black,
-      toastLength: Toast.LENGTH_LONG,
+      toastLength: Toast.LENGTH_SHORT,
       fontSize: 20,);
 }
