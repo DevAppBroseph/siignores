@@ -35,7 +35,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
 
 
   CalendarState errorCheck(Failure failure){
-    print('FAIL: ${failure}');
+    print('FAIL calendar: ${failure}');
     if(failure == ConnectionFailure() || failure == NetworkFailure()){
       return CalendarInternetErrorState();
     }else if(failure is ServerFailure){

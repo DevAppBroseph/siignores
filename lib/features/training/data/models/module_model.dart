@@ -4,6 +4,7 @@ class ModuleModel extends ModuleEntity{
   ModuleModel({
     required int id,
     required String title,
+    required bool perm,
     required String? description,
     required String? image,
 
@@ -11,6 +12,7 @@ class ModuleModel extends ModuleEntity{
     id: id, 
     title: title,
     image: image,
+    perm: perm,
     description: description
   );
 
@@ -18,6 +20,7 @@ class ModuleModel extends ModuleEntity{
     id: json['id'] ?? 1,
     title: json['name'],
     image: json['image'],
+    perm: json['perm'],
     description: json['description']
   );
 }

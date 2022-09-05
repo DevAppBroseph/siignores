@@ -24,7 +24,11 @@ class ModuleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     if (MainConfigApp.app.isSiignores) {
       return GestureDetector(
-        onTap: onTap,
+        onTap: (){
+          if(moduleEntity.perm){
+            onTap();
+          }
+        }, 
         child: Container(
           margin: EdgeInsets.fromLTRB(5.w, 0, 5.w, 10.h),
           padding: EdgeInsets.zero,
@@ -82,13 +86,26 @@ class ModuleCard extends StatelessWidget {
                   ],
                 ),
               ),
+              if(!moduleEntity.perm)
+              Positioned( 
+                top: 15.h,
+                right: 15.w,
+                child: Image.asset(
+                  'assets/images/lock.png',
+                  width: 20.w,
+                ) 
+              ) 
             ],
           ),
         ),
       );
     } else {
       return GestureDetector(
-        onTap: onTap,
+        onTap: (){
+          if(moduleEntity.perm){
+            onTap();
+          }
+        }, 
         child: Container(
           margin: EdgeInsets.fromLTRB(9.w, 0, 9.w, 14.h),
           padding: EdgeInsets.zero,
@@ -154,6 +171,15 @@ class ModuleCard extends StatelessWidget {
                   ],
                 ),
               ),
+              if(!moduleEntity.perm)
+              Positioned( 
+                top: 15.h,
+                right: 15.w,
+                child: Image.asset(
+                  'assets/images/lock.png',
+                  width: 20.w,
+                ) 
+              ) 
             ],
           ),
         ),

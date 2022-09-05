@@ -156,7 +156,7 @@ class _SignInViewState extends State<SignInView> {
                               }
                               return errorEmail;
                             },
-                            hint: 'mail@siignores.com',
+                            hint: MainConfigApp.hintEmail,
                             controller: emailController,
                           ),
                         ),

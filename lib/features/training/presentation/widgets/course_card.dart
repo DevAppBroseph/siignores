@@ -22,7 +22,7 @@ class CourseCard extends StatelessWidget {
       return GestureDetector(
         onTap: onTap,
         child: Container(
-          height: 140.h,
+          constraints: BoxConstraints(minHeight: 140.h),
           margin: EdgeInsets.fromLTRB(9.w, 0, 9.w, 14.h),
           padding: EdgeInsets.fromLTRB(14.w, 0, 0, 0),
           decoration: BoxDecoration(
@@ -53,12 +53,11 @@ class CourseCard extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                      padding: EdgeInsets.only(top: 22.h),
-                      width: 200.w,
-                      child: Text(
-                        courseEntity.title,
-                        style: TextStyles.cormorant_black_25_w400,
-                      )),
+                    padding: EdgeInsets.only(top: 22.h, bottom: 12.h),
+                    width: 200.w,
+                    child: Text(courseEntity.title, style: TextStyles.cormorant_black_25_w400,)
+                  ),
+                  
                 ],
               ),
             ],
@@ -69,7 +68,7 @@ class CourseCard extends StatelessWidget {
       return GestureDetector(
         onTap: onTap,
         child: Container(
-          height: 140.h,
+          constraints: BoxConstraints(minHeight: 140.h),
           margin: EdgeInsets.fromLTRB(9.w, 0, 9.w, 14.h),
           padding: EdgeInsets.fromLTRB(14.w, 0, 0, 0),
           decoration: BoxDecoration(
@@ -100,6 +99,7 @@ class CourseCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
+                    padding: EdgeInsets.only(bottom: 12.h, top: 22.h),
                     width: MediaQuery.of(context).size.width / 2,
                     child: Text(
                       courseEntity.title.toUpperCase(),

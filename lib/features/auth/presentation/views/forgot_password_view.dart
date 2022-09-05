@@ -165,7 +165,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
             padding: EdgeInsets.only(top: 32, left: 32.w, right: 32.w),
             child: DefaultTextFormField(
               title: 'E-mail',
-              hint: 'mail@siignores.com',
+              hint: MainConfigApp.hintEmail,
               controller: emailController,
               validator: (v){
                 if(RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(v ?? '')){
