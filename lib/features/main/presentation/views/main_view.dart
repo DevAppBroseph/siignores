@@ -118,14 +118,14 @@ class _MainViewState extends State<MainView> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Padding(
-                          padding: EdgeInsets.fromLTRB(5.h, 0, 5.h, 6.h),
+                          padding: EdgeInsets.fromLTRB(5.h, 0, 5.h, 2.h),
                           child: _currentView == 1
                             ? SvgPicture.asset("assets/svg/training_selected.svg",
-                              height: 30.h,
+                              height: 28.h,
                               color: MainConfigApp.app.isSiignores ? null : ColorStyles.white,
                             )
                             : SvgPicture.asset("assets/svg/training.svg",
-                              height: 30.h,
+                              height: 28.h,
                               color: MainConfigApp.app.isSiignores ? null : ColorStyles.white.withOpacity(0.9),
                             )
                         ),
