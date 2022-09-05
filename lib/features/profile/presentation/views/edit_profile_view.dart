@@ -111,7 +111,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                     ),
                     SizedBox(height: 20.h,),
                     DefaultTextFormField(
-                      hint: 'Юлия',
+                      hint: MainConfigApp.hintFirstname,
                       title: 'Имя',
                       validator: (v){
                         if((v ?? '').length > 1){
@@ -123,7 +123,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                     ),
                     SizedBox(height: 32.h,),
                     DefaultTextFormField(
-                      hint: 'Бойкова',
+                      hint: MainConfigApp.hintLastname,
                       title: 'Фамилия',
                       validator: (v){
                         if((v ?? '').length > 1){
@@ -135,7 +135,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                     ),
                     SizedBox(height: 32.h,),
                     DefaultTextFormField(
-                      hint: 'mail@siignores.com',
+                      hint: MainConfigApp.hintEmail,
                       title: 'E-mail',
                       validator: (v){
                         if(RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(v ?? '')){

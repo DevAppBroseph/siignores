@@ -161,7 +161,7 @@ class _RegisterViewState extends State<RegisterView> {
           DefaultTextFormField(
             margin: EdgeInsets.only(top: 33.h, left: 32.w, right: 32.w),
             title: 'Ваше имя',
-            hint: 'Юлия',
+            hint: MainConfigApp.hintFirstname,
             validator: (v){
               if((v ?? '').length > 1){
                 return null;
@@ -173,7 +173,7 @@ class _RegisterViewState extends State<RegisterView> {
           DefaultTextFormField(
             margin: EdgeInsets.only(top: 32.h, left: 32.w, right: 32.w),
             title: 'Ваша фамилия',
-            hint: 'Бойкова',
+            hint: MainConfigApp.hintLastname,
             validator: (v){
               if((v ?? '').length > 1){
                 return null;
@@ -185,7 +185,7 @@ class _RegisterViewState extends State<RegisterView> {
           DefaultTextFormField(
             margin: EdgeInsets.only(top: 32.h, left: 32.w, right: 32.w),
             title: 'E-mail',
-            hint: 'mail@siignores.com',
+            hint: MainConfigApp.hintEmail,
             validator: (v){
               if(RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(v ?? '')){
                 return null;

@@ -5,6 +5,10 @@ class MainConfigApp {
 
   static String telegram = MainConfigApp.app.isSiignores ? 'https://t.me/siignores' : 'https://t.me/burn_katrina';
 
+  static String hintEmail = MainConfigApp.app.isSiignores ? 'mail@siignores.com' : 'obraztsova@mail.ru';
+  static String hintFirstname = MainConfigApp.app.isSiignores ? 'Юлия' : 'Екатерина';
+  static String hintLastname = MainConfigApp.app.isSiignores ? 'Бойкова' : 'Образцова';
+
   //UI
   // static String defaultNoImage = 'assets/images/default_no_image.jpeg';
   // static String defaultNoImageUser = 'assets/images/user.png';
