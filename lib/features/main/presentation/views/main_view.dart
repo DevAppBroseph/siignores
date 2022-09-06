@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:siignores/constants/colors/color_styles.dart';
 import 'package:siignores/constants/main_config_app.dart';
+import 'package:siignores/features/chat/presentation/bloc/chat_tabs/chat_tabs_bloc.dart';
 import 'package:siignores/features/chat/presentation/views/chat_tabs_view.dart';
 import 'package:siignores/features/profile/presentation/views/profile_view.dart';
 import '../../../../constants/texts/text_styles.dart';
@@ -22,7 +23,6 @@ class _MainViewState extends State<MainView> {
   final List<Widget> _screens = [
     HomeView(),
     CoursesView(),
-    ChatTabsView(),
     ProfileView()
   ];
 
@@ -33,6 +33,9 @@ class _MainViewState extends State<MainView> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    if(context.read<ChatTabsBloc>().chatTabs.isNotEmpty){
+      _screens.insert(2, ChatTabsView());
+    }
   }
 
   @override
@@ -41,7 +44,11 @@ class _MainViewState extends State<MainView> {
       listener: (context, state) {
         if (state is MainScreenChangedState) {
           setState(() {
-            _currentView = state.currentView;
+            if(state.currentView >= _screens.length){
+              _currentView = _screens.length-1;
+            }else{
+              _currentView = state.currentView;
+            }
             _currentWidget = state.currentWidget;
           });
         }
@@ -127,43 +134,33 @@ class _MainViewState extends State<MainView> {
                     ),
                     label: 'Главная'),
                 BottomNavigationBarItem(
-                    icon: Container(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                              padding: EdgeInsets.fromLTRB(5.h, 0, 5.h, 2.h),
-                              child: _currentView == 1
-                                  ? SvgPicture.asset(
-                                      "assets/svg/training_selected.svg",
-                                      height: 28.h,
-                                      color: MainConfigApp.app.isSiignores
-                                          ? null
-                                          : ColorStyles.white,
-                                    )
-                                  : SvgPicture.asset(
-                                      "assets/svg/training.svg",
-                                      height: 28.h,
-                                      color: MainConfigApp.app.isSiignores
-                                          ? null
-                                          : ColorStyles.white.withOpacity(0.9),
-                                    )),
-                          Text('Тренинг',
-                              style: MainConfigApp.app.isSiignores
-                                  ? (_currentView == 1
-                                      ? TextStyles.black_12_w400
-                                      : TextStyles.black_12_w400.copyWith(
-                                          color: ColorStyles.black
-                                              .withOpacity(0.7)))
-                                  : (_currentView == 1
-                                      ? TextStyles.white_11_w400_ff4
-                                      : TextStyles.white_11_w400_ff4.copyWith(
-                                          color: ColorStyles.white
-                                              .withOpacity(0.7))))
-                        ],
-                      ),
+                  icon: Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(height: 5.h,),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(5.h, 0, 5.h, 3.h),
+                          child: _currentView == 1
+                            ? SvgPicture.asset("assets/svg/training_selected.svg",
+                              height: 30.h,
+                              color: MainConfigApp.app.isSiignores ? null : ColorStyles.white,
+                            )
+                            : SvgPicture.asset("assets/svg/training.svg",
+                              height: 30.h,
+                              color: MainConfigApp.app.isSiignores ? null : ColorStyles.white.withOpacity(0.9),
+                            )
+                        ),
+                        Text('Тренинг', style: MainConfigApp.app.isSiignores 
+                          ? (_currentView == 1 ? TextStyles.black_12_w400 : TextStyles.black_12_w400.copyWith(color: ColorStyles.black.withOpacity(0.7)))
+                          : (_currentView == 1 ? TextStyles.white_11_w400_ff4 : TextStyles.white_11_w400_ff4.copyWith(color: ColorStyles.white.withOpacity(0.7)))),
+                        SizedBox(height: 10.h,),
+                      ],
                     ),
-                    label: 'Тренинг'),
+                  ),
+                  label: 'Тренинг'
+                ),
+                if(context.read<ChatTabsBloc>().chatTabs.isNotEmpty)
                 BottomNavigationBarItem(
                     icon: Container(
                       child: Column(
@@ -202,41 +199,26 @@ class _MainViewState extends State<MainView> {
                     ),
                     label: 'Общение'),
                 BottomNavigationBarItem(
-                    icon: Container(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                              padding: EdgeInsets.fromLTRB(5.h, 0, 5.h, 6.h),
-                              child: _currentView == 3
-                                  ? SvgPicture.asset(
-                                      "assets/svg/profile_selected.svg",
-                                      height: 23.h,
-                                      color: MainConfigApp.app.isSiignores
-                                          ? null
-                                          : ColorStyles.white,
-                                    )
-                                  : SvgPicture.asset(
-                                      "assets/svg/profile.svg",
-                                      height: 23.h,
-                                      color: MainConfigApp.app.isSiignores
-                                          ? null
-                                          : ColorStyles.white.withOpacity(0.5),
-                                    )),
-                          Text('Профиль',
-                              style: MainConfigApp.app.isSiignores
-                                  ? (_currentView == 3
-                                      ? TextStyles.black_12_w400
-                                      : TextStyles.black_12_w400.copyWith(
-                                          color: ColorStyles.black
-                                              .withOpacity(0.7)))
-                                  : (_currentView == 3
-                                      ? TextStyles.white_11_w400_ff4
-                                      : TextStyles.white_11_w400_ff4.copyWith(
-                                          color: ColorStyles.white
-                                              .withOpacity(0.7))))
-                        ],
-                      ),
+                  icon: Container(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(5.h, 0, 5.h, 6.h),
+                          child: _currentView == _screens.length-1
+                            ? SvgPicture.asset("assets/svg/profile_selected.svg",
+                              height: 23.h,
+                              color: MainConfigApp.app.isSiignores ? null : ColorStyles.white,
+                            )
+                            : SvgPicture.asset("assets/svg/profile.svg",
+                              height: 23.h,
+                              color: MainConfigApp.app.isSiignores ? null : ColorStyles.white.withOpacity(0.5),
+                            )
+                        ),
+                        Text('Профиль', style: MainConfigApp.app.isSiignores 
+                          ? (_currentView == _screens.length-1 ? TextStyles.black_12_w400 : TextStyles.black_12_w400.copyWith(color: ColorStyles.black.withOpacity(0.7)))
+                          : (_currentView == _screens.length-1 ? TextStyles.white_11_w400_ff4 : TextStyles.white_11_w400_ff4.copyWith(color: ColorStyles.white.withOpacity(0.7))))
+                      ],
                     ),
                     label: 'Профиль'),
               ],

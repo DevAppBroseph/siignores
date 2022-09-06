@@ -6,6 +6,9 @@ import 'package:siignores/constants/texts/text_styles.dart';
 import 'package:siignores/core/utils/helpers/url_launcher.dart';
 
 import '../../../../constants/colors/color_styles.dart';
+import '../../../../locator.dart';
+import '../../../main/presentation/bloc/main_screen/main_screen_bloc.dart';
+import '../widgets/module_card.dart';
 
 enum EmptyViewType { first, second, third }
 
@@ -22,16 +25,32 @@ class TrainingEmptyView extends StatelessWidget {
         title: const Text('Тренинг'),
       ),
       body: Center(
-        child: emptyViewType == EmptyViewType.first
-            ? _buildFirstEmpty(context)
-            : emptyViewType == EmptyViewType.second
-                ? _buildSecondEmpty(context)
-                : _buildThirdEmpty(context),
-      ),
+        child: !sl<MainConfigApp>().isTelegram
+        ? _buildEmpty(context)
+        : emptyViewType == EmptyViewType.first
+          ? _buildFirstEmpty(context)
+          : emptyViewType == EmptyViewType.second
+          ? _buildSecondEmpty(context)
+          : _buildThirdEmpty(context),
+      )
     );
   }
 
-  Widget _buildFirstEmpty(BuildContext context) {
+
+
+  Widget _buildEmpty(BuildContext context){
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text('Пока нет курсов', style: MainConfigApp.app.isSiignores
+          ? TextStyles.black_17_w400
+          : TextStyles.white_18_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
+        SizedBox(height: 80.h,),
+      ],
+    );
+  }
+
+  Widget _buildFirstEmpty(BuildContext context){
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

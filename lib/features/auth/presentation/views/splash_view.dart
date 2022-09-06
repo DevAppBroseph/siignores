@@ -73,14 +73,22 @@ class _SplashViewState extends State<SplashView> {
           if (sl<AuthConfig>().authenticatedOption ==
               AuthenticatedOption.authenticated) {
             return BlocConsumer<ChatBloc, ChatState>(
-                listener: (context, state) {
-              if (state is NewNotificationState) {
-                setState(() {
-                  context
-                      .read<NotificationsBloc>()
-                      .notifications
-                      .add(state.notificationEntity);
-                });
+              listener: (context, state){
+                if(state is NewNotificationState){
+                  setState(() {
+                    context.read<NotificationsBloc>().notifications.add(state.notificationEntity);
+                  });
+                }
+              },
+              builder: (context, state) {
+                return BlocBuilder<ChatTabsBloc, ChatTabsState>(
+                  builder: (ctx, state){
+                    if(state is ChatTabsLoadingState){
+                      return SplashWidget(isLoading: true,);
+                    }
+                    return MainView();
+                  }
+                );
               }
             }, builder: (context, state) {
               return const MainView();

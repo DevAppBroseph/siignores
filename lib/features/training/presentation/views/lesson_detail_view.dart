@@ -219,7 +219,7 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                   bottom: PreferredSize(
                     preferredSize: Size.fromHeight(30.h),
                     child: Container(
-                      height: 30.h,
+                      height: 28.h,
                       decoration: BoxDecoration(
                         color: MainConfigApp.app.isSiignores
                             ? ColorStyles.backgroundColor
@@ -228,6 +228,13 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                           topLeft: Radius.circular(28.h),
                           topRight: Radius.circular(28.h),
                         ),
+                        boxShadow: [
+                          BoxShadow(
+                            offset: Offset(0, 2.h), 
+                            color: MainConfigApp.app.isSiignores ? ColorStyles.backgroundColor : ColorStyles.white2, 
+                            blurStyle: BlurStyle.solid
+                          )
+                        ]
                       ),
                     ),
                   ),
@@ -241,16 +248,16 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if (MainConfigApp.app.isSiignores)
-                            Text(
-                              'Урок ${bloc.lesson?.lessonNumber}',
-                              style: MainConfigApp.app.isSiignores
-                                  ? TextStyles.black_16_w700
-                                  : TextStyles.black_16_w300,
-                            ),
-                          if (MainConfigApp.app.isSiignores)
+                          // if (MainConfigApp.app.isSiignores)
+                          //   Text(
+                          //     'Урок ${bloc.lesson?.lessonNumber}',
+                          //     style: MainConfigApp.app.isSiignores
+                          //         ? TextStyles.black_16_w700
+                          //         : TextStyles.black_16_w300,
+                          //   ),
+                          // if (MainConfigApp.app.isSiignores)
                             SizedBox(
-                              height: 6.h,
+                              height: 8.h,
                             ),
                           Text(
                             bloc.lesson!.title,

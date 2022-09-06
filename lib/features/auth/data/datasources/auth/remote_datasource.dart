@@ -115,9 +115,20 @@ class AuthenticationRemoteDataSourceImpl
           headers: headers,
           validateStatus: (status) => status! < 501,
         ));
+    Response response2 = await dio.get(Endpoints.getConfig.getPath(params: [MainConfigApp.app.token]),
+        options: Options(
+          headers: headers,
+          validateStatus: (status) => status! < 501,
+        ));
     print('GOT USER INFO: ${response.statusCode}');
+    print('GOT APP INFO: ${response2.data}');
     printRes(response);
     if (response.statusCode == 200) {
+      if(response2.statusCode == 200){
+        print('CONFIG GOT');
+        sl<MainConfigApp>().isTelegram = response2.data['telegram'] ?? false;
+        sl<MainConfigApp>().urlToCompany = response2.data['link'];
+      }
       return UserModel.fromJson(response.data);
     } else if (response.statusCode == 401) {
       return UserModel(
