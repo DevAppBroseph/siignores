@@ -81,7 +81,14 @@ class _SplashViewState extends State<SplashView> {
                 }
               },
               builder: (context, state) {
-                return MainView();
+                return BlocBuilder<ChatTabsBloc, ChatTabsState>(
+                  builder: (ctx, state){
+                    if(state is ChatTabsLoadingState){
+                      return SplashWidget(isLoading: true,);
+                    }
+                    return MainView();
+                  }
+                );
               }
             );
           }else{

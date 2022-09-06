@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:siignores/constants/main_config_app.dart';
 import 'package:siignores/core/services/database/auth_params.dart';
+import 'package:siignores/core/utils/helpers/url_launcher.dart';
 import 'package:siignores/core/utils/toasts.dart';
 import 'package:siignores/core/widgets/loaders/overlay_loader.dart';
 import 'package:siignores/features/home/presentation/bloc/progress/progress_bloc.dart';
@@ -189,7 +190,16 @@ class _ProfileViewState extends State<ProfileView> {
                   ),
                 ),
                 SizedBox(height: 20.h,),
-                SvgPicture.asset('assets/svg/gastrosoft.svg'),
+                GestureDetector(
+                  onTap: (){
+                    if(sl<MainConfigApp>().urlToCompany != null){
+                      launchURL(sl<MainConfigApp>().urlToCompany!.contains('http') 
+                        ? sl<MainConfigApp>().urlToCompany! 
+                        : 'https://${sl<MainConfigApp>().urlToCompany!}');
+                    }
+                  },
+                  child: SvgPicture.asset('assets/svg/gastrosoft.svg')
+                ),
                 SizedBox(height: 155.h,),
               ],
             ),

@@ -8,6 +8,7 @@ import 'package:siignores/core/utils/helpers/url_launcher.dart';
 import 'package:siignores/features/training/presentation/views/lessons_view.dart';
 
 import '../../../../constants/colors/color_styles.dart';
+import '../../../../locator.dart';
 import '../../../main/presentation/bloc/main_screen/main_screen_bloc.dart';
 import '../widgets/module_card.dart';
 
@@ -29,7 +30,9 @@ class TrainingEmptyView extends StatelessWidget {
         title: Text('Тренинг'),
       ),
       body: Center(
-        child: emptyViewType == EmptyViewType.first
+        child: !sl<MainConfigApp>().isTelegram
+        ? _buildEmpty(context)
+        : emptyViewType == EmptyViewType.first
           ? _buildFirstEmpty(context)
           : emptyViewType == EmptyViewType.second
           ? _buildSecondEmpty(context)
@@ -40,7 +43,17 @@ class TrainingEmptyView extends StatelessWidget {
 
 
 
-
+  Widget _buildEmpty(BuildContext context){
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text('Пока нет курсов', style: MainConfigApp.app.isSiignores
+          ? TextStyles.black_17_w400
+          : TextStyles.white_18_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
+        SizedBox(height: 80.h,),
+      ],
+    );
+  }
 
   Widget _buildFirstEmpty(BuildContext context){
     return Column(

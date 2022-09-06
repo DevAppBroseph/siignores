@@ -11,6 +11,9 @@ class MainConfigApp {
   static String hintFirstname = MainConfigApp.app.isSiignores ? 'Юлия' : 'Екатерина';
   static String hintLastname = MainConfigApp.app.isSiignores ? 'Бойкова' : 'Образцова';
 
+  String? urlToCompany;
+  bool isTelegram = false;
+
   //UI
   // static String defaultNoImage = 'assets/images/default_no_image.jpeg';
   // static String defaultNoImageUser = 'assets/images/user.png';

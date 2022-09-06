@@ -149,32 +149,35 @@ class _HomeViewState extends State<HomeView> {
 
             SizedBox(height: 32.h,),
 
-            Container(
-              width: MediaQuery.of(context).size.width,
-              constraints: BoxConstraints(minHeight: 400.h),
-              padding: EdgeInsets.only(bottom: 120.h),
-              decoration: BoxDecoration(
-                color: ColorStyles.white,
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(28.h), topRight: Radius.circular(28.h))
-              ),
+            BlocConsumer<CalendarBloc, CalendarState>(
+              listener: (context, state){
+                if(state is CalendarErrorState){
+                  showAlertToast(state.message);
+                }
+                if(state is CalendarInternetErrorState){
+                  context.read<AuthBloc>().add(InternetErrorEvent());
+                }
+              },
+              builder: (context, state){
+                if(state is CalendarInitialState || state is CalendarLoadingState){
+                  return Center(
+                    child: LoaderV1(),
+                  );
+                }
+                if(state is GotSuccessCalendarState && calendarBloc.tasks.isEmpty){
+                  return SizedBox.shrink();
+                }
+                
+                return Container(
+                  width: MediaQuery.of(context).size.width,
+                  constraints: BoxConstraints(minHeight: 400.h),
+                  padding: EdgeInsets.only(bottom: 120.h),
+                  decoration: BoxDecoration(
+                    color: ColorStyles.white,
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(28.h), topRight: Radius.circular(28.h))
+                  ),
 
-              child: BlocConsumer<CalendarBloc, CalendarState>(
-                listener: (context, state){
-                  if(state is CalendarErrorState){
-                    showAlertToast(state.message);
-                  }
-                  if(state is CalendarInternetErrorState){
-                    context.read<AuthBloc>().add(InternetErrorEvent());
-                  }
-                },
-                builder: (context, state){
-                  if(state is CalendarInitialState || state is CalendarLoadingState){
-                    return Center(
-                      child: LoaderV1(),
-                    );
-                  }
-                  
-                  return Column(
+                  child: Column(
                     children: [
                       SizedBox(height: 22.h,),
                       Padding(
@@ -305,9 +308,9 @@ class _HomeViewState extends State<HomeView> {
                               : TextStyles.black_15_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
                       )
                     ],
-                  );
-                },
-              )
+                  )
+                );
+              },
             ),
           ],
         ),

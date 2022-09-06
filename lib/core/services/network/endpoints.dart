@@ -44,8 +44,11 @@ enum Endpoints {
   
   getCalendar,
   progress,
-  notifications
+  notifications,
 
+
+  //Config
+  getConfig
 }
 
 extension EndpointsExtension on Endpoints {
@@ -103,6 +106,8 @@ extension EndpointsExtension on Endpoints {
         return "$url/course/student_calendar/";
       case Endpoints.notifications:
         return "$url/notifications/";
+      case Endpoints.getConfig:
+        return "$url/course/get_settings/?app_token=${params![0]}";
       default:
         return '';
     }
