@@ -640,8 +640,8 @@ class _LessonDetailViewState extends State<LessonDetailView> {
               width: 12.w,
             ),
             Text(
-              truncateWithEllipsisLast(
-                    32, Uri.decodeFull(file.file.replaceAll(RegExp('/media/'), ''))),
+                Uri.decodeQueryComponent(truncateWithEllipsisLast(
+                    32, file.file.replaceAll(RegExp('/media/'), ''))),
                 style: MainConfigApp.app.isSiignores
                     ? TextStyles.black_13_w400
                         .copyWith(decoration: TextDecoration.underline)

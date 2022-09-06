@@ -40,6 +40,7 @@ class LessonsBloc extends Bloc<LessonsEvent, LessonsState> {
               data[i].isOpen = false;
             }
           }
+          data[i].isOpen = true;
 
           lessons.add(data[i]);
         }
