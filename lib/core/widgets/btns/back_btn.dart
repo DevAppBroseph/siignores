@@ -6,9 +6,6 @@ import 'package:siignores/constants/main_config_app.dart';
 
 import '../../../constants/colors/color_styles.dart';
 
-
-
-
 class BackBtn extends StatelessWidget {
   final Function() onTap;
   const BackBtn({Key? key, required this.onTap}) : super(key: key);
@@ -17,14 +14,15 @@ class BackBtn extends StatelessWidget {
   Widget build(BuildContext context) {
     return Bounce(
       onPressed: onTap,
-      duration: Duration(milliseconds: 110),
+      duration: const Duration(milliseconds: 110),
       child: Container(
         width: 40.w,
         height: 40.w,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(40),
-          color: MainConfigApp.app.isSiignores ? ColorStyles.white : ColorStyles.black2
-        ),
+            borderRadius: BorderRadius.circular(40),
+            color: MainConfigApp.app.isSiignores
+                ? ColorStyles.white
+                : ColorStyles.black2),
         alignment: Alignment.center,
         child: SvgPicture.asset(
           'assets/svg/back.svg',
@@ -34,7 +32,3 @@ class BackBtn extends StatelessWidget {
     );
   }
 }
-
-
-
-

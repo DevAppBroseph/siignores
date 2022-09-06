@@ -15,7 +15,7 @@ import '../widgets/module_card.dart';
 
 class TrainingView extends StatelessWidget {
   final int courseId;
-  TrainingView({required this.courseId});
+  const TrainingView({Key? key, required this.courseId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class TrainingView extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
             elevation: 1.h,
-            title: Text('Тренинг'),
+            title: const Text('Тренинг'),
             leading: BackAppbarBtn(
               onTap: () =>
                   context.read<MainScreenBloc>().add(ChangeViewEvent(view: 1)),

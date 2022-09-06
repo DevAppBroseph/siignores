@@ -40,21 +40,23 @@ void main() async {
     sound: true,
   );
 
-  print('key is ' + (await FirebaseMessaging.instance.getToken()).toString());
+  print('key is ${await FirebaseMessaging.instance.getToken()}');
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitDown,
     DeviceOrientation.portraitUp,
   ]);
   setupInjections();
-  runApp(MyApp());
+  runApp(const MyApp());
   initializeDateFormatting('ru');
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: Size(375, 812),
+      designSize: const Size(375, 812),
       builder: (context, _) => MultiBlocProvider(
         providers: [
           BlocProvider(create: (_) => sl<AuthBloc>()),

@@ -6,23 +6,20 @@ enum Endpoints {
   register,
   activationCode,
   setPassword,
-    //Login and user
+  //Login and user
   login,
   logout,
   deleteUser,
   getUserInfo,
-  
 
   //Forgot password
   sendCodeForResetPassword,
   verifyCodeForResetPassword,
   resetPassword,
 
-
   //Profile
   updateProfileInfo,
   updateAvatar,
-
 
   //Training
   getCourses,
@@ -37,15 +34,12 @@ enum Endpoints {
 
   chatWS,
 
-
-
   //Home
   getOffers,
-  
+
   getCalendar,
   progress,
   notifications
-
 }
 
 extension EndpointsExtension on Endpoints {
@@ -134,11 +128,10 @@ extension EndpointsExtension on Endpoints {
   Uri buildURL(
       {Map<String, dynamic>? queryParameters, List<dynamic>? urlParams}) {
     var url = Uri(
-        scheme: this.scheme,
-        host: this.hostName,
-        path: this.getPath(params: urlParams),
+        scheme: scheme,
+        host: hostName,
+        path: getPath(params: urlParams),
         queryParameters: queryParameters ?? {});
     return url;
   }
 }
-

@@ -46,8 +46,8 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, String?>> setPassword(SetPasswordParams params) async {
     if (await networkInfo.isConnected) {
       try {
-        final token =
-            await remoteDataSource.setPassword(params.email, params.password, params.fcmToken);
+        final token = await remoteDataSource.setPassword(
+            params.email, params.password, params.fcmToken);
         if (token != null) {
           localDataSource.saveToken(token);
         }
@@ -67,8 +67,8 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Either<Failure, String>> authSignIn(AuthSignParams params) async {
     if (await networkInfo.isConnected) {
       try {
-        String token =
-            await remoteDataSource.login(params.email, params.password, params.fcmToken);
+        String token = await remoteDataSource.login(
+            params.email, params.password, params.fcmToken);
         bool isSavedToken = await localDataSource.saveToken(token);
         if (isSavedToken) {
           return Right(token);
@@ -122,7 +122,7 @@ class AuthRepositoryImpl implements AuthRepository {
       bool isDeletedToken = await localDataSource.deleteToken();
       remoteDataSource.logout();
       if (isDeletedToken) {
-        return Right(true);
+        return const Right(true);
       } else {
         return Left(CacheFailure());
       }

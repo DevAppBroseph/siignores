@@ -23,7 +23,7 @@ class RegisterParams extends Equatable {
   final String lastName;
   final String fcmToken;
 
-  RegisterParams({
+  const RegisterParams({
     required this.email,
     required this.firstName,
     required this.lastName,

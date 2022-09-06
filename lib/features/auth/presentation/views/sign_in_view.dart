@@ -87,7 +87,8 @@ class _SignInViewState extends State<SignInView> {
                       children: [
                         Image(
                             width: MediaQuery.of(context).size.width * 0.9,
-                            image: AssetImage('assets/images/back_login.png')),
+                            image: const AssetImage(
+                                'assets/images/back_login.png')),
                         Positioned(
                             top: 0,
                             left: 0,
@@ -106,7 +107,7 @@ class _SignInViewState extends State<SignInView> {
                               decoration: BoxDecoration(
                                 gradient: RadialGradient(
                                   colors: [
-                                    Color.fromRGBO(240, 238, 236, 0.2),
+                                    const Color.fromRGBO(240, 238, 236, 0.2),
                                     ColorStyles.backgroundColor
                                   ],
                                 ),
@@ -187,10 +188,12 @@ class _SignInViewState extends State<SignInView> {
                               borderRadius: BorderRadius.circular(5),
                               onTap: () {
                                 Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ForgotPasswordView()));
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ForgotPasswordView(),
+                                  ),
+                                );
                               },
                               child: Text(
                                 'Забыли пароль?',
@@ -228,9 +231,11 @@ class _SignInViewState extends State<SignInView> {
                           child: InkWell(
                             borderRadius: BorderRadius.circular(5),
                             onTap: () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => RegisterView())),
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const RegisterView(),
+                              ),
+                            ),
                             child: Text(
                               'Зарегистрируйтесь',
                               style: MainConfigApp.app.isSiignores

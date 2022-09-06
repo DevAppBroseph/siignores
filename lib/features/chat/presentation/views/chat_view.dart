@@ -20,8 +20,6 @@ import '../../../../locator.dart';
 import '../../../auth/presentation/bloc/auth/auth_bloc.dart';
 import '../widgets/chat_message_item_from_current_user.dart';
 
-
-
 class ChatView extends StatefulWidget {
   final ChatTabEntity chatTabEntity;
 
@@ -31,9 +29,7 @@ class ChatView extends StatefulWidget {
   State<ChatView> createState() => _ChatViewState();
 }
 
-
 class _ChatViewState extends State<ChatView> {
-
   TextEditingController messageController = TextEditingController();
   bool isLoading = true;
   ScrollController scrollController = ScrollController();
@@ -43,15 +39,16 @@ class _ChatViewState extends State<ChatView> {
     // TODO: implement initState
     super.initState();
     context.read<ChatBloc>().add(GetChatEvent(id: widget.chatTabEntity.id));
-
   }
 
-  void sendMessage() async{
-    if(messageController.text.trim().length > 0){
+  void sendMessage() async {
+    if (messageController.text.trim().length > 0) {
       setState(() {
         isLoading = true;
       });
-      context.read<ChatBloc>().add(SendMessageEvent(chatId: widget.chatTabEntity.id, message: messageController.text.trim()));
+      context.read<ChatBloc>().add(SendMessageEvent(
+          chatId: widget.chatTabEntity.id,
+          message: messageController.text.trim()));
       messageController.clear();
     }
   }
@@ -63,228 +60,276 @@ class _ChatViewState extends State<ChatView> {
   @override
   Widget build(BuildContext context) {
     ChatBloc bloc = context.read<ChatBloc>();
-    
+
     return Scaffold(
       appBar: AppBar(
-        elevation: 1.h,
-        title: GestureDetector(
-          onTap: (){
-            if(bloc.chatRoom.users.isNotEmpty && bloc.currentChatId == widget.chatTabEntity.id){
-              showModalGroupUsers(context, bloc.chatRoom.users);
-            }
-          },
-          behavior: HitTestBehavior.translucent,
-          child: Column(
-            children: [
-              Text(widget.chatTabEntity.chatName, style: MainConfigApp.app.isSiignores 
-                ? TextStyles.title_app_bar
-                : TextStyles.title_app_bar2,),
-              Text('${widget.chatTabEntity.usersCount} участников', style: MainConfigApp.app.isSiignores
-                ? TextStyles.black_13_w400
-                : TextStyles.white_13_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
-            ],
+          elevation: 1.h,
+          title: GestureDetector(
+            onTap: () {
+              if (bloc.chatRoom.users.isNotEmpty &&
+                  bloc.currentChatId == widget.chatTabEntity.id) {
+                showModalGroupUsers(context, bloc.chatRoom.users);
+              }
+            },
+            behavior: HitTestBehavior.translucent,
+            child: Column(
+              children: [
+                Text(
+                  widget.chatTabEntity.chatName,
+                  style: MainConfigApp.app.isSiignores
+                      ? TextStyles.title_app_bar
+                      : TextStyles.title_app_bar2,
+                ),
+                Text(
+                  '${widget.chatTabEntity.usersCount} участников',
+                  style: MainConfigApp.app.isSiignores
+                      ? TextStyles.black_13_w400
+                      : TextStyles.white_13_w400
+                          .copyWith(fontFamily: MainConfigApp.fontFamily4),
+                ),
+              ],
+            ),
           ),
-        ),
-        leading: BackAppbarBtn(
-          onTap: () => Navigator.pop(context),
-        )
-      ),
+          leading: BackAppbarBtn(
+            onTap: () => Navigator.pop(context),
+          )),
       body: Stack(
         children: [
-          Container(
-            height: MediaQuery.of(context).size.height,
-            child: BlocConsumer<ChatBloc, ChatState>(
-              listener: (context, state){
-                if(state is ChatErrorState){
-                  Loader.hide();
-                  showAlertToast(state.message);
-                }
+          SizedBox(
+              height: MediaQuery.of(context).size.height,
+              child: BlocConsumer<ChatBloc, ChatState>(
+                listener: (context, state) {
+                  if (state is ChatErrorState) {
+                    Loader.hide();
+                    showAlertToast(state.message);
+                  }
 
-                if(state is ChatInternetErrorState){
-                  context.read<AuthBloc>().add(InternetErrorEvent());
-                }
-                if(state is GotSuccessChatState){
-                  setState(() {
-                    isLoading = false;
-                  });
-                  Future.delayed(Duration(milliseconds: 10), (){
-                    if(bloc.chatRoom.messages.isNotEmpty){
-                      scrollToBottom();
-                    }
-                  });
-                }
-                if(state is ChatSetStateState){
-                  setState(() {
-                    isLoading = false;
-                  });
-                  scrollToBottom();
-                }
-              },
-              builder: (context, state){
-                if(state is ChatInitialState || state is ChatLoadingState){
-                  return  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      LoaderV1(),
-                      SizedBox(height: 75.h,)
-                    ],
-                  );
-                }
-
-                if(bloc.chatRoom.messages.isEmpty){
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text('Напишите что нибудь', style: MainConfigApp.app.isSiignores
-                        ? TextStyles.black_15_w700
-                        : TextStyles.white_15_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
-                      SizedBox(height: 75.h, width: MediaQuery.of(context).size.width,)
-                    ],
-                  );
-                }
-
-                return SingleChildScrollView(
-                  controller: scrollController,
-                  child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 18.w),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(height: 56.h-7.h,),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: bloc.chatRoom.messages.length,
-                        itemBuilder: (context, i){
-                          return i == 0 
-                            || bloc.chatRoom.messages[i].time.year != bloc.chatRoom.messages[i-1].time.year
-                            || bloc.chatRoom.messages[i].time.month != bloc.chatRoom.messages[i-1].time.month
-                            || bloc.chatRoom.messages[i].time.day != bloc.chatRoom.messages[i-1].time.day
-                          ? Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SizedBox(height: 7.h,),
-                              Text(DateFormat('dd MMMM yyyy', 'ru').format(bloc.chatRoom.messages[i == 0 ? 0 : i].time), style: MainConfigApp.app.isSiignores
-                                ? TextStyles.black_13_w400
-                                : TextStyles.white_13_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
-                              SizedBox(height: 27.h,),
-                              _buildMessage(context, bloc.chatRoom.messages[i])
-                            ],
-                          )
-                          : _buildMessage(context, bloc.chatRoom.messages[i]);
-                        }
-                      ),
-                      SizedBox(height: 155.h)
-                    ],
-                  ),
-                ),
-              );
-              },
-            )
-          ),
-
-
-
-
-          Positioned(
-            bottom: 0,
-            right: 0,
-            left: 0,
-            child: Container(
-              height: 105.h,
-              alignment: Alignment.topCenter,
-              padding: EdgeInsets.fromLTRB(20.w, 20.h, 24.w, 0),
-              decoration: BoxDecoration(
-                color: MainConfigApp.app.isSiignores ? ColorStyles.white : ColorStyles.black2,
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(15.w),
-                  topLeft: Radius.circular(15.w),
-                ),
-              ),
-              child: Row(
-                children: [
-                  SvgPicture.asset(
-                    'assets/svg/chat_clip.svg',
-                    color: MainConfigApp.app.isSiignores ? null : ColorStyles.white,
-                  ),
-                  SizedBox(width: 15.w,),
-                  Expanded(
-                    child: TextFormField(
-                      controller: messageController,
-                      style: MainConfigApp.app.isSiignores
-                        ? TextStyles.black_14_w400
-                        : TextStyles.white_14_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),
-                      decoration: InputDecoration(
-                        hintStyle: MainConfigApp.app.isSiignores
-                        ? TextStyles.black_14_w400.copyWith(color: ColorStyles.black.withOpacity(0.4))
-                        : TextStyles.white_14_w400.copyWith(fontFamily: MainConfigApp.fontFamily4, color: ColorStyles.white.withOpacity(0.4)),
-                        hintText: 'Написать сообщение...',
-                        contentPadding: EdgeInsets.symmetric(horizontal: 19.w, vertical: 17.h),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(11.w),
-                          borderSide: BorderSide(
-                            width: 1.w,
-                            color: MainConfigApp.app.isSiignores ? ColorStyles.black.withOpacity(0.1) : ColorStyles.white.withOpacity(0.1)
-                          )
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(11.w),
-                          borderSide: BorderSide(
-                            width: 1.w,
-                            color: MainConfigApp.app.isSiignores ? ColorStyles.black.withOpacity(0.1) : ColorStyles.white.withOpacity(0.1)
-                          )
-                        ),
-                        suffixIcon: GestureDetector(
-                          onTap: sendMessage,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 7.w),
-                            child: SvgPicture.asset(
-                              MainConfigApp.app.isSiignores ? 'assets/svg/send_btn.svg' : 'assets/svg/send_btn2.svg',
-                            ),
-                          ),
+                  if (state is ChatInternetErrorState) {
+                    context.read<AuthBloc>().add(InternetErrorEvent());
+                  }
+                  if (state is GotSuccessChatState) {
+                    setState(() {
+                      isLoading = false;
+                    });
+                    Future.delayed(const Duration(milliseconds: 10), () {
+                      if (bloc.chatRoom.messages.isNotEmpty) {
+                        scrollToBottom();
+                      }
+                    });
+                  }
+                  if (state is ChatSetStateState) {
+                    setState(() {
+                      isLoading = false;
+                    });
+                    scrollToBottom();
+                  }
+                },
+                builder: (context, state) {
+                  if (state is ChatInitialState || state is ChatLoadingState) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        LoaderV1(),
+                        SizedBox(
+                          height: 75.h,
                         )
+                      ],
+                    );
+                  }
+
+                  if (bloc.chatRoom.messages.isEmpty) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Напишите что нибудь',
+                          style: MainConfigApp.app.isSiignores
+                              ? TextStyles.black_15_w700
+                              : TextStyles.white_15_w400.copyWith(
+                                  fontFamily: MainConfigApp.fontFamily4),
+                        ),
+                        SizedBox(
+                          height: 75.h,
+                          width: MediaQuery.of(context).size.width,
+                        )
+                      ],
+                    );
+                  }
+
+                  return SingleChildScrollView(
+                    controller: scrollController,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 18.w),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 56.h - 7.h,
+                          ),
+                          ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: bloc.chatRoom.messages.length,
+                              itemBuilder: (context, i) {
+                                return i == 0 ||
+                                        bloc.chatRoom.messages[i].time.year !=
+                                            bloc.chatRoom.messages[i - 1].time
+                                                .year ||
+                                        bloc.chatRoom.messages[i].time.month !=
+                                            bloc.chatRoom.messages[i - 1].time
+                                                .month ||
+                                        bloc.chatRoom.messages[i].time.day !=
+                                            bloc.chatRoom.messages[i - 1].time
+                                                .day
+                                    ? Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          SizedBox(
+                                            height: 7.h,
+                                          ),
+                                          Text(
+                                            DateFormat('dd MMMM yyyy', 'ru')
+                                                .format(bloc
+                                                    .chatRoom
+                                                    .messages[i == 0 ? 0 : i]
+                                                    .time),
+                                            style: MainConfigApp.app.isSiignores
+                                                ? TextStyles.black_13_w400
+                                                : TextStyles.white_13_w400
+                                                    .copyWith(
+                                                        fontFamily:
+                                                            MainConfigApp
+                                                                .fontFamily4),
+                                          ),
+                                          SizedBox(
+                                            height: 27.h,
+                                          ),
+                                          _buildMessage(context,
+                                              bloc.chatRoom.messages[i])
+                                        ],
+                                      )
+                                    : _buildMessage(
+                                        context, bloc.chatRoom.messages[i]);
+                              }),
+                          SizedBox(height: 155.h)
+                        ],
                       ),
                     ),
-                  )
-                ],
-              )
-            )
-          ),
-
-          if(isLoading)
+                  );
+                },
+              )),
           Positioned(
-            bottom: 0,
-            right: 0,
-            left: 0,
-            child: Container(
-              height: 105.h,
-              decoration: BoxDecoration(
-                color: MainConfigApp.app.isSiignores ? ColorStyles.white.withOpacity(0.5) : ColorStyles.black2.withOpacity(0.4),
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(15.w),
-                  topLeft: Radius.circular(15.w),
-                ),
-              ),
-            )
-          )
+              bottom: 0,
+              right: 0,
+              left: 0,
+              child: Container(
+                  height: 105.h,
+                  alignment: Alignment.topCenter,
+                  padding: EdgeInsets.fromLTRB(20.w, 20.h, 24.w, 0),
+                  decoration: BoxDecoration(
+                    color: MainConfigApp.app.isSiignores
+                        ? ColorStyles.white
+                        : ColorStyles.black2,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(15.w),
+                      topLeft: Radius.circular(15.w),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      SvgPicture.asset(
+                        'assets/svg/chat_clip.svg',
+                        color: MainConfigApp.app.isSiignores
+                            ? null
+                            : ColorStyles.white,
+                      ),
+                      SizedBox(
+                        width: 15.w,
+                      ),
+                      Expanded(
+                        child: TextFormField(
+                          controller: messageController,
+                          style: MainConfigApp.app.isSiignores
+                              ? TextStyles.black_14_w400
+                              : TextStyles.white_14_w400.copyWith(
+                                  fontFamily: MainConfigApp.fontFamily4),
+                          decoration: InputDecoration(
+                              hintStyle: MainConfigApp.app.isSiignores
+                                  ? TextStyles.black_14_w400.copyWith(
+                                      color: ColorStyles.black.withOpacity(0.4))
+                                  : TextStyles.white_14_w400.copyWith(
+                                      fontFamily: MainConfigApp.fontFamily4,
+                                      color:
+                                          ColorStyles.white.withOpacity(0.4)),
+                              hintText: 'Написать сообщение...',
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 19.w, vertical: 17.h),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(11.w),
+                                  borderSide: BorderSide(
+                                      width: 1.w,
+                                      color: MainConfigApp.app.isSiignores
+                                          ? ColorStyles.black.withOpacity(0.1)
+                                          : ColorStyles.white
+                                              .withOpacity(0.1))),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(11.w),
+                                  borderSide: BorderSide(
+                                      width: 1.w,
+                                      color: MainConfigApp.app.isSiignores
+                                          ? ColorStyles.black.withOpacity(0.1)
+                                          : ColorStyles.white
+                                              .withOpacity(0.1))),
+                              suffixIcon: GestureDetector(
+                                onTap: sendMessage,
+                                child: Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 7.w),
+                                  child: SvgPicture.asset(
+                                    MainConfigApp.app.isSiignores
+                                        ? 'assets/svg/send_btn.svg'
+                                        : 'assets/svg/send_btn2.svg',
+                                  ),
+                                ),
+                              )),
+                        ),
+                      )
+                    ],
+                  ))),
+          if (isLoading)
+            Positioned(
+                bottom: 0,
+                right: 0,
+                left: 0,
+                child: Container(
+                  height: 105.h,
+                  decoration: BoxDecoration(
+                    color: MainConfigApp.app.isSiignores
+                        ? ColorStyles.white.withOpacity(0.5)
+                        : ColorStyles.black2.withOpacity(0.4),
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(15.w),
+                      topLeft: Radius.circular(15.w),
+                    ),
+                  ),
+                ))
         ],
       ),
     );
   }
 
-
-
-  Widget _buildMessage(BuildContext context, ChatMessageEntity chatMessageEntity){
+  Widget _buildMessage(
+      BuildContext context, ChatMessageEntity chatMessageEntity) {
     return Container(
-      margin: EdgeInsets.only(bottom: 20.h),
-      child: chatMessageEntity.from.id == sl<AuthConfig>().userEntity!.id
-        ? ChatMessageItemFromCurrentUser(
-          chatMessage: chatMessageEntity,
-        )
-        : ChatMessageItemFromAnotherUser(
-          chatMessage: chatMessageEntity,
-        )
-    );
+        margin: EdgeInsets.only(bottom: 20.h),
+        child: chatMessageEntity.from.id == sl<AuthConfig>().userEntity!.id
+            ? ChatMessageItemFromCurrentUser(
+                chatMessage: chatMessageEntity,
+              )
+            : ChatMessageItemFromAnotherUser(
+                chatMessage: chatMessageEntity,
+              ));
   }
 }

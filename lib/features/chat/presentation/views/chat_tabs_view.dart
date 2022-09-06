@@ -11,87 +11,104 @@ import '../../../../core/widgets/loaders/loader_v1.dart';
 import '../../../auth/presentation/bloc/auth/auth_bloc.dart';
 import 'chat_view.dart';
 
-
-
 class ChatTabsView extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     ChatTabsBloc bloc = context.read<ChatTabsBloc>();
     return Scaffold(
-      appBar: AppBar(
-        elevation: 1.h,
-        title: Text('Общение'),
-      ),
-      body: BlocConsumer<ChatTabsBloc, ChatTabsState>(
-        listener: (context, state){
-          if(state is ChatTabsErrorState){
-            Loader.hide();
-            showAlertToast(state.message);
-          }
+        appBar: AppBar(
+          elevation: 1.h,
+          title: const Text('Общение'),
+        ),
+        body: BlocConsumer<ChatTabsBloc, ChatTabsState>(
+          listener: (context, state) {
+            if (state is ChatTabsErrorState) {
+              Loader.hide();
+              showAlertToast(state.message);
+            }
 
-          if(state is ChatTabsInternetErrorState){
-            context.read<AuthBloc>().add(InternetErrorEvent());
-          }
-        },
-        builder: (context, state){
-          if(state is ChatTabsInitialState || state is ChatTabsLoadingState){
-            return  Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                LoaderV1(),
-                SizedBox(height: 75.h,)
-              ],
-            );
-          }
-          if(state is GotSuccessChatTabsState){
-            if(bloc.chatTabs.isEmpty){
+            if (state is ChatTabsInternetErrorState) {
+              context.read<AuthBloc>().add(InternetErrorEvent());
+            }
+          },
+          builder: (context, state) {
+            if (state is ChatTabsInitialState ||
+                state is ChatTabsLoadingState) {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text('У вас пока нет переписок', style: MainConfigApp.app.isSiignores
-                    ? TextStyles.black_15_w700
-                    : TextStyles.white_15_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
-                  SizedBox(height: 75.h, width: MediaQuery.of(context).size.width,)
+                  LoaderV1(),
+                  SizedBox(
+                    height: 75.h,
+                  )
                 ],
               );
             }
-            return SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(height: 24.h,),
-                  Text('Вы состоите в ${bloc.chatTabs.length} ${bloc.chatTabs.length == 1 ? 'группе' : 'группах'}', style: MainConfigApp.app.isSiignores
-                    ? TextStyles.black_15_w700
-                    : TextStyles.white_15_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
-                  SizedBox(height: 26.h,),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: bloc.chatTabs.length,
-                    itemBuilder: (context, i){
-                      return Container(
-                        margin: EdgeInsets.only(bottom: 9.h),
-                        child: ChatCard(
-                          chatTabEntity: bloc.chatTabs[i],
-                          onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => ChatView(
-                              chatTabEntity: bloc.chatTabs[i],
-                            )));
-                          },
-                        )
-                      );
-                    }
-                  ),
-                  SizedBox(height: 30.h,),
-                ],
-              ),
-            );
-          }
-          return Container();
-        },
-      )
-    );
+            if (state is GotSuccessChatTabsState) {
+              if (bloc.chatTabs.isEmpty) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'У вас пока нет переписок',
+                      style: MainConfigApp.app.isSiignores
+                          ? TextStyles.black_15_w700
+                          : TextStyles.white_15_w400
+                              .copyWith(fontFamily: MainConfigApp.fontFamily4),
+                    ),
+                    SizedBox(
+                      height: 75.h,
+                      width: MediaQuery.of(context).size.width,
+                    )
+                  ],
+                );
+              }
+              return SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 24.h,
+                    ),
+                    Text(
+                      'Вы состоите в ${bloc.chatTabs.length} ${bloc.chatTabs.length == 1 ? 'группе' : 'группах'}',
+                      style: MainConfigApp.app.isSiignores
+                          ? TextStyles.black_15_w700
+                          : TextStyles.white_15_w400
+                              .copyWith(fontFamily: MainConfigApp.fontFamily4),
+                    ),
+                    SizedBox(
+                      height: 26.h,
+                    ),
+                    ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: bloc.chatTabs.length,
+                        itemBuilder: (context, i) {
+                          return Container(
+                              margin: EdgeInsets.only(bottom: 9.h),
+                              child: ChatCard(
+                                chatTabEntity: bloc.chatTabs[i],
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => ChatView(
+                                                chatTabEntity: bloc.chatTabs[i],
+                                              )));
+                                },
+                              ));
+                        }),
+                    SizedBox(
+                      height: 30.h,
+                    ),
+                  ],
+                ),
+              );
+            }
+            return Container();
+          },
+        ));
   }
 }

@@ -19,8 +19,6 @@ class MainView extends StatefulWidget {
 }
 
 class _MainViewState extends State<MainView> {
-
-
   final List<Widget> _screens = [
     HomeView(),
     CoursesView(),
@@ -40,14 +38,14 @@ class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<MainScreenBloc, MainScreenState>(
-      listener: (context, state){
-        if(state is MainScreenChangedState){
+      listener: (context, state) {
+        if (state is MainScreenChangedState) {
           setState(() {
             _currentView = state.currentView;
             _currentWidget = state.currentWidget;
           });
         }
-        if(state is MainScreenSetStateState){
+        if (state is MainScreenSetStateState) {
           setState(() {});
         }
       },
@@ -67,7 +65,7 @@ class _MainViewState extends State<MainView> {
                 color: Colors.grey.withOpacity(0.11),
                 spreadRadius: 1,
                 blurRadius: 1,
-                offset: Offset(0, -1), // changes position of shadow
+                offset: const Offset(0, -1), // changes position of shadow
               ),
             ],
           ),
@@ -77,116 +75,170 @@ class _MainViewState extends State<MainView> {
               topLeft: Radius.circular(15.w),
             ),
             child: BottomNavigationBar(
-              backgroundColor: MainConfigApp.app.isSiignores ? ColorStyles.white : ColorStyles.black2,
+              backgroundColor: MainConfigApp.app.isSiignores
+                  ? ColorStyles.white
+                  : ColorStyles.black2,
               onTap: (int index) {
-                context.read<MainScreenBloc>().add(ChangeViewEvent(view: index));
+                context
+                    .read<MainScreenBloc>()
+                    .add(ChangeViewEvent(view: index));
               },
               currentIndex: _currentView,
-
               type: BottomNavigationBarType.fixed,
               showSelectedLabels: false,
               showUnselectedLabels: false,
               items: <BottomNavigationBarItem>[
                 BottomNavigationBarItem(
-                  icon: Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(5.h, 0, 5.h, 6.h),
-                          child: _currentView == 0 
-                            ? SvgPicture.asset("assets/svg/home_selected.svg",
-                              height: 23.h,
-                              color: MainConfigApp.app.isSiignores ? null : ColorStyles.white,
-                            )
-                            : SvgPicture.asset("assets/svg/home.svg",
-                              height: 23.h,
-                              color: MainConfigApp.app.isSiignores ? null : ColorStyles.white.withOpacity(0.5),
-                            )
-                        ),
-                        Text('Главная', style: MainConfigApp.app.isSiignores 
-                          ? (_currentView == 0 ? TextStyles.black_12_w400 : TextStyles.black_12_w400.copyWith(color: ColorStyles.black.withOpacity(0.7)))
-                          : (_currentView == 0 ? TextStyles.white_11_w400_ff4 : TextStyles.white_11_w400_ff4.copyWith(color: ColorStyles.white.withOpacity(0.7))))
-                      ],
+                    icon: Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                              padding: EdgeInsets.fromLTRB(5.h, 0, 5.h, 6.h),
+                              child: _currentView == 0
+                                  ? SvgPicture.asset(
+                                      "assets/svg/home_selected.svg",
+                                      height: 23.h,
+                                      color: MainConfigApp.app.isSiignores
+                                          ? null
+                                          : ColorStyles.white,
+                                    )
+                                  : SvgPicture.asset(
+                                      "assets/svg/home.svg",
+                                      height: 23.h,
+                                      color: MainConfigApp.app.isSiignores
+                                          ? null
+                                          : ColorStyles.white.withOpacity(0.5),
+                                    )),
+                          Text('Главная',
+                              style: MainConfigApp.app.isSiignores
+                                  ? (_currentView == 0
+                                      ? TextStyles.black_12_w400
+                                      : TextStyles.black_12_w400.copyWith(
+                                          color: ColorStyles.black
+                                              .withOpacity(0.7)))
+                                  : (_currentView == 0
+                                      ? TextStyles.white_11_w400_ff4
+                                      : TextStyles.white_11_w400_ff4.copyWith(
+                                          color: ColorStyles.white
+                                              .withOpacity(0.7))))
+                        ],
+                      ),
                     ),
-                  ),
-                  label: 'Главная'
-                ),
+                    label: 'Главная'),
                 BottomNavigationBarItem(
-                  icon: Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(5.h, 0, 5.h, 2.h),
-                          child: _currentView == 1
-                            ? SvgPicture.asset("assets/svg/training_selected.svg",
-                              height: 28.h,
-                              color: MainConfigApp.app.isSiignores ? null : ColorStyles.white,
-                            )
-                            : SvgPicture.asset("assets/svg/training.svg",
-                              height: 28.h,
-                              color: MainConfigApp.app.isSiignores ? null : ColorStyles.white.withOpacity(0.9),
-                            )
-                        ),
-                        Text('Тренинг', style: MainConfigApp.app.isSiignores 
-                          ? (_currentView == 1 ? TextStyles.black_12_w400 : TextStyles.black_12_w400.copyWith(color: ColorStyles.black.withOpacity(0.7)))
-                          : (_currentView == 1 ? TextStyles.white_11_w400_ff4 : TextStyles.white_11_w400_ff4.copyWith(color: ColorStyles.white.withOpacity(0.7))))
-                      ],
+                    icon: Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                              padding: EdgeInsets.fromLTRB(5.h, 0, 5.h, 2.h),
+                              child: _currentView == 1
+                                  ? SvgPicture.asset(
+                                      "assets/svg/training_selected.svg",
+                                      height: 28.h,
+                                      color: MainConfigApp.app.isSiignores
+                                          ? null
+                                          : ColorStyles.white,
+                                    )
+                                  : SvgPicture.asset(
+                                      "assets/svg/training.svg",
+                                      height: 28.h,
+                                      color: MainConfigApp.app.isSiignores
+                                          ? null
+                                          : ColorStyles.white.withOpacity(0.9),
+                                    )),
+                          Text('Тренинг',
+                              style: MainConfigApp.app.isSiignores
+                                  ? (_currentView == 1
+                                      ? TextStyles.black_12_w400
+                                      : TextStyles.black_12_w400.copyWith(
+                                          color: ColorStyles.black
+                                              .withOpacity(0.7)))
+                                  : (_currentView == 1
+                                      ? TextStyles.white_11_w400_ff4
+                                      : TextStyles.white_11_w400_ff4.copyWith(
+                                          color: ColorStyles.white
+                                              .withOpacity(0.7))))
+                        ],
+                      ),
                     ),
-                  ),
-                  label: 'Тренинг'
-                ),
+                    label: 'Тренинг'),
                 BottomNavigationBarItem(
-                  icon: Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(5.h, 0, 5.h, 6.h),
-                          child: _currentView == 2 
-                            ? SvgPicture.asset(MainConfigApp.app.isSiignores ? "assets/svg/chat_selected.svg" : "assets/svg/chat_selected_white.svg",
-                              height: 23.h,
-                            )
-                            : SvgPicture.asset("assets/svg/chat.svg",
-                              height: 23.h,
-                              color: MainConfigApp.app.isSiignores ? null : ColorStyles.white.withOpacity(0.9),
-                            )
-                        ),
-                        Text('Общение', style: MainConfigApp.app.isSiignores 
-                          ? (_currentView == 2 ? TextStyles.black_12_w400 : TextStyles.black_12_w400.copyWith(color: ColorStyles.black.withOpacity(0.7)))
-                          : (_currentView == 2 ? TextStyles.white_11_w400_ff4 : TextStyles.white_11_w400_ff4.copyWith(color: ColorStyles.white.withOpacity(0.7))))
-                      ],
+                    icon: Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                              padding: EdgeInsets.fromLTRB(5.h, 0, 5.h, 6.h),
+                              child: _currentView == 2
+                                  ? SvgPicture.asset(
+                                      MainConfigApp.app.isSiignores
+                                          ? "assets/svg/chat_selected.svg"
+                                          : "assets/svg/chat_selected_white.svg",
+                                      height: 23.h,
+                                    )
+                                  : SvgPicture.asset(
+                                      "assets/svg/chat.svg",
+                                      height: 23.h,
+                                      color: MainConfigApp.app.isSiignores
+                                          ? null
+                                          : ColorStyles.white.withOpacity(0.9),
+                                    )),
+                          Text('Общение',
+                              style: MainConfigApp.app.isSiignores
+                                  ? (_currentView == 2
+                                      ? TextStyles.black_12_w400
+                                      : TextStyles.black_12_w400.copyWith(
+                                          color: ColorStyles.black
+                                              .withOpacity(0.7)))
+                                  : (_currentView == 2
+                                      ? TextStyles.white_11_w400_ff4
+                                      : TextStyles.white_11_w400_ff4.copyWith(
+                                          color: ColorStyles.white
+                                              .withOpacity(0.7))))
+                        ],
+                      ),
                     ),
-                  ),
-                  label: 'Общение'
-                ),
+                    label: 'Общение'),
                 BottomNavigationBarItem(
-                  icon: Container(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(5.h, 0, 5.h, 6.h),
-                          child: _currentView == 3
-                            ? SvgPicture.asset("assets/svg/profile_selected.svg",
-                              height: 23.h,
-                              color: MainConfigApp.app.isSiignores ? null : ColorStyles.white,
-                            )
-                            : SvgPicture.asset("assets/svg/profile.svg",
-                              height: 23.h,
-                              color: MainConfigApp.app.isSiignores ? null : ColorStyles.white.withOpacity(0.5),
-                            )
-                        ),
-                        Text('Профиль', style: MainConfigApp.app.isSiignores 
-                          ? (_currentView == 3 ? TextStyles.black_12_w400 : TextStyles.black_12_w400.copyWith(color: ColorStyles.black.withOpacity(0.7)))
-                          : (_currentView == 3 ? TextStyles.white_11_w400_ff4 : TextStyles.white_11_w400_ff4.copyWith(color: ColorStyles.white.withOpacity(0.7))))
-                      ],
+                    icon: Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                              padding: EdgeInsets.fromLTRB(5.h, 0, 5.h, 6.h),
+                              child: _currentView == 3
+                                  ? SvgPicture.asset(
+                                      "assets/svg/profile_selected.svg",
+                                      height: 23.h,
+                                      color: MainConfigApp.app.isSiignores
+                                          ? null
+                                          : ColorStyles.white,
+                                    )
+                                  : SvgPicture.asset(
+                                      "assets/svg/profile.svg",
+                                      height: 23.h,
+                                      color: MainConfigApp.app.isSiignores
+                                          ? null
+                                          : ColorStyles.white.withOpacity(0.5),
+                                    )),
+                          Text('Профиль',
+                              style: MainConfigApp.app.isSiignores
+                                  ? (_currentView == 3
+                                      ? TextStyles.black_12_w400
+                                      : TextStyles.black_12_w400.copyWith(
+                                          color: ColorStyles.black
+                                              .withOpacity(0.7)))
+                                  : (_currentView == 3
+                                      ? TextStyles.white_11_w400_ff4
+                                      : TextStyles.white_11_w400_ff4.copyWith(
+                                          color: ColorStyles.white
+                                              .withOpacity(0.7))))
+                        ],
+                      ),
                     ),
-                  ),
-                  label: 'Профиль'
-                ),
-                    
+                    label: 'Профиль'),
               ],
             ),
           ),

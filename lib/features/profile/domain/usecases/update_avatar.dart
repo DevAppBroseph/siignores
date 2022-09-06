@@ -18,7 +18,7 @@ class UpdateAvatar implements UseCase<bool, UpdateAvatarParams> {
 
 class UpdateAvatarParams extends Equatable {
   final File file;
-  UpdateAvatarParams({required this.file});
+  const UpdateAvatarParams({required this.file});
 
   @override
   List<Object> get props => [file];

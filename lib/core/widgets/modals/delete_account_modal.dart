@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:siignores/constants/colors/color_styles.dart';
 import 'package:siignores/constants/main_config_app.dart';
 import 'package:siignores/core/widgets/btns/close_modal_btn.dart';
@@ -36,38 +35,35 @@ class DeleteAccountModal {
                   children: [
                     SizedBox(height: 28.h),
                     Text(
-                      MainConfigApp.app.isSiignores ? 'Аккаунт' : 'Аккаунт'.toUpperCase(),
-                      style: MainConfigApp.app.isSiignores 
-                        ? TextStyles.black_26_w700
-                        : TextStyles.black_26_w300,
-                      textAlign: TextAlign.center
-                    ),
+                        MainConfigApp.app.isSiignores
+                            ? 'Аккаунт'
+                            : 'Аккаунт'.toUpperCase(),
+                        style: MainConfigApp.app.isSiignores
+                            ? TextStyles.black_26_w700
+                            : TextStyles.black_26_w300,
+                        textAlign: TextAlign.center),
                     SizedBox(height: 23.h),
-                    Text(
-                      'Вы действительно хотите удалить свой аккаунт?',
-                      style: MainConfigApp.app.isSiignores 
-                        ? TextStyles.black_16_w400
-                        : TextStyles.black_16_w400.copyWith(fontFamily: MainConfigApp.fontFamily4, color: ColorStyles.black2.withOpacity(0.6)),
-                      textAlign: TextAlign.center
-                    ),
+                    Text('Вы действительно хотите удалить свой аккаунт?',
+                        style: MainConfigApp.app.isSiignores
+                            ? TextStyles.black_16_w400
+                            : TextStyles.black_16_w400.copyWith(
+                                fontFamily: MainConfigApp.fontFamily4,
+                                color: ColorStyles.black2.withOpacity(0.6)),
+                        textAlign: TextAlign.center),
                     SizedBox(height: 23.h),
                     PrimaryBtn(
-                      title: 'Удалить',
-                      width: MediaQuery.of(context).size.width, 
-                      onTap: onDelete
-                    )
+                        title: 'Удалить',
+                        width: MediaQuery.of(context).size.width,
+                        onTap: onDelete)
                   ],
                 ),
               ),
               Positioned(
-                top: 16.h,
-                right: 16.h,
-                child: CloseModalBtn(
-                  onTap: (){
+                  top: 16.h,
+                  right: 16.h,
+                  child: CloseModalBtn(onTap: () {
                     Navigator.pop(context);
-                  }
-                )
-              )
+                  }))
             ],
           ),
         );

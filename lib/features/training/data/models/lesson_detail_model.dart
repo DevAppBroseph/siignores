@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 import '../../domain/entities/lesson_detail_entity.dart';
 
 class LessonDetailModel extends LessonDetailEntity {
@@ -12,22 +14,23 @@ class LessonDetailModel extends LessonDetailEntity {
     required String? status,
     required String? video,
     required String? backImage,
+    required List<TeacherAnswer>? teacherAnswers,
     required List<TimeOfVideo> times,
     required List<LessonFile> files,
   }) : super(
-          id: id,
-          title: title,
-          image: image,
-          moduleId: moduleId,
-          text: text,
-          question: question,
-          video: video,
-          times: times,
-          files: files,
-          backImage: backImage,
-          lessonNumber: lessonNumber,
-          status: status
-        );
+            id: id,
+            title: title,
+            image: image,
+            moduleId: moduleId,
+            text: text,
+            question: question,
+            video: video,
+            times: times,
+            files: files,
+            backImage: backImage,
+            teacherAnswer: teacherAnswers,
+            lessonNumber: lessonNumber,
+            status: status);
 
   factory LessonDetailModel.fromJson(Map<String, dynamic> json) =>
       LessonDetailModel(
@@ -44,6 +47,11 @@ class LessonDetailModel extends LessonDetailEntity {
           files: (json['lessonfiles_set'] as List)
               .map((json) => LessonFile.fromJson(json))
               .toList(),
+          teacherAnswers: json['review'] != null
+              ? (json['review'] as List)
+                  .map((json) => TeacherAnswer.fromJson(json))
+                  .toList()
+              : null,
           times: (json['timer_set'] as List)
               .map((json) => TimeOfVideo.fromJson(json))
               .toList());
@@ -81,5 +89,20 @@ class TimeOfVideo {
         minute: int.parse(json['time'].split(":")[1]),
         second: int.parse(json['time'].split(":")[2]),
         text: json['text'],
+      );
+}
+
+class TeacherAnswer {
+  final String comment;
+  final DateTime time;
+
+  TeacherAnswer({
+    required this.comment,
+    required this.time,
+  });
+
+  factory TeacherAnswer.fromJson(Map<String, dynamic> json) => TeacherAnswer(
+        comment: json['review'],
+        time: DateFormat("yyyy-MM-ddThh:mm:ss").parse(json["datetime"], true),
       );
 }

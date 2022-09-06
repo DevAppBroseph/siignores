@@ -10,29 +10,30 @@ class PrimaryBtn extends StatelessWidget {
   final String title;
   final Function() onTap;
   final double? width;
-  const PrimaryBtn({
-    Key? key,
-    required this.title,
-    required this.onTap,
-    this.width
-  }) : super(key: key);
+  const PrimaryBtn(
+      {Key? key, required this.title, required this.onTap, this.width})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Bounce(
-      duration: Duration(milliseconds: 110),
+      duration: const Duration(milliseconds: 110),
       onPressed: onTap,
       child: Container(
         width: width ?? 311.w,
         height: 44.h,
         decoration: BoxDecoration(
-          color: ColorStyles.primary,
-          borderRadius: MainConfigApp.app.isSiignores ? BorderRadius.circular(50.w) : BorderRadius.circular(8.w)
-        ),
+            color: ColorStyles.primary,
+            borderRadius: MainConfigApp.app.isSiignores
+                ? BorderRadius.circular(50.w)
+                : BorderRadius.circular(8.w)),
         alignment: Alignment.center,
-        child: Text(MainConfigApp.app.isSiignores ? title : title.toUpperCase(), style: MainConfigApp.app.isSiignores 
-          ? TextStyles.black_16_w700
-          : TextStyles.black_15_w400,),
+        child: Text(
+          MainConfigApp.app.isSiignores ? title : title.toUpperCase(),
+          style: MainConfigApp.app.isSiignores
+              ? TextStyles.black_16_w700
+              : TextStyles.black_15_w400,
+        ),
       ),
     );
   }

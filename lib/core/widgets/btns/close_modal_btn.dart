@@ -6,9 +6,6 @@ import 'package:siignores/constants/main_config_app.dart';
 
 import '../../../constants/colors/color_styles.dart';
 
-
-
-
 class CloseModalBtn extends StatelessWidget {
   final Function() onTap;
   const CloseModalBtn({Key? key, required this.onTap}) : super(key: key);
@@ -17,14 +14,15 @@ class CloseModalBtn extends StatelessWidget {
   Widget build(BuildContext context) {
     return Bounce(
       onPressed: onTap,
-      duration: Duration(milliseconds: 110),
+      duration: const Duration(milliseconds: 110),
       child: Container(
         width: 40.h,
         height: 40.h,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(50),
-          color: MainConfigApp.app.isSiignores ? ColorStyles.grey_f1f1f1 : ColorStyles.lilac2
-        ),
+            borderRadius: BorderRadius.circular(50),
+            color: MainConfigApp.app.isSiignores
+                ? ColorStyles.grey_f1f1f1
+                : ColorStyles.lilac2),
         alignment: Alignment.center,
         child: SvgPicture.asset('assets/svg/close_modal.svg'),
       ),

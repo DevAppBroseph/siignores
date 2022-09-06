@@ -6,7 +6,8 @@ import 'package:video_player/video_player.dart';
 class VideoView extends StatefulWidget {
   final String url;
   final Duration? duration;
-  VideoView({required this.url, required this.duration});
+  const VideoView({Key? key, required this.url, required this.duration})
+      : super(key: key);
 
   @override
   _VideoViewState createState() => _VideoViewState();
@@ -20,18 +21,18 @@ class _VideoViewState extends State<VideoView> {
     super.initState();
     print('VIDEO: ${widget.url}');
     flickManager = FlickManager(
-      videoPlayerController: VideoPlayerController.network(widget.url)
-    );
+        videoPlayerController: VideoPlayerController.network(widget.url));
 
     seekTo(widget.duration);
   }
 
-  seekTo(Duration? duration) async{
-    await Future.delayed(Duration(seconds: 1));
-    if(widget.duration != null){
-     setState(() {
-        flickManager.flickVideoManager!.videoPlayerController!.seekTo(Duration(seconds: 5));
-     });
+  seekTo(Duration? duration) async {
+    await Future.delayed(const Duration(seconds: 1));
+    if (widget.duration != null) {
+      setState(() {
+        flickManager.flickVideoManager!.videoPlayerController!
+            .seekTo(const Duration(seconds: 5));
+      });
     }
   }
 
@@ -40,7 +41,6 @@ class _VideoViewState extends State<VideoView> {
     flickManager.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +52,9 @@ class _VideoViewState extends State<VideoView> {
           onTap: () => Navigator.pop(context),
           child: Row(
             children: [
-              SizedBox(width: 20.w,),
+              SizedBox(
+                width: 20.w,
+              ),
               Icon(
                 Icons.close,
                 color: Colors.white,
@@ -68,19 +70,21 @@ class _VideoViewState extends State<VideoView> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
+            SizedBox(
               child: FlickVideoPlayer(
                 flickManager: flickManager,
-                flickVideoWithControls: FlickVideoWithControls(
+                flickVideoWithControls: const FlickVideoWithControls(
                   closedCaptionTextStyle: TextStyle(fontSize: 8),
                   controls: FlickPortraitControls(),
                 ),
-                flickVideoWithControlsFullscreen: FlickVideoWithControls(
+                flickVideoWithControlsFullscreen: const FlickVideoWithControls(
                   controls: FlickLandscapeControls(),
                 ),
               ),
             ),
-            SizedBox(height: 70.h,)
+            SizedBox(
+              height: 70.h,
+            )
           ],
         ),
       ),

@@ -14,9 +14,7 @@ import '../../../home/presentation/bloc/notifications/notifications_bloc.dart';
 import '../../../home/presentation/bloc/progress/progress_bloc.dart';
 import '../bloc/auth/auth_bloc.dart';
 
-
 class SplashView extends StatefulWidget {
-
   @override
   _SplashViewState createState() => _SplashViewState();
 }
@@ -29,30 +27,30 @@ class _SplashViewState extends State<SplashView> {
     context.read<AuthBloc>().add(CheckUserLoggedEvent());
   }
 
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) async {
-        if(state is RequiredGetUserInfoState){
+        if (state is RequiredGetUserInfoState) {
           Loader.hide();
           context.read<AuthBloc>().add(GetUserInfoEvent());
         }
-        if(state is RequiredCheckState){
+        if (state is RequiredCheckState) {
           context.read<AuthBloc>().add(CheckUserLoggedEvent());
         }
 
-        if(state is ErrorState){
+        if (state is ErrorState) {
           Loader.hide();
           showAlertToast(state.message);
           // context.read<AuthBloc>().add(ServerErrorEvent());
         }
 
-        if(state is InternetErrorState){
+        if (state is InternetErrorState) {
           context.read<AuthBloc>().add(InternetErrorEvent());
         }
-        if(state is CheckedState){
-          if(sl<AuthConfig>().authenticatedOption == AuthenticatedOption.authenticated){
+        if (state is CheckedState) {
+          if (sl<AuthConfig>().authenticatedOption ==
+              AuthenticatedOption.authenticated) {
             context.read<ProgressBloc>().add(GetProgressEvent());
             context.read<ChatTabsBloc>().add(GetChatTabsEvent());
             context.read<NotificationsBloc>().add(GetNotificationsEvent());
@@ -60,7 +58,6 @@ class _SplashViewState extends State<SplashView> {
           }
         }
       },
-      
       builder: (context, state) {
         //Error screens
         // if(state is InternetErrorState){
@@ -69,22 +66,26 @@ class _SplashViewState extends State<SplashView> {
         // if(state is ServerErrorState){
         //   return ServerConnectErrorView();
         // }
-        
-        if(state is CheckedState || state is BlankState || state is ErrorState){
-          if(sl<AuthConfig>().authenticatedOption == AuthenticatedOption.authenticated){
+
+        if (state is CheckedState ||
+            state is BlankState ||
+            state is ErrorState) {
+          if (sl<AuthConfig>().authenticatedOption ==
+              AuthenticatedOption.authenticated) {
             return BlocConsumer<ChatBloc, ChatState>(
-              listener: (context, state){
-                if(state is NewNotificationState){
-                  setState(() {
-                    context.read<NotificationsBloc>().notifications.add(state.notificationEntity);
-                  });
-                }
-              },
-              builder: (context, state) {
-                return MainView();
+                listener: (context, state) {
+              if (state is NewNotificationState) {
+                setState(() {
+                  context
+                      .read<NotificationsBloc>()
+                      .notifications
+                      .add(state.notificationEntity);
+                });
               }
-            );
-          }else{
+            }, builder: (context, state) {
+              return const MainView();
+            });
+          } else {
             return SignInView();
           }
         }
@@ -93,9 +94,7 @@ class _SplashViewState extends State<SplashView> {
       },
     );
   }
-
 }
-
 
 class SplashWidget extends StatelessWidget {
   final isLoading;
@@ -106,7 +105,10 @@ class SplashWidget extends StatelessWidget {
     return Scaffold(
       backgroundColor: ColorStyles.primary,
       body: Center(
-        child: Text('Loading', style: TextStyles.title_app_bar,),
+        child: Text(
+          'Loading',
+          style: TextStyles.title_app_bar,
+        ),
       ),
     );
   }

@@ -25,13 +25,13 @@ class ModuleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     if (MainConfigApp.app.isSiignores) {
       return GestureDetector(
-        onTap: (){
-          if(moduleEntity.perm){
+        onTap: () {
+          if (moduleEntity.perm) {
             onTap();
-          }else{
+          } else {
             showSuccessAlertToast('Модуль недоступен');
           }
-        }, 
+        },
         child: Container(
           margin: EdgeInsets.fromLTRB(5.w, 0, 5.w, 10.h),
           padding: EdgeInsets.zero,
@@ -59,19 +59,22 @@ class ModuleCard extends StatelessWidget {
                   : Positioned(
                       bottom: 0,
                       right: 0,
-                      child: Container(
+                      child: SizedBox(
                         width: MediaQuery.of(context).size.width / 2,
                         child: CachedImage(
-                            height: 80.w,
-                            isProfilePhoto: false,
-                            fit: BoxFit.contain,
-                            borderRadius: BorderRadius.only(
-                                bottomRight: Radius.circular(14.h)),
-                            alignment: Alignment.bottomRight,
-                            urlImage: moduleEntity.image == null
-                                ? null
-                                : Config.url.url + moduleEntity.image!),
-                      )),
+                          height: 80.w,
+                          isProfilePhoto: false,
+                          fit: BoxFit.contain,
+                          borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(14.h),
+                          ),
+                          alignment: Alignment.bottomRight,
+                          urlImage: moduleEntity.image == null
+                              ? null
+                              : Config.url.url + moduleEntity.image!,
+                        ),
+                      ),
+                    ),
               Padding(
                 padding: EdgeInsets.fromLTRB(14.w, 22.h, 0, 0),
                 child: Column(
@@ -89,28 +92,27 @@ class ModuleCard extends StatelessWidget {
                   ],
                 ),
               ),
-              if(!moduleEntity.perm)
-              Positioned( 
-                top: 15.h,
-                right: 15.w,
-                child: Image.asset(
-                  'assets/images/lock.png',
-                  width: 20.w,
-                ) 
-              ) 
+              if (!moduleEntity.perm)
+                Positioned(
+                    top: 15.h,
+                    right: 15.w,
+                    child: Image.asset(
+                      'assets/images/lock.png',
+                      width: 20.w,
+                    ))
             ],
           ),
         ),
       );
     } else {
       return GestureDetector(
-        onTap: (){
-          if(moduleEntity.perm){
+        onTap: () {
+          if (moduleEntity.perm) {
             onTap();
-          }else{
+          } else {
             showSuccessAlertToast('Модуль недоступен');
           }
-        }, 
+        },
         child: Container(
           margin: EdgeInsets.fromLTRB(9.w, 0, 9.w, 14.h),
           padding: EdgeInsets.zero,
@@ -139,19 +141,22 @@ class ModuleCard extends StatelessWidget {
                       bottom: 0,
                       right: 0,
                       left: 14.w,
-                      child: Container(
+                      child: SizedBox(
                         width: MediaQuery.of(context).size.width,
                         child: CachedImage(
-                            height: 80.w,
-                            isProfilePhoto: false,
-                            fit: BoxFit.contain,
-                            borderRadius: BorderRadius.only(
-                                bottomRight: Radius.circular(14.h)),
-                            alignment: Alignment.bottomRight,
-                            urlImage: moduleEntity.image == null
-                                ? null
-                                : Config.url.url + moduleEntity.image!),
-                      )),
+                          height: 80.w,
+                          isProfilePhoto: false,
+                          fit: BoxFit.contain,
+                          borderRadius: BorderRadius.only(
+                            bottomRight: Radius.circular(14.h),
+                          ),
+                          alignment: Alignment.bottomRight,
+                          urlImage: moduleEntity.image == null
+                              ? null
+                              : Config.url.url + moduleEntity.image!,
+                        ),
+                      ),
+                    ),
               Padding(
                 padding: EdgeInsets.fromLTRB(14.w, 22.h, 0, 0),
                 child: Column(
@@ -176,15 +181,14 @@ class ModuleCard extends StatelessWidget {
                   ],
                 ),
               ),
-              if(!moduleEntity.perm)
-              Positioned( 
-                top: 15.h,
-                right: 15.w,
-                child: Image.asset(
-                  'assets/images/lock.png',
-                  width: 20.w,
-                ) 
-              ) 
+              if (!moduleEntity.perm)
+                Positioned(
+                    top: 15.h,
+                    right: 15.w,
+                    child: Image.asset(
+                      'assets/images/lock.png',
+                      width: 20.w,
+                    ))
             ],
           ),
         ),

@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'dart:math';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
@@ -128,7 +128,7 @@ class _LessonDetailViewState extends State<LessonDetailView> {
         return Stack(
           children: [
             CustomScrollView(
-              physics: ClampingScrollPhysics(),
+              physics: const ClampingScrollPhysics(),
               slivers: [
                 SliverAppBar(
                   collapsedHeight: 100.h,
@@ -150,29 +150,35 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Bounce(
-                                duration: Duration(microseconds: 110),
+                                duration: const Duration(microseconds: 110),
                                 onPressed: () {
                                   Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              VideoView(
-                                                url: Config.url.url +
-                                                    bloc.lesson!.video!,
-                                                duration: null,
-                                              )));
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          VideoView(
+                                        url: Config.url.url +
+                                            bloc.lesson!.video!,
+                                        duration: null,
+                                      ),
+                                    ),
+                                  );
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
-                                      color: MainConfigApp.app.isSiignores
-                                          ? ColorStyles.white.withOpacity(0.5)
-                                          : ColorStyles.primary,
-                                      borderRadius: BorderRadius.circular(
-                                          MainConfigApp.app.isSiignores
-                                              ? 40.h
-                                              : 8.h)),
+                                    color: MainConfigApp.app.isSiignores
+                                        ? ColorStyles.white.withOpacity(0.5)
+                                        : ColorStyles.primary,
+                                    borderRadius: BorderRadius.circular(
+                                      MainConfigApp.app.isSiignores
+                                          ? 40.h
+                                          : 8.h,
+                                    ),
+                                  ),
                                   padding: EdgeInsets.symmetric(
-                                      horizontal: 15.w, vertical: 14.h),
+                                    horizontal: 15.w,
+                                    vertical: 14.h,
+                                  ),
                                   child: Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
@@ -500,6 +506,76 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                                   .toList(),
                             ),
                           ],
+                          if (bloc.lesson!.teacherAnswer != null) ...[
+                            SizedBox(
+                              height: 35.h,
+                            ),
+                            Text(
+                              'Комментарии преподавателя',
+                              style: MainConfigApp.app.isSiignores
+                                  ? TextStyles.black_18_w700
+                                  : TextStyles.black_18_w300,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: bloc.lesson!.teacherAnswer!
+                                  .map(
+                                    (answer) => SizedBox(
+                                      child: ListTile(
+                                        // leading: Container(
+                                        //   height: 25,
+                                        //   width: 25,
+                                        //   decoration: BoxDecoration(
+                                        //     shape: BoxShape.circle,
+                                        //     color: ColorStyles.backgroundColor,
+                                        //   ),
+                                        //   child: const Center(
+                                        //     child: Text(
+                                        //       answer.hashCode.toString(),
+                                        //       style: TextStyle(
+                                        //           color: Colors.white),
+                                        //     ),
+                                        //   ),
+                                        // ),
+                                        subtitle: Text(
+                                          DateFormat(
+                                            "dd MMMM, HH:mm",
+                                            'RU',
+                                          ).format(answer.time.toLocal()),
+                                          style: MainConfigApp.app.isSiignores
+                                              ? TextStyles.black_14_w400
+                                                  .copyWith(
+                                                  height: 1.75.h,
+                                                  color: Colors.grey[500],
+                                                )
+                                              : TextStyles.black_14_w300
+                                                  .copyWith(
+                                                  height: 1.75.h,
+                                                  fontFamily:
+                                                      MainConfigApp.fontFamily4,
+                                                  color: Colors.grey[500],
+                                                ),
+                                        ),
+                                        title: Text(
+                                          answer.comment,
+                                          style: MainConfigApp.app.isSiignores
+                                              ? TextStyles.black_14_w400
+                                                  .copyWith(
+                                                  height: 1.75.h,
+                                                )
+                                              : TextStyles.black_14_w300
+                                                  .copyWith(
+                                                  height: 1.75.h,
+                                                  fontFamily:
+                                                      MainConfigApp.fontFamily4,
+                                                ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                            ),
+                          ],
                           if ((bloc.lesson!.status == null ||
                                   bloc.lesson!.status == 'failed') &&
                               (bloc.lesson?.question != 'null' &&
@@ -640,14 +716,20 @@ class _LessonDetailViewState extends State<LessonDetailView> {
               width: 12.w,
             ),
             Text(
-                Uri.decodeQueryComponent(truncateWithEllipsisLast(
-                    32, file.file.replaceAll(RegExp('/media/'), ''))),
-                style: MainConfigApp.app.isSiignores
-                    ? TextStyles.black_13_w400
-                        .copyWith(decoration: TextDecoration.underline)
-                    : TextStyles.black_13_w400.copyWith(
-                        decoration: TextDecoration.underline,
-                        fontFamily: MainConfigApp.fontFamily4))
+              truncateWithEllipsisLast(
+                32,
+                Uri.decodeFull(
+                  file.file.replaceAll(RegExp('/media/'), ''),
+                ),
+              ),
+              style: MainConfigApp.app.isSiignores
+                  ? TextStyles.black_13_w400
+                      .copyWith(decoration: TextDecoration.underline)
+                  : TextStyles.black_13_w400.copyWith(
+                      decoration: TextDecoration.underline,
+                      fontFamily: MainConfigApp.fontFamily4,
+                    ),
+            ),
           ],
         ),
       ),

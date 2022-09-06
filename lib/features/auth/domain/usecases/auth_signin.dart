@@ -22,7 +22,8 @@ class AuthSignParams extends Equatable {
   final String password;
   final String fcmToken;
 
-  AuthSignParams({required this.email, required this.password, required this.fcmToken});
+  const AuthSignParams(
+      {required this.email, required this.password, required this.fcmToken});
 
   @override
   List<Object> get props => [email, password];

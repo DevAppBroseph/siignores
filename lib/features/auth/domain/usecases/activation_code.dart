@@ -21,7 +21,7 @@ class ActivationCodeParams extends Equatable {
   final String email;
   final String code;
 
-  ActivationCodeParams({required this.email, required this.code});
+  const ActivationCodeParams({required this.email, required this.code});
 
   @override
   List<Object> get props => [email, code];

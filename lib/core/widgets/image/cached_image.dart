@@ -11,13 +11,18 @@ class CachedImage extends StatelessWidget {
   final bool? isProfilePhoto;
   final BoxFit fit;
   final Alignment? alignment;
-  CachedImage({this.alignment, this.borderRadius, required this.height, required this.urlImage, required this.isProfilePhoto, this.fit = BoxFit.cover});
-
+  const CachedImage(
+      {this.alignment,
+      this.borderRadius,
+      required this.height,
+      required this.urlImage,
+      required this.isProfilePhoto,
+      this.fit = BoxFit.cover});
 
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
-      imageUrl: urlImage == null ? '' :  urlImage!,
+      imageUrl: urlImage == null ? '' : urlImage!,
       imageBuilder: (context, imageProvider) => ClipRRect(
         borderRadius: borderRadius ?? BorderRadius.circular(0),
         child: Image(
@@ -28,40 +33,42 @@ class CachedImage extends StatelessWidget {
           image: imageProvider,
         ),
       ),
-      placeholder: (context, url) => isProfilePhoto == null || isProfilePhoto! 
-      ? Container(
-        height: height,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          borderRadius: borderRadius,
-          color: ColorStyles.backgroundColor,
-        ),
-        child: Center(
-          child: LoadingAnimationWidget.fallingDot(
-            color: ColorStyles.primary,
-            size: 35,
-          ),
-        ),
-      ) : SizedBox.shrink(),
+      placeholder: (context, url) => isProfilePhoto == null || isProfilePhoto!
+          ? Container(
+              height: height,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: borderRadius,
+                color: ColorStyles.backgroundColor,
+              ),
+              child: Center(
+                child: LoadingAnimationWidget.fallingDot(
+                  color: ColorStyles.primary,
+                  size: 35,
+                ),
+              ),
+            )
+          : const SizedBox.shrink(),
       errorWidget: (context, url, error) => ClipRRect(
         borderRadius: borderRadius,
         child: isProfilePhoto == null
-        ? Image(
-          height: height,
-          width: MediaQuery.of(context).size.width,
-          fit: BoxFit.cover,
-          image: AssetImage('assets/images/nophoto.png'),
-        ) 
-        : isProfilePhoto!
-        ? Image(
-          height: height,
-          width: MediaQuery.of(context).size.width,
-          fit: BoxFit.cover,
-          image: AssetImage('assets/images/profile.jpeg'),
-        ) : Container(
-          height: height,
-          width: MediaQuery.of(context).size.width,
-        ) 
+            ? Image(
+                height: height,
+                width: MediaQuery.of(context).size.width,
+                fit: BoxFit.cover,
+                image: const AssetImage('assets/images/nophoto.png'),
+              )
+            : isProfilePhoto!
+                ? Image(
+                    height: height,
+                    width: MediaQuery.of(context).size.width,
+                    fit: BoxFit.cover,
+                    image: const AssetImage('assets/images/profile.jpeg'),
+                  )
+                : SizedBox(
+                    height: height,
+                    width: MediaQuery.of(context).size.width,
+                  ),
       ),
     );
   }

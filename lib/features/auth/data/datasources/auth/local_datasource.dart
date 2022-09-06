@@ -1,4 +1,3 @@
-
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../../../../../core/services/database/consts.dart';
 
@@ -6,21 +5,19 @@ abstract class AuthenticationLocalDataSource {
   Future<bool> saveToken(String token);
   Future<bool> deleteToken();
   Future<String?> getToken();
-
 }
-
 
 class AuthenticationLocalDataSourceImpl
     implements AuthenticationLocalDataSource {
-  static final FlutterSecureStorage _storage = FlutterSecureStorage();
+  final FlutterSecureStorage _storage = const FlutterSecureStorage();
 
   @override
-  Future<bool> saveToken(String token) async{
+  Future<bool> saveToken(String token) async {
     print("SAVING TOKEN");
     await _storage.write(key: ConstantsForData.ACCESS_TOKEN, value: token);
     return true;
   }
-  
+
   @override
   Future<String?> getToken() async {
     print("GETTING TOKEN");
@@ -34,14 +31,9 @@ class AuthenticationLocalDataSourceImpl
     }
   }
 
-
   @override
   Future<bool> deleteToken() async {
     await _storage.delete(key: ConstantsForData.ACCESS_TOKEN);
     return true;
   }
-
-
-
-
 }

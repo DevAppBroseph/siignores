@@ -1,23 +1,15 @@
 import 'package:dartz/dartz.dart';
 import 'package:siignores/core/services/network/network_info.dart';
-import 'package:siignores/features/chat/domain/entities/chat_message_entity.dart';
 import 'package:siignores/features/chat/domain/entities/chat_room_entity.dart';
 import 'package:siignores/features/chat/domain/entities/chat_tab_entity.dart';
 import '../../../../core/error/failures.dart';
 import '../../domain/repositories/chat/chat_repository.dart';
 import '../datasources/chat/remote_datasource.dart';
 
-
 class ChatRepositoryImpl implements ChatRepository {
   final ChatRemoteDataSource remoteDataSource;
   final NetworkInfo networkInfo;
-  ChatRepositoryImpl(
-      this.remoteDataSource, this.networkInfo);
-
-
-
-
-
+  ChatRepositoryImpl(this.remoteDataSource, this.networkInfo);
 
   @override
   Future<Either<Failure, List<ChatTabEntity>>> getChatTabs() async {
@@ -34,9 +26,6 @@ class ChatRepositoryImpl implements ChatRepository {
     }
   }
 
-
-
-
   @override
   Future<Either<Failure, ChatRoomEntity>> getChat(int params) async {
     if (await networkInfo.isConnected) {
@@ -51,7 +40,4 @@ class ChatRepositoryImpl implements ChatRepository {
       return Left(NetworkFailure());
     }
   }
-  
-
 }
-

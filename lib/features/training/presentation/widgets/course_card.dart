@@ -1,7 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:siignores/constants/main_config_app.dart';
 import 'package:siignores/constants/texts/text_styles.dart';
 import 'package:siignores/core/widgets/image/cached_image.dart';
@@ -33,7 +31,7 @@ class CourseCard extends StatelessWidget {
               Positioned(
                   bottom: 0,
                   right: 0,
-                  child: Container(
+                  child: SizedBox(
                     width: MediaQuery.of(context).size.width / 2.6,
                     child: CachedImage(
                         height: 140.h,
@@ -53,11 +51,12 @@ class CourseCard extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                    padding: EdgeInsets.only(top: 22.h, bottom: 12.h),
-                    width: 200.w,
-                    child: Text(courseEntity.title, style: TextStyles.cormorant_black_25_w400,)
-                  ),
-                  
+                      padding: EdgeInsets.only(top: 22.h, bottom: 12.h),
+                      width: 200.w,
+                      child: Text(
+                        courseEntity.title,
+                        style: TextStyles.cormorant_black_25_w400,
+                      )),
                 ],
               ),
             ],
@@ -79,7 +78,7 @@ class CourseCard extends StatelessWidget {
               Positioned(
                   bottom: 0,
                   right: 0,
-                  child: Container(
+                  child: SizedBox(
                     width: MediaQuery.of(context).size.width / 2.6,
                     child: CachedImage(
                         height: 140.h,
