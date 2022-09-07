@@ -14,4 +14,7 @@ class ProgressErrorState extends ProgressState {
 }
 class ProgressInternetErrorState extends ProgressState{}
 
-class GotSuccessProgressState extends ProgressState{}
+class GotSuccessProgressState extends ProgressState{
+  List<ProgressEntity> progress;
+  GotSuccessProgressState({required this.progress});
+}

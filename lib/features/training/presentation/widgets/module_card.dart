@@ -83,8 +83,8 @@ class ModuleCard extends StatelessWidget {
                       style: TextStyles.cormorant_black_18_w400,
                     ),
                     Text(
-                      index.toString(),
-                      style: TextStyles.cormorant_black_41_w400,
+                      moduleEntity.description ?? '',
+                      style: TextStyles.cormorant_black_12_w400,
                     ),
                   ],
                 ),

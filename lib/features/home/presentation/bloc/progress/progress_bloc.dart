@@ -24,7 +24,7 @@ class ProgressBloc extends Bloc<ProgressEvent, ProgressState> {
         (failure) => errorCheck(failure),
         (data){
           progressList = data;
-          return GotSuccessProgressState();
+          return GotSuccessProgressState(progress: data);
         }
       );
     }
