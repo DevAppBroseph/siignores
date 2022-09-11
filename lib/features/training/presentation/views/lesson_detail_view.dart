@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+import 'package:flutter_html/flutter_html.dart' as html;
 import 'package:path/path.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/gestures.dart';
@@ -476,10 +477,9 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                                   color: ColorStyles.white,
                                   borderRadius: BorderRadius.circular(13.h)),
                               padding: EdgeInsets.all(20.h),
-                              child: Text(
-                                bloc.lesson?.question == null
-                                    ? 'Задания пока нет'
-                                    : bloc.lesson!.question!,
+                              child: bloc.lesson?.question == null
+                              ? Text(
+                                'Задания пока нет',
                                 style: MainConfigApp.app.isSiignores
                                     ? TextStyles.black_14_w400
                                         .copyWith(height: 1.75.h)
@@ -487,6 +487,17 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                                         height: 1.75.h,
                                         fontFamily: MainConfigApp.fontFamily4,
                                       ),
+                              ) 
+                              : html.Html(
+                                data: bloc.lesson!.question!,
+                                style: {
+                                  '#': html.Style(
+                                    fontSize: html.FontSize(14.sp),
+                                    color: ColorStyles.black,
+                                    fontFamily: MainConfigApp.app.isSiignores ? MainConfigApp.fontFamily1 : MainConfigApp.fontFamily4,
+                                    lineHeight: html.LineHeight.number(1.75.h)
+                                  ),
+                                },
                               ),
                             ),
                           if (bloc.lesson!.files.isNotEmpty) ...[

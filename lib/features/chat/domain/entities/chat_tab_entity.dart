@@ -4,11 +4,15 @@ class ChatTabEntity extends Equatable {
   final int id;
   final String chatName;
   final int usersCount;
+  final bool flag;
+  final String? linkTelegram;
 
   ChatTabEntity({
     required this.id,
     required this.chatName,
     required this.usersCount,
+    required this.flag,
+    required this.linkTelegram,
   });
 
 
@@ -17,6 +21,7 @@ class ChatTabEntity extends Equatable {
   List<Object> get props => [
         id,
         chatName,
-        usersCount
+        usersCount,
+        flag
       ];
 }

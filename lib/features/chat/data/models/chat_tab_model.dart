@@ -5,16 +5,22 @@ class ChatTabModel extends ChatTabEntity{
     required int id,
     required String chatName,
     required int usersCount,
+    required bool flag,
+    required String? linkTelegram,
 
   }) : super(
     id: id, 
     chatName: chatName,
-    usersCount: usersCount
+    usersCount: usersCount,
+    flag: flag,
+    linkTelegram: linkTelegram
   );
 
   factory ChatTabModel.fromJson(Map<String, dynamic> json) => ChatTabModel(
     id: json['chat_id'],
     chatName: json['chat_name'],
     usersCount: json['users_count'],
+    linkTelegram: json['link'],
+    flag: json['flag']
   );
 }
