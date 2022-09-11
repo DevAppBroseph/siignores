@@ -7,6 +7,7 @@ import 'package:siignores/constants/main_config_app.dart';
 import 'package:siignores/features/chat/domain/entities/chat_tab_entity.dart';
 
 import '../../../constants/texts/text_styles.dart';
+import '../../utils/helpers/url_launcher.dart';
 
 class ChatCard extends StatelessWidget {
   final bool centerButton;
@@ -76,8 +77,16 @@ class ChatCard extends StatelessWidget {
             ],
           ),
           Bounce(
-            duration: const Duration(milliseconds: 110),
-            onPressed: onTap,
+            duration: Duration(milliseconds: 110),
+            onPressed: (){
+              if(!chatTabEntity.flag && chatTabEntity.linkTelegram != null){
+                launchURL(chatTabEntity.linkTelegram!.contains('http') 
+                        ? chatTabEntity.linkTelegram! 
+                        : 'https://${chatTabEntity.linkTelegram!}');
+              }else{
+                onTap();
+              }
+            },
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 8.h),
               decoration: BoxDecoration(
