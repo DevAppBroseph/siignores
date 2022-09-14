@@ -17,20 +17,22 @@ class LessonDetailModel extends LessonDetailEntity {
     required List<TeacherAnswer>? teacherAnswers,
     required List<TimeOfVideo> times,
     required List<LessonFile> files,
+    required List<Review> reviews,
   }) : super(
-            id: id,
-            title: title,
-            image: image,
-            moduleId: moduleId,
-            text: text,
-            question: question,
-            video: video,
-            times: times,
-            files: files,
-            backImage: backImage,
-            teacherAnswer: teacherAnswers,
-            lessonNumber: lessonNumber,
-            status: status);
+          id: id,
+          title: title,
+          image: image,
+          moduleId: moduleId,
+          text: text,
+          question: question,
+          video: video,
+          times: times,
+          files: files,
+          backImage: backImage,
+          lessonNumber: lessonNumber,
+          status: status,
+          reviews: reviews
+        );
 
   factory LessonDetailModel.fromJson(Map<String, dynamic> json) =>
       LessonDetailModel(
@@ -54,7 +56,14 @@ class LessonDetailModel extends LessonDetailEntity {
               : null,
           times: (json['timer_set'] as List)
               .map((json) => TimeOfVideo.fromJson(json))
-              .toList());
+              .toList(),
+          reviews: json['review'] == null 
+            ? []
+            : (json['review'] as List)
+              .map((json) => Review.fromJson(json))
+              .toList()
+      );
+          
 }
 
 class LessonFile {
@@ -92,17 +101,24 @@ class TimeOfVideo {
       );
 }
 
-class TeacherAnswer {
-  final String comment;
-  final DateTime time;
 
-  TeacherAnswer({
-    required this.comment,
-    required this.time,
-  });
+class Review {
+  final String text;
+  List<LessonFile> files;
+  final String? review;
+  final DateTime dateTime;
 
-  factory TeacherAnswer.fromJson(Map<String, dynamic> json) => TeacherAnswer(
-        comment: json['review'],
-        time: DateFormat("yyyy-MM-ddThh:mm:ss").parse(json["datetime"], true),
+  Review({required this.files, required this.text, required this.dateTime, required this.review});
+
+  factory Review.fromJson(Map<String, dynamic> json) => Review(
+        text: json['text'],
+        files: (json['files'] as List)
+              .map((json) => LessonFile.fromJson(json))
+              .toList(),
+        review: json['review'],
+        dateTime: json['datetime'] == null 
+          ? DateTime.now() 
+          : DateTime.parse(json['datetime']).toLocal()
       );
 }
+

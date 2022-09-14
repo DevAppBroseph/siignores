@@ -5,6 +5,8 @@ class CalendarModel extends CalendarEntity{
     required int id,
     required String header,
     required String description,
+    required bool nonCycle,
+    required String period,
     required DateTime dateTime,
 
   }) : super(
@@ -12,13 +14,17 @@ class CalendarModel extends CalendarEntity{
     header: header,
     dateTime: dateTime,
     description: description,
+    nonCycle: nonCycle,
+    period: period,
   );
 
   factory CalendarModel.fromJson(Map<String, dynamic> json) => CalendarModel(
     id: json['id'] ?? 1,
     header: json['header'],
     description: json['description'],
-    dateTime: DateTime.parse('${json['date']} ${json['time']}').toLocal()
+    dateTime: DateTime.parse('${json['date']} ${json['time']}').toLocal(),
+    period: json['period'],
+    nonCycle: json['non_cycle']
     
   );
 }

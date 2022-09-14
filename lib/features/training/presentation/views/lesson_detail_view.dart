@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:flutter_html/flutter_html.dart' as html;
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +30,7 @@ import '../../../../core/utils/helpers/time_helper.dart';
 import '../../../../core/utils/helpers/truncate_text_helper.dart';
 import '../../../../core/utils/toasts.dart';
 import '../../../../core/widgets/loaders/loader_v1.dart';
+import '../../../../core/widgets/modals/take_photo_or_file_modal.dart';
 import '../../../../core/widgets/text_fields/default_text_form_field.dart';
 import '../../../auth/presentation/bloc/auth/auth_bloc.dart';
 import '../bloc/lesson_detail/lesson_detail_bloc.dart';
@@ -67,6 +70,26 @@ class _LessonDetailViewState extends State<LessonDetailView> {
         files.addAll(selectedFiles);
       });
     }
+  }
+  void showModal(BuildContext context){
+    TakeGalleryOrFileModal(
+      context: context,
+      title: 'Где выбрать \nфайл',
+      tapGallery: (ImageSource source) async{
+        final getMedia = await ImagePicker().getImage(source: source, maxWidth: 1000.0, maxHeight: 1000.0);
+        if (getMedia != null) {
+          final file = File(getMedia.path);
+          setState(() {
+            files.add(file);
+          });
+          Navigator.pop(context);
+        }
+      },
+      tapFile: () async {
+        await selectFiles();
+        Navigator.pop(context);
+      }
+    ).showMyDialog();
   }
 
   void sendHomework(BuildContext context) {
@@ -123,8 +146,7 @@ class _LessonDetailViewState extends State<LessonDetailView> {
             ],
           );
         }
-        // print("Back Image is: ${Config.url.url + bloc.lesson!.backImage!}");
-        print('Question is: ${bloc.lesson?.question}');
+        print('REVIEWS: ${bloc.lesson?.reviews}');
         return Stack(
           children: [
             CustomScrollView(
@@ -628,7 +650,7 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                               height: 22.h,
                             ),
                             GestureDetector(
-                              onTap: selectFiles,
+                              onTap: () => showModal(context),
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: ColorStyles.black,
@@ -660,6 +682,7 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                               height: 10.h,
                             ),
                             Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: files
                                   .map((file) => Container(
                                         margin:
@@ -691,6 +714,81 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                                   sendHomework(context);
                                 })
                           ],
+                          if(bloc.lesson!.reviews.isNotEmpty)
+                          ...[SizedBox(
+                            height: 27.h,
+                          ),
+                          Text(
+                            bloc.lesson!.reviews.length == 1 ? 'История ответа' : 'История ответов',
+                            style: MainConfigApp.app.isSiignores
+                                ? TextStyles.black_18_w700
+                                : TextStyles.black_18_w300,
+                          ),
+                          SizedBox(
+                            height: 13.h,
+                          ),
+                          ...bloc.lesson!.reviews.map((e) 
+                            => Container(
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                  color: ColorStyles.white,
+                                  borderRadius: BorderRadius.circular(13.h)),
+                              padding: EdgeInsets.all(20.h),
+                              margin: EdgeInsets.only(bottom: 10.h),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Ваш ответ: ${e.text}',
+                                    style: MainConfigApp.app.isSiignores
+                                      ? TextStyles.black_16_w700
+                                        .copyWith(height: 1.75.h)
+                                      : TextStyles.black_16_w300.copyWith(
+                                        height: 1.75.h,
+                                        fontFamily: MainConfigApp.fontFamily4,
+                                      ),
+                                  ),
+                                  SizedBox(
+                                    height: 4.h,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: e.files
+                                        .map((file) => _buildFileLink(
+                                            context, file, getFileType(file.file), decode: false))
+                                        .toList(),
+                                  ),
+                                  SizedBox(
+                                    height: 14.h,
+                                  ),
+                                  if(e.review != null && e.review != '')
+                                  Text(
+                                    'Комментарий: ${e.review}',
+                                    style: MainConfigApp.app.isSiignores
+                                      ? TextStyles.black_16_w700
+                                        .copyWith(height: 1.75.h)
+                                      : TextStyles.black_16_w300.copyWith(
+                                        height: 1.75.h,
+                                        fontFamily: MainConfigApp.fontFamily4,
+                                      ),
+                                  ),
+                                  SizedBox(
+                                    height: 6.h,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Text(DateFormat('yyyy MMM HH:mm').format(e.dateTime), style: MainConfigApp.app.isSiignores
+                                        ? TextStyles.black_11_w400
+                                        .copyWith(color: ColorStyles.black.withOpacity(0.7))
+                                        : TextStyles.black_11_w400
+                                        .copyWith(color: ColorStyles.black.withOpacity(0.7), fontFamily: MainConfigApp.fontFamily4),),
+                                    ],
+                                  ),
+                                ],
+                              )
+                            )
+                          ).toList(),],
                           SizedBox(
                             height: 155.h,
                           ),
@@ -717,10 +815,14 @@ class _LessonDetailViewState extends State<LessonDetailView> {
   }
 
   Widget _buildFileLink(
-      BuildContext context, LessonFile file, FileType fileType) {
+      BuildContext context, LessonFile file, FileType fileType, {bool decode = true}) {
     return GestureDetector(
       onTap: () {
-        launchURL(Config.url.url + file.file);
+        if(file.file.contains('/media/')){
+          launchURL(Config.url.url + file.file);
+        }else{
+          launchURL(Config.url.url + '/' + file.file);
+        }
       },
       child: Padding(
         padding: EdgeInsets.only(top: 13.h),
@@ -733,20 +835,17 @@ class _LessonDetailViewState extends State<LessonDetailView> {
               width: 12.w,
             ),
             Text(
-              truncateWithEllipsisLast(
-                32,
-                Uri.decodeFull(
-                  file.file.replaceAll(RegExp('/media/'), ''),
-                ),
-              ),
-              style: MainConfigApp.app.isSiignores
-                  ? TextStyles.black_13_w400
-                      .copyWith(decoration: TextDecoration.underline)
-                  : TextStyles.black_13_w400.copyWith(
-                      decoration: TextDecoration.underline,
-                      fontFamily: MainConfigApp.fontFamily4,
-                    ),
-            ),
+              decode
+              ? truncateWithEllipsisLast(
+                    32, Uri.decodeFull(file.file.replaceAll(RegExp('/media/'), '').replaceAll(RegExp('media/'), '')))
+              : truncateWithEllipsisLast(
+                    32, file.file.replaceAll(RegExp('/media/'), '').replaceAll(RegExp('media/'), '')),
+                style: MainConfigApp.app.isSiignores
+                    ? TextStyles.black_13_w400
+                        .copyWith(decoration: TextDecoration.underline)
+                    : TextStyles.black_13_w400.copyWith(
+                        decoration: TextDecoration.underline,
+                        fontFamily: MainConfigApp.fontFamily4))
           ],
         ),
       ),

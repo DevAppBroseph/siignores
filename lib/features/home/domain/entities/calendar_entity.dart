@@ -4,13 +4,17 @@ class CalendarEntity extends Equatable {
   final int id;
   final String header;
   final String description;
-  final DateTime dateTime;
+  DateTime dateTime;
+  final bool nonCycle;
+  final String period;
 
   CalendarEntity({
     required this.id,
     required this.header,
     required this.dateTime,
     required this.description,
+    required this.nonCycle,
+    required this.period,
   });
 
 
@@ -20,6 +24,7 @@ class CalendarEntity extends Equatable {
         id,
         header,
         description,
-
+        nonCycle,
+        period
       ];
 }

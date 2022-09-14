@@ -61,7 +61,7 @@ class AuthenticationRemoteDataSourceImpl
     if (response.statusCode! >= 200 && response.statusCode! <= 299) {
       return response.data['auth_token'];
     } else if (response.statusCode == 400) {
-      throw ServerException(message: 'Не правильный логин или пароль');
+      throw ServerException(message: 'Неправильный логин или пароль');
     } else {
       throw ServerException(message: 'Ошибка с сервером');
     }
@@ -162,7 +162,7 @@ class AuthenticationRemoteDataSourceImpl
     if (response.statusCode! >= 200 && response.statusCode! < 400) {
       return true;
     } else if (response.statusCode == 400) {
-      throw ServerException(message: 'Не правильный код');
+      throw ServerException(message: 'Неправильный код');
     } else {
       throw ServerException(message: 'Ошибка с сервером');
     }
@@ -271,7 +271,7 @@ class AuthenticationRemoteDataSourceImpl
         token: response.data['token'],
       );
     } else if (response.statusCode == 400) {
-      throw ServerException(message: 'Не правильный код');
+      throw ServerException(message: 'Неправильный код');
     } else {
       throw ServerException(message: 'Ошибка с сервером');
     }

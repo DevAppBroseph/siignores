@@ -29,8 +29,14 @@ class _CalendarViewState extends State<CalendarView> {
   List<CalendarEntity> eventLoader(DateTime dt) {
     List<CalendarEntity> tasks = context.read<CalendarBloc>().tasks;
     List<CalendarEntity> events = [];
-    for (var task in tasks) {
-      if (isSameDay(task.dateTime, dt)) {
+    for(var task in tasks){
+      if(!task.nonCycle){
+        if(task.period == 'daily' 
+          || (task.period == 'monthly' && task.dateTime.day == dt.day)
+          || (task.period == 'weekly' && task.dateTime.weekday == dt.weekday)){
+          events.add(task);
+        }
+      }else if(isSameDay(task.dateTime, dt)){
         events.add(task);
       }
     }
