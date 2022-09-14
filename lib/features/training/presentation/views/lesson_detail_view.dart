@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:flutter_html/flutter_html.dart' as html;
+import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/gestures.dart';
@@ -29,6 +30,7 @@ import '../../../../core/utils/helpers/time_helper.dart';
 import '../../../../core/utils/helpers/truncate_text_helper.dart';
 import '../../../../core/utils/toasts.dart';
 import '../../../../core/widgets/loaders/loader_v1.dart';
+import '../../../../core/widgets/modals/take_photo_or_file_modal.dart';
 import '../../../../core/widgets/text_fields/default_text_form_field.dart';
 import '../../../auth/presentation/bloc/auth/auth_bloc.dart';
 import '../bloc/lesson_detail/lesson_detail_bloc.dart';
@@ -68,6 +70,26 @@ class _LessonDetailViewState extends State<LessonDetailView> {
         files.addAll(selectedFiles);
       });
     }
+  }
+  void showModal(BuildContext context){
+    TakeGalleryOrFileModal(
+      context: context,
+      title: 'Где выбрать \nфайл',
+      tapGallery: (ImageSource source) async{
+        final getMedia = await ImagePicker().getImage(source: source, maxWidth: 1000.0, maxHeight: 1000.0);
+        if (getMedia != null) {
+          final file = File(getMedia.path);
+          setState(() {
+            files.add(file);
+          });
+          Navigator.pop(context);
+        }
+      },
+      tapFile: () async {
+        await selectFiles();
+        Navigator.pop(context);
+      }
+    ).showMyDialog();
   }
 
   void sendHomework(BuildContext context) {
@@ -553,7 +575,7 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                               height: 22.h,
                             ),
                             GestureDetector(
-                              onTap: selectFiles,
+                              onTap: () => showModal(context),
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: ColorStyles.black,
@@ -585,6 +607,7 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                               height: 10.h,
                             ),
                             Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: files
                                   .map((file) => Container(
                                         margin:
