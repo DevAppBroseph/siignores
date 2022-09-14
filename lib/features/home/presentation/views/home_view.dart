@@ -37,7 +37,13 @@ class _HomeViewState extends State<HomeView> {
     List<CalendarEntity> tasks = context.read<CalendarBloc>().tasks;
     List<CalendarEntity> events = [];
     for(var task in tasks){
-      if(isSameDay(task.dateTime, dt)){
+      if(!task.nonCycle){
+        if(task.period == 'daily' 
+          || (task.period == 'monthly' && task.dateTime.day == dt.day)
+          || (task.period == 'weekly' && task.dateTime.weekday == dt.weekday)){
+          events.add(task);
+        }
+      }else if(isSameDay(task.dateTime, dt)){
         events.add(task);
       }
     }

@@ -14,6 +14,7 @@ class LessonDetailModel extends LessonDetailEntity {
     required String? backImage,
     required List<TimeOfVideo> times,
     required List<LessonFile> files,
+    required List<Review> reviews,
   }) : super(
           id: id,
           title: title,
@@ -26,7 +27,8 @@ class LessonDetailModel extends LessonDetailEntity {
           files: files,
           backImage: backImage,
           lessonNumber: lessonNumber,
-          status: status
+          status: status,
+          reviews: reviews
         );
 
   factory LessonDetailModel.fromJson(Map<String, dynamic> json) =>
@@ -46,7 +48,14 @@ class LessonDetailModel extends LessonDetailEntity {
               .toList(),
           times: (json['timer_set'] as List)
               .map((json) => TimeOfVideo.fromJson(json))
-              .toList());
+              .toList(),
+          reviews: json['review'] == null 
+            ? []
+            : (json['review'] as List)
+              .map((json) => Review.fromJson(json))
+              .toList()
+      );
+          
 }
 
 class LessonFile {
@@ -83,3 +92,25 @@ class TimeOfVideo {
         text: json['text'],
       );
 }
+
+
+class Review {
+  final String text;
+  List<LessonFile> files;
+  final String? review;
+  final DateTime dateTime;
+
+  Review({required this.files, required this.text, required this.dateTime, required this.review});
+
+  factory Review.fromJson(Map<String, dynamic> json) => Review(
+        text: json['text'],
+        files: (json['files'] as List)
+              .map((json) => LessonFile.fromJson(json))
+              .toList(),
+        review: json['review'],
+        dateTime: json['datetime'] == null 
+          ? DateTime.now() 
+          : DateTime.parse(json['datetime']).toLocal()
+      );
+}
+

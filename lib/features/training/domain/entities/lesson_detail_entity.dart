@@ -14,6 +14,7 @@ class LessonDetailEntity extends Equatable {
   final String? video;
   final List<TimeOfVideo> times;
   final List<LessonFile> files;
+  final List<Review> reviews;
 
   LessonDetailEntity({
     required this.id,
@@ -28,6 +29,7 @@ class LessonDetailEntity extends Equatable {
     required this.times,
     required this.files,
     required this.backImage,
+    required this.reviews
   });
 
   @override
