@@ -195,8 +195,16 @@ class _CalendarViewState extends State<CalendarView> {
                     ),
                   ),
                   SizedBox(height: 10.h,),
-                  if(bloc.tasks.any((element) => isSameDay(element.dateTime, _selectedDay),))
-                  ...bloc.tasks.where((element) => isSameDay(element.dateTime, _selectedDay),).map((event) 
+                  if(bloc.tasks.any((element) => isSameDay(element.dateTime, _selectedDay) 
+                    || (!element.nonCycle && element.period == 'daily')
+                    || (!element.nonCycle && element.period == 'monthly' && element.dateTime.day == _selectedDay.day)
+                    || (!element.nonCycle && element.period == 'weekly' && element.dateTime.weekday == _selectedDay.weekday)
+                  ,))
+                  ...bloc.tasks.where((element) => isSameDay(element.dateTime, _selectedDay) 
+                    || (!element.nonCycle && element.period == 'daily')
+                    || (!element.nonCycle && element.period == 'monthly' && element.dateTime.day == _selectedDay.day)
+                    || (!element.nonCycle && element.period == 'weekly' && element.dateTime.weekday == _selectedDay.weekday)
+                  ,).map((event) 
                     => Container(
                       padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 10.h),
                       margin: EdgeInsets.symmetric(horizontal: 22.w),
@@ -230,7 +238,11 @@ class _CalendarViewState extends State<CalendarView> {
                       ),
                     )
                   ).toList(),
-                  if(!bloc.tasks.any((element) => isSameDay(element.dateTime, _selectedDay),))
+                  if(!bloc.tasks.any((element) 
+                    => isSameDay(element.dateTime, _selectedDay)
+                    || (!element.nonCycle && element.period == 'daily')
+                    || (!element.nonCycle && element.period == 'monthly' && element.dateTime.day == _selectedDay.day)
+                    || (!element.nonCycle && element.period == 'weekly' && element.dateTime.weekday == _selectedDay.weekday)))
                   Container(
                     margin: EdgeInsets.only(top: 50.h),
                     alignment: Alignment.center,

@@ -110,7 +110,7 @@ class _HomeViewState extends State<HomeView> {
                               scrollDirection: Axis.horizontal,
                               children: [1, 2, 3, 4].map((e) 
                                 => LectureLoadingCard(
-                                  isFirst: e == 1
+                                  isFirst: e == 1,
                                 )
                               ).toList()
                             );
@@ -278,8 +278,16 @@ class _HomeViewState extends State<HomeView> {
                         ),
                       ),
                       SizedBox(height: 10.h,),
-                      if(calendarBloc.tasks.any((element) => isSameDay(element.dateTime, _selectedDay),))
-                      ...calendarBloc.tasks.where((element) => isSameDay(element.dateTime, _selectedDay),).map((event) 
+                      if(calendarBloc.tasks.any((element) => isSameDay(element.dateTime, _selectedDay) 
+                        || (!element.nonCycle && element.period == 'daily')
+                        || (!element.nonCycle && element.period == 'monthly' && element.dateTime.day == _selectedDay.day)
+                        || (!element.nonCycle && element.period == 'weekly' && element.dateTime.weekday == _selectedDay.weekday)
+                      ,))
+                      ...calendarBloc.tasks.where((element) => isSameDay(element.dateTime, _selectedDay) 
+                        || (!element.nonCycle && element.period == 'daily')
+                        || (!element.nonCycle && element.period == 'monthly' && element.dateTime.day == _selectedDay.day)
+                        || (!element.nonCycle && element.period == 'weekly' && element.dateTime.weekday == _selectedDay.weekday)
+                      ,).map((event)  
                         => Container(
                           padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 6.h),
                           margin: EdgeInsets.symmetric(vertical: 5.h, horizontal: 22.w),
@@ -305,7 +313,11 @@ class _HomeViewState extends State<HomeView> {
                           ),
                         )
                       ).toList(),
-                      if(!calendarBloc.tasks.any((element) => isSameDay(element.dateTime, _selectedDay),))
+                      if(!calendarBloc.tasks.any((element) 
+                        => isSameDay(element.dateTime, _selectedDay)
+                        || (!element.nonCycle && element.period == 'daily')
+                        || (!element.nonCycle && element.period == 'monthly' && element.dateTime.day == _selectedDay.day)
+                        || (!element.nonCycle && element.period == 'weekly' && element.dateTime.weekday == _selectedDay.weekday)))
                       Container(
                         margin: EdgeInsets.only(top: 50.h),
                         alignment: Alignment.center,

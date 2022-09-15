@@ -21,7 +21,7 @@ class LectureCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 212.w,
+        width: MainConfigApp.app.isSiignores ? 212.w : MediaQuery.of(context).size.width-46.w,
         margin: EdgeInsets.only(right: 16.w, left: isFirst ? 23.w : 0),
         child: CachedImage(
           height: 120.h,

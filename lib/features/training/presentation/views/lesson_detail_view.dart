@@ -540,11 +540,15 @@ class _LessonDetailViewState extends State<LessonDetailView> {
                                   .toList(),
                             ),
                           ],
-                          if ((bloc.lesson!.status == null ||
-                                  bloc.lesson!.status == 'failed') &&
-                              (bloc.lesson?.question != 'null' &&
-                                  bloc.lesson?.question != null &&
-                                  bloc.lesson?.question != '')) ...[
+                          // if ((bloc.lesson!.status == null ||
+                          //         bloc.lesson!.status == 'failed') &&
+                          //     (bloc.lesson?.question != 'null' &&
+                          //         bloc.lesson?.question != null &&
+                          //         bloc.lesson?.question != '')) 
+                          if(bloc.lesson?.question != null &&
+                            bloc.lesson?.question != 'null' &&
+                            bloc.lesson?.question != '')
+                          ...[
                             SizedBox(
                               height: 27.h,
                             ),

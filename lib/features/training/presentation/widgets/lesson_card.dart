@@ -23,9 +23,9 @@ class LessonCard extends StatelessWidget {
     if(MainConfigApp.app.isSiignores) {
       return GestureDetector(
         onTap: (){
-          if(lessonListEntity.isOpen){
+          // if(lessonListEntity.isOpen){
             onTap();
-          }
+          // }
         },
         child: Container(
           margin: EdgeInsets.fromLTRB(0, 0, 0, 14.h),
@@ -92,7 +92,7 @@ class LessonCard extends StatelessWidget {
                   ) : SizedBox.shrink()
                 ],
               ),
-              if(!lessonListEntity.isOpen)
+              if(false)//!lessonListEntity.isOpen)
               Positioned( 
                 top: 15.h,
                 right: 15.w,
@@ -108,9 +108,9 @@ class LessonCard extends StatelessWidget {
     }else{
       return GestureDetector(
         onTap: (){
-          if(lessonListEntity.isOpen){
+          // if(lessonListEntity.isOpen){
             onTap();
-          }
+          // }
         },
         child: Stack(
           children: [
@@ -175,7 +175,7 @@ class LessonCard extends StatelessWidget {
               right: 0,
               child: SvgPicture.asset('assets/svg/completed_lesson.svg'),
             ),
-            if(!lessonListEntity.isOpen)
+              if(false)//!lessonListEntity.isOpen)
             Positioned( 
               top: 15.h,
               right: 15.w,
