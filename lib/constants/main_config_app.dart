@@ -1,15 +1,19 @@
 class MainConfigApp {
   //======== APP SETTINGS ========//
 
-  static App app = App.secondApp;
+  static App app = App.siignores;
 
   static String telegram = MainConfigApp.app.isSiignores
       ? 'https://t.me/siignores'
       : 'https://t.me/burn_katrina';
 
-  static String hintEmail = MainConfigApp.app.isSiignores ? 'mail@siignores.com' : 'obraztsova@mail.ru';
-  static String hintFirstname = MainConfigApp.app.isSiignores ? 'Юлия' : 'Екатерина';
-  static String hintLastname = MainConfigApp.app.isSiignores ? 'Бойкова' : 'Образцова';
+  static String hintEmail = MainConfigApp.app.isSiignores
+      ? 'mail@siignores.com'
+      : 'obraztsova@mail.ru';
+  static String hintFirstname =
+      MainConfigApp.app.isSiignores ? 'Юлия' : 'Екатерина';
+  static String hintLastname =
+      MainConfigApp.app.isSiignores ? 'Бойкова' : 'Образцова';
 
   String? urlToCompany;
   bool isTelegram = false;
