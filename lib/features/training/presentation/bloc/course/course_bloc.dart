@@ -31,6 +31,12 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
     }
 
 
+
+    if(event is ToInitalStateCoursesEvent){
+      yield CourseInitialState();
+    }
+
+
     
   }
 

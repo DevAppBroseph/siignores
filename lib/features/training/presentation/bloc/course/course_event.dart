@@ -7,4 +7,5 @@ class CourseEvent extends Equatable {
 
 
 class GetCoursesEvent extends CourseEvent{}
+class ToInitalStateCoursesEvent extends CourseEvent{}
 
