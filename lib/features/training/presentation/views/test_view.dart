@@ -131,7 +131,7 @@ class _TestViewState extends State<TestView> {
                     TextSpan(
                         text: 'Вопрос: ',
                         style: MainConfigApp.app.isSiignores
-                          ? TextStyles.white_16_w400.copyWith(color: ColorStyles.white.withOpacity(0.6))
+                          ? TextStyles.white_16_w400.copyWith(color: ColorStyles.black.withOpacity(0.6))
                           : TextStyles.white_16_w400.copyWith(
                             color: ColorStyles.white.withOpacity(0.6),
                             fontFamily: MainConfigApp.fontFamily4,
@@ -140,13 +140,13 @@ class _TestViewState extends State<TestView> {
                           TextSpan(
                             text: '${bloc.indexCurrentQuestion+1}/',
                             style: MainConfigApp.app.isSiignores
-                              ? TextStyles.white_16_w700
+                              ? TextStyles.black_16_w700
                               : TextStyles.white_16_w700.copyWith(fontFamily: MainConfigApp.fontFamily4),
                           ),
                           TextSpan(
                             text: '${bloc.testEntity == null ? 0 : bloc.testEntity!.questions.length}',
                             style: MainConfigApp.app.isSiignores
-                              ? TextStyles.white_16_w400.copyWith(color: ColorStyles.white.withOpacity(0.6))
+                              ? TextStyles.white_16_w400.copyWith(color: ColorStyles.black.withOpacity(0.6))
                               : TextStyles.white_16_w400.copyWith(
                                 color: ColorStyles.white.withOpacity(0.6),
                                 fontFamily: MainConfigApp.fontFamily4,
@@ -157,10 +157,11 @@ class _TestViewState extends State<TestView> {
                   
                   SizedBox(height: 70.h,),
                   Text(bloc.testEntity!.questions[bloc.indexCurrentQuestion].title, style: MainConfigApp.app.isSiignores
-                    ? TextStyles.white_16_w400
+                    ? TextStyles.black_16_w400
                     : TextStyles.white_16_w400.copyWith(
                       fontFamily: MainConfigApp.fontFamily4,
                     ),
+                    textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 60.h,),
                   Container(
@@ -176,7 +177,7 @@ class _TestViewState extends State<TestView> {
                       ).toList()
                     ),
                   ),
-                  SizedBox(height: 150.h,),
+                  SizedBox(height: 250.h,),
 
                 ],
               ),
@@ -216,37 +217,39 @@ class _TestViewState extends State<TestView> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  width: 18.w,
-                  height: 18.w,
-                  decoration: BoxDecoration(
-                    color: selectedAnswer != null && !bloc.testEntity!.questions[bloc.indexCurrentQuestion].options.any((element) => element.isCorrect && element.id == selectedAnswer)
-                      ? (!optionTest.isCorrect ? Colors.red : ColorStyles.green_accent) 
-                      : selectedAnswer != null && selectedAnswer == optionTest.id
-                      ? ColorStyles.primary
-                      : null,
-                    border: Border.all(
+            Expanded(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 18.w,
+                    height: 18.w,
+                    decoration: BoxDecoration(
                       color: selectedAnswer != null && !bloc.testEntity!.questions[bloc.indexCurrentQuestion].options.any((element) => element.isCorrect && element.id == selectedAnswer)
-                      ? (!optionTest.isCorrect ? Colors.red : ColorStyles.green_accent) 
-                      : ColorStyles.primary, 
-                      width: 2.h,
+                        ? (!optionTest.isCorrect ? Colors.red : ColorStyles.green_accent) 
+                        : selectedAnswer != null && selectedAnswer == optionTest.id
+                        ? ColorStyles.primary
+                        : null,
+                      border: Border.all(
+                        color: selectedAnswer != null && !bloc.testEntity!.questions[bloc.indexCurrentQuestion].options.any((element) => element.isCorrect && element.id == selectedAnswer)
+                        ? (!optionTest.isCorrect ? Colors.red : ColorStyles.green_accent) 
+                        : ColorStyles.primary, 
+                        width: 2.h,
+                      ),
+                      borderRadius: BorderRadius.circular(30.h)
                     ),
-                    borderRadius: BorderRadius.circular(30.h)
+                    alignment: Alignment.center,
+                    child: selectedAnswer != null
+                    ? Icon(
+                      !optionTest.isCorrect ? Icons.close : Icons.check,
+                      color: ColorStyles.white,
+                      size: 15.w,
+                    ) : null,
                   ),
-                  alignment: Alignment.center,
-                  child: selectedAnswer != null
-                  ? Icon(
-                    !optionTest.isCorrect ? Icons.close : Icons.check,
-                    color: ColorStyles.white,
-                    size: 15.w,
-                  ) : null,
-                ),
-                SizedBox(width: 8.w,),
-                Text(optionTest.text, style: TextStyles.black_14_w700,)
-              ],
+                  SizedBox(width: 8.w,),
+                  Flexible(child: Text(optionTest.text, style: TextStyles.black_14_w700,))
+                ],
+              ),
             ),
             false && selectedAnswer != null && !bloc.testEntity!.questions[bloc.indexCurrentQuestion].options.any((element) => element.isCorrect && element.id == selectedAnswer)
             ? Row(
