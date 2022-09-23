@@ -35,22 +35,17 @@ class _TestViewState extends State<TestView> {
   int? selectedAnswer;
   String title = '';
 
-  void nextQuestion(){
+  void sendAnswer(){
     if(selectedAnswer != null && !(context.read<TestBloc>().state is TestInitialState || context.read<TestBloc>().state is TestLoadingState)){
       showLoaderWrapper(context);
-      context.read<TestBloc>().add(NextQuestionEvent(optionId: selectedAnswer!));
+      context.read<TestBloc>().add(SendAnswerEvent(optionId: selectedAnswer!));
     }
   }
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    TestBloc bloc = context.read<TestBloc>();
-    if(bloc.testEntity == null || bloc.testEntity!.id != widget.testId || bloc.isCompleteTest){
-      bloc.add(GetTestsEvent(testId: widget.testId));
-    }else{
-      title = bloc.testEntity!.title;
-    }
+    context.read<TestBloc>().add(GetTestsEvent(testId: widget.testId));
   }
 
   @override
@@ -71,6 +66,9 @@ class _TestViewState extends State<TestView> {
             setState(() {
               selectedAnswer = null;
             });
+          }
+          if(state is TestAnswerSendedState){
+            Loader.hide();
             if(state.isLastQuestion){
               context.read<MainScreenBloc>().add(ChangeViewEvent(widget: LessonsView(moduleEntity: widget.moduleEntity, courseId: widget.courseId,)));
             }
@@ -173,7 +171,9 @@ class _TestViewState extends State<TestView> {
                     padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 15.h),
                     child: Column(
                       children: bloc.testEntity!.questions[bloc.indexCurrentQuestion].options.map((option) 
-                        => _buildAnwerItem(context, option)
+                        => bloc.testEntity!.questions.length <= 30 
+                          ? _buildAnwerItemExam(context, option)
+                          : _buildAnwerItem(context, option)
                       ).toList()
                     ),
                   ),
@@ -191,9 +191,13 @@ class _TestViewState extends State<TestView> {
         children: [
           PrimaryBtn(
             title: 'ДАЛЬШЕ',
-            onTap: nextQuestion
+            onTap: (){
+              if(selectedAnswer != null){
+                context.read<TestBloc>().add(NextQuestionEvent());
+              }
+            }
           ),
-          SizedBox(height: 140.h,),
+          SizedBox(height: MediaQuery.of(context).padding.bottom),
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -208,6 +212,7 @@ class _TestViewState extends State<TestView> {
         if(selectedAnswer == null){
           setState(() {
             selectedAnswer = optionTest.id;
+            sendAnswer();
           });
         }
       },
@@ -266,6 +271,47 @@ class _TestViewState extends State<TestView> {
             ) : SizedBox.shrink(),
           ],
         ),
+      ),
+    );
+    
+  }
+
+
+
+
+  Widget _buildAnwerItemExam(BuildContext context, OptionTest optionTest){
+    TestBloc bloc = context.read<TestBloc>();
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: (){
+        if(selectedAnswer == null){
+          setState(() {
+            selectedAnswer = optionTest.id;
+            sendAnswer();
+          });
+        }
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 14.w),
+        margin: EdgeInsets.symmetric(vertical: 15.h),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: bloc.testEntity!.questions[bloc.indexCurrentQuestion].options.any((element) => !element.isCorrect && element.id == selectedAnswer) 
+            ? (selectedAnswer == optionTest.id && !optionTest.isCorrect 
+              ? ColorStyles.red 
+              : optionTest.isCorrect 
+              ? ColorStyles.green_accent
+              : ColorStyles.grey_f1f1f1)
+            : optionTest.id == selectedAnswer
+            ? ColorStyles.green_accent
+            : ColorStyles.grey_f1f1f1,
+          borderRadius: BorderRadius.circular(12.w)
+        ),
+        child: Text(optionTest.text, style: TextStyles.black_14_w700
+          .copyWith(color: bloc.testEntity!.questions[bloc.indexCurrentQuestion].options
+            .any((element) => !element.isCorrect && element.id == selectedAnswer) && selectedAnswer == optionTest.id && !optionTest.isCorrect 
+            ? ColorStyles.white
+            : ColorStyles.black),)
       ),
     );
     

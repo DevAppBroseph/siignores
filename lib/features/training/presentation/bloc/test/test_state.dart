@@ -16,10 +16,11 @@ class TestInternetErrorState extends TestState{}
 
 class GotSuccessTestState extends TestState{}
 class TestBlankState extends TestState{}
-class TestShowState extends TestState{
+class TestAnswerSendedState extends TestState{
   final bool isLastQuestion;
-  TestShowState({this.isLastQuestion = false});
+  TestAnswerSendedState({this.isLastQuestion = false});
 }
+class TestShowState extends TestState{}
 class TestCompleteState extends TestState{
   final int allQuestions;
   final int correctQuestions;

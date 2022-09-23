@@ -44,7 +44,7 @@ class TestBloc extends Bloc<TestEvent, TestState> {
 
 
 
-    if(event is NextQuestionEvent){
+    if(event is SendAnswerEvent){
       yield TestBlankState();
       if(indexCurrentQuestion == (testEntity!.questions.length-1)){
         print('TEST COMPLETE');
@@ -66,7 +66,7 @@ class TestBloc extends Bloc<TestEvent, TestState> {
                 correctQuestions: data['your_result'] ?? 0
               );
             }
-            return TestShowState(isLastQuestion: true);
+            return TestAnswerSendedState(isLastQuestion: true);
           }
         );
       }else{
@@ -75,11 +75,19 @@ class TestBloc extends Bloc<TestEvent, TestState> {
         yield sent.fold(
           (failure) => errorCheck(failure),
           (data){
-            indexCurrentQuestion++;
-            return TestShowState();
+            return TestAnswerSendedState();
           }
         );
       }
+    }
+
+
+
+
+    if(event is NextQuestionEvent){
+      yield TestBlankState();
+      indexCurrentQuestion++;
+      yield TestShowState();
     }
 
 

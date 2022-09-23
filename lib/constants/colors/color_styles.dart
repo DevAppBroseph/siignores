@@ -46,6 +46,8 @@ class ColorStyles {
   static const grey929292 = Color(0xFF929292);
   static const grey_f1f1f1 = Color(0xFFF1F1F1);
   static const grey9B928C = Color(0xFF9B928C);
+  static const greycbcbcb = Color(0xFFcbcbcb);
+  static const red = Color(0xFFC83736);
 
   static const green_accent = Color(0xFF6DB533);
   static const lilac = Color(0xFFDDC6E0);

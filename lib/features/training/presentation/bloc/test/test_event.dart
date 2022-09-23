@@ -10,8 +10,8 @@ class GetTestsEvent extends TestEvent{
   final int testId;
   GetTestsEvent({required this.testId});
 }
-class NextQuestionEvent extends TestEvent{
+class SendAnswerEvent extends TestEvent{
   final int optionId;
-  NextQuestionEvent({required this.optionId});
+  SendAnswerEvent({required this.optionId});
 }
-
+class NextQuestionEvent extends TestEvent{}
