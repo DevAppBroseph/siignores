@@ -29,7 +29,7 @@ class LessonDetailEntity extends Equatable {
     required this.times,
     required this.files,
     required this.backImage,
-    required this.reviews
+    required this.reviews,
   });
 
   @override

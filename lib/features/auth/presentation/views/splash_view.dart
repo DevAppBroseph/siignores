@@ -50,7 +50,8 @@ class _SplashViewState extends State<SplashView> {
         }
 
         if(state is InternetErrorState){
-          context.read<AuthBloc>().add(InternetErrorEvent());
+          showAlertToast('Проверьте соединение с интернетом!');
+          // context.read<AuthBloc>().add(InternetErrorEvent());
         }
         if(state is CheckedState){
           if(sl<AuthConfig>().authenticatedOption == AuthenticatedOption.authenticated){

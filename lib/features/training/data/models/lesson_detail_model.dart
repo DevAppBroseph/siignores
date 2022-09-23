@@ -28,7 +28,7 @@ class LessonDetailModel extends LessonDetailEntity {
           backImage: backImage,
           lessonNumber: lessonNumber,
           status: status,
-          reviews: reviews
+          reviews: reviews,
         );
 
   factory LessonDetailModel.fromJson(Map<String, dynamic> json) =>
