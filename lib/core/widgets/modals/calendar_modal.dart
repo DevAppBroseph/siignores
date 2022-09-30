@@ -161,12 +161,20 @@ showModalCalendar(
                           eventLoader: eventLoader,
                           startingDayOfWeek: StartingDayOfWeek.monday,
                           daysOfWeekStyle: DaysOfWeekStyle(
-                            weekdayStyle: MainConfigApp.app.isSiignores
+                            weekdayStyle: MediaQuery.of(context).size.width > 550
+                            ? (MainConfigApp.app.isSiignores
+                              ? TextStyles.black_11_w400.copyWith(color: ColorStyles.black.withOpacity(0.4))
+                              : TextStyles.black_11_w400.copyWith(color: ColorStyles.black.withOpacity(0.4), fontFamily: MainConfigApp.fontFamily4))
+                            : (MainConfigApp.app.isSiignores
                               ? TextStyles.black_12_w400.copyWith(color: ColorStyles.black.withOpacity(0.4))
-                              : TextStyles.black_12_w400.copyWith(color: ColorStyles.black.withOpacity(0.4), fontFamily: MainConfigApp.fontFamily4),
-                            weekendStyle: MainConfigApp.app.isSiignores
+                              : TextStyles.black_12_w400.copyWith(color: ColorStyles.black.withOpacity(0.4), fontFamily: MainConfigApp.fontFamily4)),
+                            weekendStyle: MediaQuery.of(context).size.width > 550
+                            ? (MainConfigApp.app.isSiignores
+                              ? TextStyles.black_11_w400.copyWith(color: ColorStyles.black.withOpacity(0.4))
+                              : TextStyles.black_11_w400.copyWith(color: ColorStyles.black.withOpacity(0.4), fontFamily: MainConfigApp.fontFamily4))
+                            : (MainConfigApp.app.isSiignores
                               ? TextStyles.black_12_w400.copyWith(color: ColorStyles.black.withOpacity(0.4))
-                              : TextStyles.black_12_w400.copyWith(color: ColorStyles.black.withOpacity(0.4), fontFamily: MainConfigApp.fontFamily4)
+                              : TextStyles.black_12_w400.copyWith(color: ColorStyles.black.withOpacity(0.4), fontFamily: MainConfigApp.fontFamily4))
                           ),
                           calendarStyle: CalendarStyle(
                             markerDecoration: BoxDecoration(

@@ -204,11 +204,11 @@ class _ChatViewState extends State<ChatView> {
               ),
               child: Row(
                 children: [
-                  SvgPicture.asset(
-                    'assets/svg/chat_clip.svg',
-                    color: MainConfigApp.app.isSiignores ? null : ColorStyles.white,
-                  ),
-                  SizedBox(width: 15.w,),
+                  // SvgPicture.asset(
+                  //   'assets/svg/chat_clip.svg',
+                  //   color: MainConfigApp.app.isSiignores ? null : ColorStyles.white,
+                  // ),
+                  // SizedBox(width: 15.w,),
                   Expanded(
                     child: TextFormField(
                       controller: messageController,

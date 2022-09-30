@@ -24,5 +24,6 @@ class TestShowState extends TestState{}
 class TestCompleteState extends TestState{
   final int allQuestions;
   final int correctQuestions;
-  TestCompleteState({required this.allQuestions, required this.correctQuestions});
+  final bool isExam;
+  TestCompleteState({required this.allQuestions, required this.correctQuestions, required this.isExam});
 }

@@ -269,6 +269,9 @@ class _HomeViewState extends State<HomeView> {
                             todayTextStyle: MainConfigApp.app.isSiignores
                               ? TextStyles.white_14_w400
                               : TextStyles.white_13_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),
+                            outsideTextStyle: MainConfigApp.app.isSiignores
+                              ? TextStyles.black_14_w400
+                              : TextStyles.black_13_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),
                             rangeHighlightColor: ColorStyles.black,
                             selectedDecoration: BoxDecoration(color: MainConfigApp.app.isSiignores ? ColorStyles.backgroundColor : ColorStyles.lilac.withOpacity(0.6), shape: BoxShape.circle),
                             

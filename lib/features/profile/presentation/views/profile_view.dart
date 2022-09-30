@@ -68,7 +68,7 @@ class _ProfileViewState extends State<ProfileView> {
         title: Text('Профиль', ),
         leading: Row(
           children: [
-            SizedBox(width: 15.w,),
+            SizedBox(width: MediaQuery.of(context).size.width > 550 ? 15.w : 15.w,),
             CustomPopupMenu(
               controller: controller,
               arrowColor: ColorStyles.white,
@@ -198,7 +198,7 @@ class _ProfileViewState extends State<ProfileView> {
                         : 'https://${sl<MainConfigApp>().urlToCompany!}');
                     }
                   },
-                  child: SvgPicture.asset('assets/svg/gastrosoft.svg')
+                  child: SvgPicture.asset('assets/svg/gastrosoft.svg', height: 13.h,)
                 ),
                 SizedBox(height: 155.h,),
               ],

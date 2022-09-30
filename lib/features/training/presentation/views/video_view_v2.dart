@@ -70,7 +70,7 @@ class _VideoViewState extends State<VideoView> {
                 onTap: () => Navigator.pop(context),
                 child: Row(
                   children: [
-                    SizedBox(width: 20.w,),
+                    SizedBox(width: MediaQuery.of(context).size.width > 550 ? 40.w : 20.w,),
                     Icon(
                       Icons.close,
                       color: Colors.white,

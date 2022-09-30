@@ -84,6 +84,7 @@ class TopInfoHome extends StatelessWidget {
                       child: bloc.notifications.isEmpty
                       ? SvgPicture.asset(
                         'assets/svg/notification.svg',
+                        width: MediaQuery.of(context).size.width > 550 ? 20.w : null,
                         color: MainConfigApp.app.isSiignores ? null : ColorStyles.white,
                       ) 
                       : CustomPopupMenu(
@@ -92,6 +93,7 @@ class TopInfoHome extends StatelessWidget {
                         showArrow: true,
                         child: SvgPicture.asset(
                           'assets/svg/notification.svg',
+                          width: MediaQuery.of(context).size.width > 550 ? 20.w : null,
                           color: MainConfigApp.app.isSiignores ? null : ColorStyles.white,
                         ),
                         menuBuilder: _buildLongPressMenu,

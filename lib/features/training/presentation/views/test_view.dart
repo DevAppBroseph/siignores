@@ -15,8 +15,10 @@ import '../../../../constants/texts/text_styles.dart';
 import '../../../../core/utils/toasts.dart';
 import '../../../../core/widgets/btns/back_appbar_btn.dart';
 import '../../../../core/widgets/loaders/loader_v1.dart';
+import '../../../../core/widgets/modals/test_module_complete_modal.dart';
 import '../../../auth/presentation/bloc/auth/auth_bloc.dart';
 import '../../data/models/test_model.dart';
+import '../../domain/entities/test_entity.dart';
 
 
 
@@ -33,6 +35,7 @@ class TestView extends StatefulWidget {
 class _TestViewState extends State<TestView> {
 
   int? selectedAnswer;
+  bool answerSended = false;
   String title = '';
 
   void sendAnswer(){
@@ -65,17 +68,25 @@ class _TestViewState extends State<TestView> {
             Loader.hide();
             setState(() {
               selectedAnswer = null;
+              answerSended = false;
             });
           }
           if(state is TestAnswerSendedState){
             Loader.hide();
+            setState(() {
+              answerSended = true;
+            });
             if(state.isLastQuestion){
               context.read<MainScreenBloc>().add(ChangeViewEvent(widget: LessonsView(moduleEntity: widget.moduleEntity, courseId: widget.courseId,)));
             }
           }
           if(state is TestCompleteState){
             Loader.hide();
-            await TestCompleteModal(context: context, allQuestions: state.allQuestions, correctQuestions: state.correctQuestions).showMyDialog();
+            if(state.isExam){
+              await TestCompleteModal(context: context, allQuestions: state.allQuestions, correctQuestions: state.correctQuestions).showMyDialog();
+            }else{
+              await TestModuleCompleteModal(context: context, allQuestions: state.allQuestions, correctQuestions: state.correctQuestions).showMyDialog();
+            }
             context.read<MainScreenBloc>().add(ChangeViewEvent(widget: LessonsView(moduleEntity: widget.moduleEntity, courseId: widget.courseId,)));
           }
           if(state is TestErrorState){
@@ -118,13 +129,25 @@ class _TestViewState extends State<TestView> {
               );
             }
           }
+          if(bloc.testEntity!.correctQuestions != null && bloc.testEntity!.isExam != null && bloc.testEntity!.isExam!){
+            return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text('Вы уже сдали этот тест,\nваш результат: ${bloc.testEntity!.correctQuestions ?? 0}/${bloc.testEntity!.allQuestions ?? bloc.testEntity!.questions.length}', style: MainConfigApp.app.isSiignores
+                    ? TextStyles.black_18_w700
+                    : TextStyles.white_18_w400.copyWith(fontFamily: MainConfigApp.fontFamily4), textAlign: TextAlign.center,),
+                  SizedBox(height: 75.h, width: MediaQuery.of(context).size.width,)
+                ],
+              );
+          }
           return SingleChildScrollView(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: 25.h, width: MediaQuery.of(context).size.width,),
+                  SizedBox(height: 55.h, width: MediaQuery.of(context).size.width,),
                   Text.rich(
                     TextSpan(
                         text: 'Вопрос: ',
@@ -153,7 +176,7 @@ class _TestViewState extends State<TestView> {
                         ]),
                   ),
                   
-                  SizedBox(height: 70.h,),
+                  SizedBox(height: 40.h,),
                   Text(bloc.testEntity!.questions[bloc.indexCurrentQuestion].title, style: MainConfigApp.app.isSiignores
                     ? TextStyles.black_16_w400
                     : TextStyles.white_16_w400.copyWith(
@@ -162,7 +185,16 @@ class _TestViewState extends State<TestView> {
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 60.h,),
-                  Container(
+                  isExam(bloc.testEntity!)
+                  ? Container(
+                    width: 311.w,
+                    child: Column(
+                      children: bloc.testEntity!.questions[bloc.indexCurrentQuestion].options.map((option) 
+                        => _buildAnwerItemExam(context, option)
+                      ).toList()
+                    ),
+                  )
+                  : Container(
                     width: 311.w,
                     decoration: BoxDecoration(
                       color: ColorStyles.white,
@@ -171,9 +203,7 @@ class _TestViewState extends State<TestView> {
                     padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 15.h),
                     child: Column(
                       children: bloc.testEntity!.questions[bloc.indexCurrentQuestion].options.map((option) 
-                        => bloc.testEntity!.questions.length <= 30 
-                          ? _buildAnwerItemExam(context, option)
-                          : _buildAnwerItem(context, option)
+                        => _buildAnwerItem(context, option)
                       ).toList()
                     ),
                   ),
@@ -185,20 +215,32 @@ class _TestViewState extends State<TestView> {
           );
         },
       ),
-      floatingActionButton:  Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          PrimaryBtn(
-            title: 'ДАЛЬШЕ',
-            onTap: (){
-              if(selectedAnswer != null){
-                context.read<TestBloc>().add(NextQuestionEvent());
-              }
-            }
-          ),
-          SizedBox(height: MediaQuery.of(context).padding.bottom),
-        ],
+      floatingActionButton: bloc.testEntity!.correctQuestions != null && bloc.testEntity!.isExam != null && bloc.testEntity!.isExam!
+      ? null
+      : Container(
+        color: ColorStyles.backgroundColor,
+        padding: EdgeInsets.only(top: 20.h, bottom: 20.h),
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            PrimaryBtn(
+                title: answerSended ? 'ДАЛЬШЕ' : 'ОТВЕТИТЬ',
+                onTap: (){
+                  if(selectedAnswer != null){
+                    if(answerSended){
+                      context.read<TestBloc>().add(NextQuestionEvent());
+                    }else{
+                      sendAnswer();
+                    }
+                  }
+                }
+              ),
+            SizedBox(height: MediaQuery.of(context).padding.bottom-18.h),
+          ],
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
@@ -209,10 +251,9 @@ class _TestViewState extends State<TestView> {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: (){
-        if(selectedAnswer == null){
+        if(!answerSended){
           setState(() {
             selectedAnswer = optionTest.id;
-            sendAnswer();
           });
         }
       },
@@ -230,21 +271,37 @@ class _TestViewState extends State<TestView> {
                     width: 18.w,
                     height: 18.w,
                     decoration: BoxDecoration(
-                      color: selectedAnswer != null && !bloc.testEntity!.questions[bloc.indexCurrentQuestion].options.any((element) => element.isCorrect && element.id == selectedAnswer)
+                      color: !answerSended && optionTest.id == selectedAnswer
+                        ? ColorStyles.primary
+                        : !answerSended
+                        ? null
+                        : selectedAnswer != null && !bloc.testEntity!.questions[bloc.indexCurrentQuestion].options.any((element) => element.isCorrect && element.id == selectedAnswer)
                         ? (!optionTest.isCorrect ? Colors.red : ColorStyles.green_accent) 
                         : selectedAnswer != null && selectedAnswer == optionTest.id
-                        ? ColorStyles.primary
+                        ? ColorStyles.green_accent
                         : null,
                       border: Border.all(
-                        color: selectedAnswer != null && !bloc.testEntity!.questions[bloc.indexCurrentQuestion].options.any((element) => element.isCorrect && element.id == selectedAnswer)
+                        color: !answerSended
+                        ? ColorStyles.primary
+                        : selectedAnswer != null && !bloc.testEntity!.questions[bloc.indexCurrentQuestion].options.any((element) => element.isCorrect && element.id == selectedAnswer)
                         ? (!optionTest.isCorrect ? Colors.red : ColorStyles.green_accent) 
+                        : selectedAnswer != null && selectedAnswer == optionTest.id
+                        ? ColorStyles.green_accent
                         : ColorStyles.primary, 
                         width: 2.h,
                       ),
                       borderRadius: BorderRadius.circular(30.h)
                     ),
                     alignment: Alignment.center,
-                    child: selectedAnswer != null
+                    child: !answerSended && optionTest.id == selectedAnswer
+                    ? Icon(
+                      Icons.check,
+                      color: ColorStyles.white,
+                      size: 15.w,
+                    )
+                    : !answerSended
+                    ? null
+                    : selectedAnswer != null
                     ? Icon(
                       !optionTest.isCorrect ? Icons.close : Icons.check,
                       color: ColorStyles.white,
@@ -284,10 +341,9 @@ class _TestViewState extends State<TestView> {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: (){
-        if(selectedAnswer == null){
+        if(!answerSended){
           setState(() {
             selectedAnswer = optionTest.id;
-            sendAnswer();
           });
         }
       },
@@ -296,24 +352,36 @@ class _TestViewState extends State<TestView> {
         margin: EdgeInsets.symmetric(vertical: 15.h),
         width: double.infinity,
         decoration: BoxDecoration(
-          color: bloc.testEntity!.questions[bloc.indexCurrentQuestion].options.any((element) => !element.isCorrect && element.id == selectedAnswer) 
+          color: !answerSended && optionTest.id == selectedAnswer
+            ? ColorStyles.greycbcbcb
+            : !answerSended
+            ? ColorStyles.white
+            : bloc.testEntity!.questions[bloc.indexCurrentQuestion].options.any((element) => !element.isCorrect && element.id == selectedAnswer) 
             ? (selectedAnswer == optionTest.id && !optionTest.isCorrect 
               ? ColorStyles.red 
               : optionTest.isCorrect 
               ? ColorStyles.green_accent
-              : ColorStyles.grey_f1f1f1)
+              : ColorStyles.white)
             : optionTest.id == selectedAnswer
             ? ColorStyles.green_accent
-            : ColorStyles.grey_f1f1f1,
+            : ColorStyles.white,
           borderRadius: BorderRadius.circular(12.w)
         ),
         child: Text(optionTest.text, style: TextStyles.black_14_w700
-          .copyWith(color: bloc.testEntity!.questions[bloc.indexCurrentQuestion].options
+          .copyWith(color: !answerSended 
+            ? ColorStyles.black
+            : bloc.testEntity!.questions[bloc.indexCurrentQuestion].options
             .any((element) => !element.isCorrect && element.id == selectedAnswer) && selectedAnswer == optionTest.id && !optionTest.isCorrect 
             ? ColorStyles.white
             : ColorStyles.black),)
       ),
     );
     
+  }
+
+
+
+  bool isExam(TestEntity test){
+    return (test.isExam != null && test.isExam!) || (test.isExam == null && test.questions.length <= 30);
   }
 }

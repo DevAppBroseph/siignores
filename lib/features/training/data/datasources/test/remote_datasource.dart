@@ -42,6 +42,41 @@ class TestRemoteDataSourceImpl
     } else {
       throw ServerException(message: 'Ошибка с сервером');
     }
+
+    // return TestModel(id: 0, title: 'dsadsad dsa ', description: 'dasdas', 
+    // allQuestions: 4,
+    // correctQuestions: null,
+    // isExam: false,
+    // questions: 
+    //   List.generate(4, (index) 
+    //     => QuestionTest(
+    //       id: index, 
+    //       title: 'Question $index', 
+    //       options: [
+    //         OptionTest(
+    //           id: index, 
+    //           text: 'Option 1', 
+    //           isCorrect: false
+    //         ),
+    //         OptionTest(
+    //           id: index+1, 
+    //           text: 'Option 2', 
+    //           isCorrect: true
+    //         ),
+    //         // OptionTest(
+    //         //   id: index+2, 
+    //         //   text: 'Option 3', 
+    //         //   isCorrect: false
+    //         // ),
+    //         // OptionTest(
+    //         //   id: index+3, 
+    //         //   text: 'Option 4', 
+    //         //   isCorrect: false
+    //         // )
+    //       ], 
+    //       unanswered: index != 0
+    //     ))
+    //   );
   }
 
 

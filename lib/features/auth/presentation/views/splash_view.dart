@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:siignores/constants/texts/text_styles.dart';
 import 'package:siignores/core/services/database/auth_params.dart';
 import 'package:siignores/features/auth/presentation/views/sign_in_view.dart';
@@ -33,6 +34,13 @@ class _SplashViewState extends State<SplashView> {
 
   @override
   Widget build(BuildContext context) {
+    print('WIDTH APP: ${MediaQuery.of(context).size.width}');
+    print('HEIGHT APP: ${MediaQuery.of(context).size.height}');
+    if(MediaQuery.of(context).size.width > 550){
+      setState(() {
+        ScreenUtil.init(context, designSize: Size(495, 812));
+      });
+    }
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) async {
         if(state is RequiredGetUserInfoState){

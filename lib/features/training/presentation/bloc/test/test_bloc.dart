@@ -60,13 +60,19 @@ class TestBloc extends Bloc<TestEvent, TestState> {
         yield sent2.fold(
           (failure) => errorCheck(failure),
           (data){
-            if(data['all_questions'] != null && data['all_questions']! <= 30){
-              return TestCompleteState(
-                allQuestions: data['all_questions'] ?? 0,
-                correctQuestions: data['your_result'] ?? 0
-              );
-            }
-            return TestAnswerSendedState(isLastQuestion: true);
+            // if(data['all_questions'] != null && data['all_questions']! <= 30){
+            //   return TestCompleteState(
+            //     allQuestions: data['all_questions'] ?? 0,
+            //     correctQuestions: data['your_result'] ?? 0,
+            //     isExam: true
+            //   );
+            // }
+            // return TestAnswerSendedState(isLastQuestion: true);
+            return TestCompleteState(
+              allQuestions: data['all_questions'] ?? 0,
+              correctQuestions: data['your_result'] ?? 0,
+              isExam: (testEntity!.isExam != null && testEntity!.isExam!) || (testEntity!.isExam == null && data['all_questions'] != null && data['all_questions']! <= 30)
+            );
           }
         );
       }else{
