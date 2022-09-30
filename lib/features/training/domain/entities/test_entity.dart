@@ -6,6 +6,7 @@ class TestEntity extends Equatable {
   final String title;
   final String? description;
   final bool? isExam;
+  final bool? isChecked;
   final int? allQuestions;
   final int? correctQuestions;
   final List<QuestionTest> questions;
@@ -16,11 +17,10 @@ class TestEntity extends Equatable {
     required this.description,
     required this.questions,
     required this.isExam,
+    required this.isChecked,
     required this.allQuestions,
     required this.correctQuestions,
   });
-
-
 
   @override
   List<Object> get props => [
