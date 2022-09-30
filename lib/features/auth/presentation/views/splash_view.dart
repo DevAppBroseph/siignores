@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:siignores/constants/texts/text_styles.dart';
 import 'package:siignores/core/services/database/auth_params.dart';
 import 'package:siignores/features/auth/presentation/views/sign_in_view.dart';
 import 'package:siignores/features/chat/presentation/bloc/chat/chat_bloc.dart';
 import 'package:siignores/features/main/presentation/views/main_view.dart';
+import 'package:siignores/features/training/presentation/bloc/course/course_bloc.dart';
 import '../../../../constants/colors/color_styles.dart';
 import '../../../../core/utils/toasts.dart';
 import '../../../../locator.dart';
@@ -32,6 +34,13 @@ class _SplashViewState extends State<SplashView> {
 
   @override
   Widget build(BuildContext context) {
+    print('WIDTH APP: ${MediaQuery.of(context).size.width}');
+    print('HEIGHT APP: ${MediaQuery.of(context).size.height}');
+    if(MediaQuery.of(context).size.width > 550){
+      setState(() {
+        ScreenUtil.init(context, designSize: Size(495, 812));
+      });
+    }
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) async {
         if(state is RequiredGetUserInfoState){
@@ -49,12 +58,14 @@ class _SplashViewState extends State<SplashView> {
         }
 
         if(state is InternetErrorState){
-          context.read<AuthBloc>().add(InternetErrorEvent());
+          showAlertToast('Проверьте соединение с интернетом!');
+          // context.read<AuthBloc>().add(InternetErrorEvent());
         }
         if(state is CheckedState){
           if(sl<AuthConfig>().authenticatedOption == AuthenticatedOption.authenticated){
             context.read<ProgressBloc>().add(GetProgressEvent());
             context.read<ChatTabsBloc>().add(GetChatTabsEvent());
+            context.read<CourseBloc>().add(ToInitalStateCoursesEvent());
             context.read<NotificationsBloc>().add(GetNotificationsEvent());
             context.read<ChatBloc>().add(StartSocketEvent());
           }

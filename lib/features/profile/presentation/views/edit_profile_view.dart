@@ -146,22 +146,22 @@ class _EditProfileViewState extends State<EditProfileView> {
                       controller: emailController,
                     ),
                     SizedBox(height: 50.h,),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20.h, vertical: 20.h),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.w),
-                        color: MainConfigApp.app.isSiignores ? ColorStyles.white : ColorStyles.black2
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Изменить пароль для входа', style: MainConfigApp.app.isSiignores
-                            ? TextStyles.black_15_w700
-                            : TextStyles.white_15_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
-                          SvgPicture.asset('assets/svg/arrow_right.svg')
-                        ],
-                      ),
-                    ),
+                    // Container(
+                    //   padding: EdgeInsets.symmetric(horizontal: 20.h, vertical: 20.h),
+                    //   decoration: BoxDecoration(
+                    //     borderRadius: BorderRadius.circular(10.w),
+                    //     color: MainConfigApp.app.isSiignores ? ColorStyles.white : ColorStyles.black2
+                    //   ),
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //     children: [
+                    //       Text('Изменить пароль для входа', style: MainConfigApp.app.isSiignores
+                    //         ? TextStyles.black_15_w700
+                    //         : TextStyles.white_15_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
+                    //       SvgPicture.asset('assets/svg/arrow_right.svg')
+                    //     ],
+                    //   ),
+                    // ),
                     SizedBox(height: 280.h,),
                   ],
                 ),

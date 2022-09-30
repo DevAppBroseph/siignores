@@ -9,7 +9,8 @@ class LessonListModel extends LessonListEntity{
     required String? image,
     required String? question,
     required String? status,
-    required String miniDesc
+    required String miniDesc,
+    required List<int> tests
 
   }) : super(
     id: id, 
@@ -19,7 +20,8 @@ class LessonListModel extends LessonListEntity{
     question: question,
     text: text,
     status: status,
-    miniDesc: miniDesc
+    miniDesc: miniDesc,
+    tests: tests
   );
 
   factory LessonListModel.fromJson(Map<String, dynamic> json) => LessonListModel(
@@ -30,6 +32,9 @@ class LessonListModel extends LessonListEntity{
     moduleId: json['module'],
     text: json['text'],
     status: json['status'],
+    tests: json['test_set'] == null
+    ? []
+    : (json['test_set'] as List).map((json) => int.parse(json.toString())).toList(),
     miniDesc: json['short_desc'] ?? ''
     
   );

@@ -5,6 +5,7 @@ class LessonListEntity extends Equatable {
   final int moduleId;
   final String title;
   final String text;
+  final List<int> tests;
   final String? image;
   final String? question;
   final String miniDesc;
@@ -17,6 +18,7 @@ class LessonListEntity extends Equatable {
     required this.image,
     required this.moduleId,
     required this.question,
+    required this.tests,
     required this.text,
     required this.status,
     required this.miniDesc,

@@ -20,7 +20,9 @@ class BackAppbarBtn extends StatelessWidget {
       onTap: onTap,
       behavior: HitTestBehavior.translucent,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 15.h),
+        padding: MediaQuery.of(context).size.width > 550 
+        ? EdgeInsets.only(left: 12.w, top: 15.h, bottom: 15.h)
+        : EdgeInsets.symmetric(horizontal: 16.w, vertical: 15.h),
         child: SvgPicture.asset(
           'assets/svg/back_appbar.svg',
           color: black ? ColorStyles.black : (MainConfigApp.app.isSiignores ? null : ColorStyles.white),

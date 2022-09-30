@@ -74,7 +74,7 @@ class _CalendarViewState extends State<CalendarView> {
                 }
               );
             },
-            child: SvgPicture.asset('assets/svg/calendar.svg')
+            child: SvgPicture.asset('assets/svg/calendar.svg', width: MediaQuery.of(context).size.width > 550 ? 22.w : null,)
           ),
           SizedBox(width: 15.w,)
         ],
@@ -186,6 +186,9 @@ class _CalendarViewState extends State<CalendarView> {
                         todayTextStyle: MainConfigApp.app.isSiignores
                           ? TextStyles.white_14_w400
                           : TextStyles.white_13_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),
+                        outsideTextStyle: MainConfigApp.app.isSiignores
+                          ? TextStyles.black_14_w400
+                          : TextStyles.black_13_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),
                         rangeHighlightColor: ColorStyles.black,
                         selectedDecoration: BoxDecoration(color: MainConfigApp.app.isSiignores ? ColorStyles.backgroundColor : ColorStyles.lilac.withOpacity(0.6), shape: BoxShape.circle),
                         

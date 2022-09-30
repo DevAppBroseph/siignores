@@ -38,13 +38,13 @@ class _SignInViewState extends State<SignInView> {
   late StreamSubscription<bool> keyboardSub;
 
   void signIn(BuildContext context) {
-    if (formKey.currentState!.validate()) {
+    // if (formKey.currentState!.validate()) {
       showLoaderWrapper(context);
       context.read<AuthBloc>().add(SignInEvent(
             email: emailController.text.trim(),
             password: passwordController.text.trim(),
           ));
-    }
+    // }
   }
 
   void scrollToBottom() async {
@@ -87,6 +87,7 @@ class _SignInViewState extends State<SignInView> {
                       children: [
                         Image(
                             width: MediaQuery.of(context).size.width * 0.9,
+                            fit: BoxFit.cover,
                             image: AssetImage('assets/images/back_login.png')),
                         Positioned(
                             top: 0,
@@ -118,7 +119,7 @@ class _SignInViewState extends State<SignInView> {
                 : Positioned(
                     bottom: -20.h,
                     child: Image.asset('assets/images/sign_in_back.png',
-                        width: MediaQuery.of(context).size.width)),
+                        width: MediaQuery.of(context).size.width, fit: BoxFit.cover,)),
           CustomScrollView(
             controller: scrollController,
             slivers: [

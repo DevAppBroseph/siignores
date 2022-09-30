@@ -21,6 +21,7 @@ import 'package:siignores/features/training/domain/usecases/get_courses.dart';
 import 'package:siignores/features/training/domain/usecases/get_lesson.dart';
 import 'package:siignores/features/training/domain/usecases/get_lessons.dart';
 import 'package:siignores/features/training/domain/usecases/get_modules.dart';
+import 'package:siignores/features/training/domain/usecases/get_test.dart';
 import 'package:siignores/features/training/domain/usecases/send_homework.dart';
 import 'package:siignores/features/training/presentation/bloc/lessons/lessons_bloc.dart';
 import 'package:siignores/features/training/presentation/bloc/modules/module_bloc.dart';
@@ -58,11 +59,17 @@ import 'features/home/presentation/bloc/progress/progress_bloc.dart';
 import 'features/profile/data/datasources/profile/remote_datasource.dart';
 import 'features/profile/data/repositories/profile_repository_impl.dart';
 import 'features/profile/presentation/bloc/profile/profile_bloc.dart';
+import 'features/training/data/datasources/test/remote_datasource.dart';
 import 'features/training/data/datasources/training_main/remote_datasource.dart';
+import 'features/training/data/repositories/test_repository_impl.dart';
 import 'features/training/data/repositories/training_repository_impl.dart';
+import 'features/training/domain/repositories/test/test_repository.dart';
 import 'features/training/domain/repositories/training/training_repository.dart';
+import 'features/training/domain/usecases/complete_test.dart';
+import 'features/training/domain/usecases/send_answer_test.dart';
 import 'features/training/presentation/bloc/course/course_bloc.dart';
 import 'features/training/presentation/bloc/lesson_detail/lesson_detail_bloc.dart';
+import 'features/training/presentation/bloc/test/test_bloc.dart';
 
 
 final sl = GetIt.instance;
@@ -175,10 +182,16 @@ void setupInjections() {
   sl.registerLazySingleton<TrainingRemoteDataSource>(
     () => TrainingRemoteDataSourceImpl(dio: sl()),
   );
+  sl.registerLazySingleton<TestRemoteDataSource>(
+    () => TestRemoteDataSourceImpl(dio: sl()),
+  );
 
   // //Repositories
   sl.registerLazySingleton<TrainingRepository>(
     () => TrainingRepositoryImpl(sl(), sl(), ),
+  );
+  sl.registerLazySingleton<TestRepository>(
+    () => TestRepositoryImpl(sl(), sl(), ),
   );
 
   // //UseCases
@@ -186,6 +199,9 @@ void setupInjections() {
   sl.registerLazySingleton(() => GetModules(sl()));
   sl.registerLazySingleton(() => GetLessons(sl()));
   sl.registerLazySingleton(() => GetLesson(sl()));
+  sl.registerLazySingleton(() => GetTest(sl()));
+  sl.registerLazySingleton(() => SendAnswerTest(sl()));
+  sl.registerLazySingleton(() => CompleteTest(sl()));
   sl.registerLazySingleton(() => SendHomework(sl()));
 
   //Blocs
@@ -200,6 +216,9 @@ void setupInjections() {
   );
   sl.registerFactory<LessonDetailBloc>(
     () => LessonDetailBloc(sl(), sl()),
+  );
+  sl.registerFactory<TestBloc>(
+    () => TestBloc(sl(), sl(), sl()),
   );
 
 

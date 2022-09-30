@@ -24,6 +24,7 @@ import 'features/training/presentation/bloc/course/course_bloc.dart';
 import 'features/training/presentation/bloc/lesson_detail/lesson_detail_bloc.dart';
 import 'features/training/presentation/bloc/lessons/lessons_bloc.dart';
 import 'features/training/presentation/bloc/modules/module_bloc.dart';
+import 'features/training/presentation/bloc/test/test_bloc.dart';
 import 'locator.dart';
 
 void main() async {
@@ -72,6 +73,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(create: (_) => sl<ProgressBloc>()),
           BlocProvider(create: (_) => sl<CalendarBloc>()),
           BlocProvider(create: (_) => sl<NotificationsBloc>()),
+          BlocProvider(create: (_) => sl<TestBloc>()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

@@ -25,6 +25,7 @@ import 'package:siignores/features/training/domain/entities/module_enitiy.dart';
 import 'package:siignores/features/training/presentation/bloc/lessons/lessons_bloc.dart';
 import 'package:siignores/features/training/presentation/views/lessons_view.dart';
 import 'package:siignores/features/training/presentation/views/video_view.dart';
+import 'package:siignores/features/training/presentation/views/video_view_v2.dart';
 import '../../../../constants/colors/color_styles.dart';
 import '../../../../core/services/network/config.dart';
 import '../../../../core/utils/helpers/time_helper.dart';

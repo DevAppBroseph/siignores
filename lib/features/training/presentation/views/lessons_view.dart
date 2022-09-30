@@ -4,6 +4,7 @@ import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:siignores/features/main/presentation/bloc/main_screen/main_screen_bloc.dart';
 import 'package:siignores/features/training/domain/entities/module_enitiy.dart';
+import 'package:siignores/features/training/presentation/views/test_view.dart';
 import 'package:siignores/features/training/presentation/views/training_view.dart';
 import '../../../../constants/main_config_app.dart';
 import '../../../../constants/texts/text_styles.dart';
@@ -86,11 +87,19 @@ class LessonsView extends StatelessWidget {
                       return LessonCard(
                         lessonListEntity: bloc.lessons[i],
                         onTap: (){
-                          context.read<MainScreenBloc>().add(ChangeViewEvent(widget: LessonDetailView(
-                            courseId: courseId,
-                            lessonId: bloc.lessons[i].id,
-                            moduleEntity: moduleEntity,
-                          )));
+                          if(bloc.lessons[i].tests.isNotEmpty){
+                            context.read<MainScreenBloc>().add(ChangeViewEvent(widget: TestView(
+                              moduleEntity: moduleEntity, 
+                              testId: bloc.lessons[i].tests.first,
+                              courseId: courseId,
+                            )));
+                          }else{
+                            context.read<MainScreenBloc>().add(ChangeViewEvent(widget: LessonDetailView(
+                              courseId: courseId,
+                              lessonId: bloc.lessons[i].id,
+                              moduleEntity: moduleEntity,
+                            )));
+                          }
                           
                         },
                         isCompleted: false

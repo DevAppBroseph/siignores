@@ -30,6 +30,8 @@ enum Endpoints {
   getLessons,
   getLesson,
   addHomework,
+  testDetails,
+  testAnswer,
 
   //Chat
   getChatTabs,
@@ -84,6 +86,10 @@ extension EndpointsExtension on Endpoints {
         return "$url/auth/users/change_photo/";
       case Endpoints.getCourses:
         return "$url/course/get_courses/";
+      case Endpoints.testDetails:
+        return "$url/test/${params![0]}";
+      case Endpoints.testAnswer:
+        return "$url/answer/";
       case Endpoints.getModules:
         return "$url/course/get_modules/${params![0]}/";
       case Endpoints.getLessons:
