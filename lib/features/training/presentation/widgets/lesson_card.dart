@@ -97,6 +97,7 @@ class LessonCard extends StatelessWidget {
                               color: ColorStyles.green_accent,
                               borderRadius: BorderRadius.circular(18.w)),
                           child: Row(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               SvgPicture.asset('assets/svg/checked_white.svg'),
                               SizedBox(
