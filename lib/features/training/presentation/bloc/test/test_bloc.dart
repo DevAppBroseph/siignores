@@ -30,6 +30,7 @@ class TestBloc extends Bloc<TestEvent, TestState> {
         (failure) => errorCheck(failure),
         (data){
           testEntity = data;
+          indexCurrentQuestion = 0;
           for(var item in data.questions){
             if(item.unanswered == true){
               indexCurrentQuestion = data.questions.indexOf(item);
@@ -94,6 +95,21 @@ class TestBloc extends Bloc<TestEvent, TestState> {
       yield TestBlankState();
       indexCurrentQuestion++;
       yield TestShowState();
+    }
+
+
+    if(event is GetTestResultEvent){
+      yield TestLoadingState();
+      var sent2 = await completeTest(testEntity!.id);
+      yield sent2.fold(
+        (failure) => errorCheck(failure),
+        (data){
+          return TestResultGotState(
+            allQuestions: data['all_questions'] ?? 0,
+            correctQuestions: data['your_result'] ?? 0,
+          );
+        }
+      );
     }
 
 

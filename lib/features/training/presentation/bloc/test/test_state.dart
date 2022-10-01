@@ -21,6 +21,11 @@ class TestAnswerSendedState extends TestState{
   TestAnswerSendedState({this.isLastQuestion = false});
 }
 class TestShowState extends TestState{}
+class TestResultGotState extends TestState{
+  final int allQuestions;
+  final int correctQuestions;
+  TestResultGotState({required this.allQuestions, required this.correctQuestions});
+}
 class TestCompleteState extends TestState{
   final int allQuestions;
   final int correctQuestions;

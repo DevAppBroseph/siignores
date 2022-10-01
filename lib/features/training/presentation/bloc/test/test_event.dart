@@ -15,3 +15,4 @@ class SendAnswerEvent extends TestEvent{
   SendAnswerEvent({required this.optionId});
 }
 class NextQuestionEvent extends TestEvent{}
+class GetTestResultEvent extends TestEvent{}

@@ -73,6 +73,21 @@ class _TestViewState extends State<TestView> {
           if(state is TestLoadingState){
             setState(() {});
           }
+          if(state is TestResultGotState){
+            await TestCompleteModal(
+              context: context,
+              allQuestions: state.allQuestions,
+              correctQuestions: state.correctQuestions
+            ).showMyDialog();
+            setState(() {});
+            if(bloc.testEntity != null && bloc.testEntity!.isChecked && bloc.testEntity!.isExam == true){
+              context.read<MainScreenBloc>().add(ChangeViewEvent(
+                  widget: LessonsView(
+                moduleEntity: widget.moduleEntity,
+                courseId: widget.courseId,
+              )));
+            }
+          }
           if (state is TestShowState) {
             Loader.hide();
             setState(() {
@@ -124,6 +139,9 @@ class _TestViewState extends State<TestView> {
           }
           if (state is GotSuccessTestState) {
             if (bloc.testEntity != null) {
+              if(bloc.testEntity!.isChecked && bloc.testEntity!.isExam == true){
+                bloc.add(GetTestResultEvent());
+              }
               setState(() {
                 title = bloc.testEntity!.title;
               });
@@ -163,28 +181,28 @@ class _TestViewState extends State<TestView> {
               );
             }
           }
-          if (bloc.testEntity!.isChecked &&
-              bloc.testEntity!.isExam != null &&
-              bloc.testEntity!.isExam!) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'Вы уже сдали этот тест',
-                  style: MainConfigApp.app.isSiignores
-                      ? TextStyles.black_18_w700
-                      : TextStyles.white_18_w400
-                          .copyWith(fontFamily: MainConfigApp.fontFamily4),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(
-                  height: 75.h,
-                  width: MediaQuery.of(context).size.width,
-                )
-              ],
-            );
-          }
+          // if (bloc.testEntity!.isChecked &&
+          //     bloc.testEntity!.isExam != null &&
+          //     bloc.testEntity!.isExam!) {
+          //   return Column(
+          //     mainAxisAlignment: MainAxisAlignment.center,
+          //     crossAxisAlignment: CrossAxisAlignment.center,
+          //     children: [
+          //       Text(
+          //         'Вы уже сдали этот тест',
+          //         style: MainConfigApp.app.isSiignores
+          //             ? TextStyles.black_18_w700
+          //             : TextStyles.white_18_w400
+          //                 .copyWith(fontFamily: MainConfigApp.fontFamily4),
+          //         textAlign: TextAlign.center,
+          //       ),
+          //       SizedBox(
+          //         height: 75.h,
+          //         width: MediaQuery.of(context).size.width,
+          //       )
+          //     ],
+          //   );
+          // }
           return SingleChildScrollView(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 24.w),
@@ -230,7 +248,9 @@ class _TestViewState extends State<TestView> {
                     height: 40.h,
                   ),
                   Text(
-                    bloc.testEntity!.questions[bloc.indexCurrentQuestion].title,
+                    bloc.testEntity!.questions.isEmpty 
+                    ? ''
+                    : bloc.testEntity!.questions[bloc.indexCurrentQuestion].title,
                     style: MainConfigApp.app.isSiignores
                         ? TextStyles.black_16_w400
                         : TextStyles.white_16_w400.copyWith(
@@ -245,7 +265,9 @@ class _TestViewState extends State<TestView> {
                       ? Container(
                           width: 311.w,
                           child: Column(
-                              children: bloc.testEntity!
+                              children: bloc.testEntity!.questions.isEmpty
+                              ? []
+                              : bloc.testEntity!
                                   .questions[bloc.indexCurrentQuestion].options
                                   .map((option) =>
                                       _buildAnwerItemExam(context, option))
@@ -260,7 +282,9 @@ class _TestViewState extends State<TestView> {
                           padding: EdgeInsets.symmetric(
                               horizontal: 20.w, vertical: 15.h),
                           child: Column(
-                              children: bloc.testEntity!
+                              children: bloc.testEntity!.questions.isEmpty
+                              ? []
+                              : bloc.testEntity!
                                   .questions[bloc.indexCurrentQuestion].options
                                   .map((option) =>
                                       _buildAnwerItem(context, option))
@@ -275,11 +299,14 @@ class _TestViewState extends State<TestView> {
           );
         },
       ),
-      floatingActionButton: bloc.state == TestLoadingState() || bloc.testEntity == null || bloc.testEntity!.isChecked &&
-              bloc.testEntity!.isExam != null &&
-              bloc.testEntity!.isExam!
+      floatingActionButton: 
+      // bloc.state == TestLoadingState() || bloc.testEntity == null || bloc.testEntity!.isChecked &&
+      //         bloc.testEntity!.isExam != null &&
+      //         bloc.testEntity!.isExam!
+      bloc.state == TestLoadingState()
           ? null
-          : Container(
+          :
+           Container(
               color: ColorStyles.backgroundColor,
               padding: EdgeInsets.only(top: 20.h, bottom: 20.h),
               width: MediaQuery.of(context).size.width,
@@ -289,9 +316,17 @@ class _TestViewState extends State<TestView> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   PrimaryBtn(
-                      title: answerSended ? 'ДАЛЬШЕ' : 'ОТВЕТИТЬ',
+                      title: bloc.testEntity != null && bloc.testEntity!.isChecked && bloc.testEntity!.isExam == true
+                      ? 'НАЗАД'
+                      : answerSended ? 'ДАЛЬШЕ' : 'ОТВЕТИТЬ',
                       onTap: () {
-                        if (selectedAnswer != null) {
+                        if(bloc.testEntity != null && bloc.testEntity!.isChecked && bloc.testEntity!.isExam == true){
+                          context.read<MainScreenBloc>().add(ChangeViewEvent(
+                              widget: LessonsView(
+                            moduleEntity: widget.moduleEntity,
+                            courseId: widget.courseId,
+                          )));
+                        }else if (selectedAnswer != null) {
                           if (answerSended) {
                             context.read<TestBloc>().add(NextQuestionEvent());
                           } else {
