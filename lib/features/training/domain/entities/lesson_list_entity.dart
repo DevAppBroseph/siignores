@@ -11,6 +11,7 @@ class LessonListEntity extends Equatable {
   final String miniDesc;
   String? status;
   bool isOpen;
+  bool? isFinished;
 
   LessonListEntity({
     required this.id,
@@ -22,16 +23,10 @@ class LessonListEntity extends Equatable {
     required this.text,
     required this.status,
     required this.miniDesc,
-    this.isOpen = false
+    this.isFinished = false,
+    this.isOpen = false,
   });
 
-
-
   @override
-  List<Object> get props => [
-        id,
-        title,
-        moduleId,
-        text
-      ];
+  List<Object> get props => [id, title, moduleId, text];
 }
