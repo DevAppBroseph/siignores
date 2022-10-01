@@ -70,6 +70,9 @@ class _TestViewState extends State<TestView> {
           )),
       body: BlocConsumer<TestBloc, TestState>(
         listener: (context, state) async {
+          if(state is TestLoadingState){
+            setState(() {});
+          }
           if (state is TestShowState) {
             Loader.hide();
             setState(() {
@@ -160,7 +163,7 @@ class _TestViewState extends State<TestView> {
               );
             }
           }
-          if (bloc.testEntity!.correctQuestions != null &&
+          if (bloc.testEntity!.isChecked &&
               bloc.testEntity!.isExam != null &&
               bloc.testEntity!.isExam!) {
             return Column(
@@ -168,7 +171,7 @@ class _TestViewState extends State<TestView> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  'Вы уже сдали этот тест,\nваш результат: ${bloc.testEntity!.correctQuestions ?? 0}/${bloc.testEntity!.allQuestions ?? bloc.testEntity!.questions.length}',
+                  'Вы уже сдали этот тест',
                   style: MainConfigApp.app.isSiignores
                       ? TextStyles.black_18_w700
                       : TextStyles.white_18_w400
@@ -272,7 +275,7 @@ class _TestViewState extends State<TestView> {
           );
         },
       ),
-      floatingActionButton: bloc.testEntity?.correctQuestions != null &&
+      floatingActionButton: bloc.state == TestLoadingState() || bloc.testEntity == null || bloc.testEntity!.isChecked &&
               bloc.testEntity!.isExam != null &&
               bloc.testEntity!.isExam!
           ? null

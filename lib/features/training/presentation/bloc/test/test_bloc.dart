@@ -71,7 +71,7 @@ class TestBloc extends Bloc<TestEvent, TestState> {
             return TestCompleteState(
               allQuestions: data['all_questions'] ?? 0,
               correctQuestions: data['your_result'] ?? 0,
-              isExam: (testEntity!.isExam != null && testEntity!.isExam!) || (testEntity!.isExam == null && data['all_questions'] != null && data['all_questions']! <= 30)
+              isExam: (testEntity!.isExam != null && testEntity!.isExam!)
             );
           }
         );

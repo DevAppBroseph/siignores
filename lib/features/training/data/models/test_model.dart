@@ -7,17 +7,13 @@ class TestModel extends TestEntity {
     required String? description,
     required List<QuestionTest> questions,
     required bool? isExam,
-    required bool? isChecked,
-    required int? allQuestions,
-    required int? correctQuestions,
+    required bool isChecked,
   }) : super(
             id: id,
             title: title,
             description: description,
             questions: questions,
-            allQuestions: allQuestions,
             isChecked: isChecked,
-            correctQuestions: correctQuestions,
             isExam: isExam);
 
   factory TestModel.fromJson(Map<String, dynamic> json) => TestModel(
@@ -25,9 +21,7 @@ class TestModel extends TestEntity {
         title: json['name'],
         description: json['description'],
         isExam: json['is_exam'],
-        isChecked: json['is_checked'] ?? false,
-        allQuestions: json['all_questions'],
-        correctQuestions: json['your_result'],
+        isChecked: json['is_blocked'] ?? false,
         questions: json['question_set'] == null
             ? []
             : (json['question_set'] as List)
