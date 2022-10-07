@@ -10,6 +10,7 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 import '../../../../../core/error/failures.dart';
 import '../../../../../core/services/database/auth_params.dart';
 import '../../../../../locator.dart';
+import '../../../../auth/data/models/user_model.dart';
 import '../../../../home/data/models/notification_model.dart';
 import '../../../domain/usecases/get_chat.dart';
 part 'chat_event.dart';
@@ -62,10 +63,11 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
               message: jsonDecode(event)['type'] ?? 'message',
               time: DateTime.now()
             )));
-          }else if(jsonDecode(event)['chat_id'] == currentChatId){
-            chatRoom.messages.add(ChatMessageModel.fromJson(jsonDecode(event)));
-            add(ChatSetStateEvent());
           }
+          // else if(jsonDecode(event)['chat_id'] == currentChatId){
+          //   chatRoom.messages.add(ChatMessageModel.fromJson(jsonDecode(event)));
+          //   add(ChatSetStateEvent());
+          // }
         });
       }
     }
@@ -81,6 +83,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         'chat_id': event.chatId,
         'message': event.message
       }));
+      chatRoom.messages.add(ChatMessageModel(from: sl<AuthConfig>().userEntity as UserModel, message: event.message, time: DateTime.now()));
+      add(ChatSetStateEvent());
+
     }
 
     if(event is ChatSetStateEvent){

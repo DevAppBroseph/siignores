@@ -34,8 +34,6 @@ class _SplashViewState extends State<SplashView> {
 
   @override
   Widget build(BuildContext context) {
-    print('WIDTH APP: ${MediaQuery.of(context).size.width}');
-    print('HEIGHT APP: ${MediaQuery.of(context).size.height}');
     if(MediaQuery.of(context).size.width > 550){
       setState(() {
         ScreenUtil.init(context, designSize: Size(495, 812));

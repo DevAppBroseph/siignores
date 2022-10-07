@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -37,13 +40,19 @@ class _ChatViewState extends State<ChatView> {
   TextEditingController messageController = TextEditingController();
   bool isLoading = true;
   ScrollController scrollController = ScrollController();
+  late StreamSubscription<bool> keyboardSub;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     context.read<ChatBloc>().add(GetChatEvent(id: widget.chatTabEntity.id));
-
+    keyboardSub = KeyboardVisibilityController().onChange.listen((event) async{
+      print('event: $event');
+      if (event == true) {
+        Future.delayed(Duration(milliseconds: 150), scrollToBottom);
+      }
+    });
   }
 
   void sendMessage() async{
@@ -57,7 +66,13 @@ class _ChatViewState extends State<ChatView> {
   }
 
   void scrollToBottom() {
-    scrollController.jumpTo(scrollController.position.maxScrollExtent);
+    scrollController.jumpTo(scrollController.position.maxScrollExtent+100.h);
+  }
+
+  @override
+  void dispose() {
+    keyboardSub.cancel();
+    super.dispose();
   }
 
   @override
@@ -117,7 +132,7 @@ class _ChatViewState extends State<ChatView> {
                   setState(() {
                     isLoading = false;
                   });
-                  scrollToBottom();
+                  Future.delayed(Duration(milliseconds: 150), scrollToBottom);
                 }
               },
               builder: (context, state){
@@ -175,7 +190,7 @@ class _ChatViewState extends State<ChatView> {
                           : _buildMessage(context, bloc.chatRoom.messages[i]);
                         }
                       ),
-                      SizedBox(height: 155.h)
+                      SizedBox(height: 105.h)
                     ],
                   ),
                 ),
@@ -192,9 +207,10 @@ class _ChatViewState extends State<ChatView> {
             right: 0,
             left: 0,
             child: Container(
-              height: 105.h,
-              alignment: Alignment.topCenter,
-              padding: EdgeInsets.fromLTRB(20.w, 20.h, 24.w, 0),
+              // height: 105.h,
+              constraints: BoxConstraints(minHeight: 105.h),
+              alignment: Alignment.bottomCenter,
+              padding: EdgeInsets.fromLTRB(20.w, 20.h, 24.w, 30.h),
               decoration: BoxDecoration(
                 color: MainConfigApp.app.isSiignores ? ColorStyles.white : ColorStyles.black2,
                 borderRadius: BorderRadius.only(
@@ -211,6 +227,10 @@ class _ChatViewState extends State<ChatView> {
                   // SizedBox(width: 15.w,),
                   Expanded(
                     child: TextFormField(
+                      keyboardType: TextInputType.multiline,
+                      minLines: 1,
+                      maxLines: 6,
+                      textCapitalization: TextCapitalization.sentences,
                       controller: messageController,
                       style: MainConfigApp.app.isSiignores
                         ? TextStyles.black_14_w400

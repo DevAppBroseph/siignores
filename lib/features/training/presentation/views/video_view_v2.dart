@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:video_player/video_player.dart';
 import 'package:chewie/chewie.dart';
@@ -29,6 +31,8 @@ class _VideoViewState extends State<VideoView> {
       videoPlayerController: videoPlayerController,
       autoPlay: true,
       looping: true,
+      deviceOrientationsAfterFullScreen: [DeviceOrientation.portraitUp],
+      customControls: const MaterialControls(showPlayButton: true,)
     );
     seekTo(widget.duration);
     setState(() {});
@@ -70,7 +74,7 @@ class _VideoViewState extends State<VideoView> {
                 onTap: () => Navigator.pop(context),
                 child: Row(
                   children: [
-                    SizedBox(width: MediaQuery.of(context).size.width > 550 ? 40.w : 20.w,),
+                    SizedBox(width: 20.w,),
                     Icon(
                       Icons.close,
                       color: Colors.white,
