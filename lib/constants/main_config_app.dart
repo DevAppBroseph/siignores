@@ -40,6 +40,15 @@ extension AppExtension on App {
     }
   }
 
+  String get name {
+    switch (this) {
+      case App.siignores:
+        return 'Siignores';
+      case App.secondApp:
+        return 'IBK';
+    }
+  }
+
   bool get isSiignores {
     return this == App.siignores;
   }

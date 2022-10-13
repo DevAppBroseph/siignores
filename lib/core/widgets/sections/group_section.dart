@@ -73,9 +73,11 @@ class GroupSection extends StatelessWidget {
               centerButton: MainConfigApp.app.isSiignores,
               chatTabEntity: bloc.chatTabs[0],
               onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ChatView(
-                  chatTabEntity: bloc.chatTabs[0],
-                )));
+                Navigator.pushNamed(
+                    context,
+                    'chat',
+                    arguments: {'chat_tab': bloc.chatTabs[0]},
+                );
               },
             ),
             if(bloc.chatTabs.length >= 2)
@@ -84,9 +86,11 @@ class GroupSection extends StatelessWidget {
               centerButton: MainConfigApp.app.isSiignores,
               chatTabEntity: bloc.chatTabs[1],
               onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ChatView(
-                  chatTabEntity: bloc.chatTabs[1],
-                )));
+                Navigator.pushNamed(
+                    context,
+                    'chat',
+                    arguments: {'chat_tab': bloc.chatTabs[1]},
+                );
               },
             ),]
           ],

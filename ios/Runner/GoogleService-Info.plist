@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>960152891906-v592afgu46cjrci21hf67pcrrrst7m5v.apps.googleusercontent.com</string>
+	<string>960152891906-b3p6ponbd9nn5749okri36kllr92pvb7.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.960152891906-v592afgu46cjrci21hf67pcrrrst7m5v</string>
+	<string>com.googleusercontent.apps.960152891906-b3p6ponbd9nn5749okri36kllr92pvb7</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>960152891906-ke87kf88hpfuti7c0lh9fo54mijvdtas.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>dev.broseph.siignores</string>
+	<string>dev.broseph.ibk</string>
 	<key>PROJECT_ID</key>
 	<string>gastrosoft-bcb27</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:960152891906:ios:397578df68787267acad1b</string>
+	<string>1:960152891906:ios:c18dd418e869e26aacad1b</string>
 </dict>
 </plist>

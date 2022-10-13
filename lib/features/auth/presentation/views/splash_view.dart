@@ -10,10 +10,13 @@ import 'package:siignores/features/main/presentation/views/main_view.dart';
 import 'package:siignores/features/training/presentation/bloc/course/course_bloc.dart';
 import '../../../../constants/colors/color_styles.dart';
 import '../../../../core/utils/toasts.dart';
+import '../../../../core/widgets/modals/dialogs/top_message_dialog.dart';
 import '../../../../locator.dart';
 import '../../../chat/presentation/bloc/chat_tabs/chat_tabs_bloc.dart';
 import '../../../home/presentation/bloc/notifications/notifications_bloc.dart';
 import '../../../home/presentation/bloc/progress/progress_bloc.dart';
+import '../../../home/presentation/views/calendar_view.dart';
+import '../../../main/presentation/bloc/main_screen/main_screen_bloc.dart';
 import '../bloc/auth/auth_bloc.dart';
 
 
@@ -84,9 +87,27 @@ class _SplashViewState extends State<SplashView> {
             return BlocConsumer<ChatBloc, ChatState>(
               listener: (context, state){
                 if(state is NewNotificationState){
-                  setState(() {
-                    context.read<NotificationsBloc>().notifications.add(state.notificationEntity);
-                  });
+                  if(state.isNotification){
+                    setState(() {
+                      context.read<NotificationsBloc>().notifications.add(state.notificationEntity);
+                    });
+                  }else if(!context.read<ChatBloc>().isOpened){
+                    TopMessageDialog().showDialog(
+                      context, 
+                      message: state.notificationEntity.message, 
+                      onTap: (){
+                        if(state.chatId == null){
+                          context.read<MainScreenBloc>().add(ChangeViewEvent(widget: CalendarView()));
+                        }else{
+                          Navigator.pushNamed(
+                            context,
+                            'chat',
+                            arguments: {'chat_tab': context.read<ChatTabsBloc>().chatTabs.where((element) => element.id == state.chatId).first},
+                          );
+                        }
+                      }
+                    );
+                  }
                 }
               },
               builder: (context, state) {

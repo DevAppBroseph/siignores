@@ -7,6 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:siignores/constants/main_config_app.dart';
 import 'package:siignores/features/auth/presentation/bloc/register/register_bloc.dart';
+import 'package:siignores/features/chat/domain/entities/chat_tab_entity.dart';
+import 'package:siignores/features/chat/presentation/views/chat_view.dart';
 import 'package:siignores/features/home/presentation/bloc/notifications/notifications_bloc.dart';
 import 'constants/colors/color_styles.dart';
 import 'constants/texts/text_styles.dart';
@@ -30,7 +32,6 @@ import 'locator.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
   await FirebaseMessaging.instance.requestPermission(
     alert: true,
     announcement: false,
@@ -77,7 +78,10 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Siignores',
+          title: MainConfigApp.app.name,
+          routes: {
+            'chat': (BuildContext ctx) => ChatView(),
+          },
           theme: ThemeData(
               primaryColor: ColorStyles.primary,
               primarySwatch: ColorStyles.primarySwath,

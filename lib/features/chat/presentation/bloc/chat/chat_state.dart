@@ -19,5 +19,7 @@ class ChatBlankState extends ChatState{}
 class ChatSetStateState extends ChatState{}
 class NewNotificationState extends ChatState{
   final NotificationEntity notificationEntity;
-  NewNotificationState({required this.notificationEntity});
+  final int? chatId;
+  final bool isNotification;
+  NewNotificationState({required this.notificationEntity, required this.chatId, required this.isNotification});
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
 import 'package:siignores/core/services/network/endpoints.dart';
 import 'package:siignores/features/chat/data/models/chat_message_model.dart';
 import 'package:siignores/features/chat/domain/entities/chat_room_entity.dart';
@@ -24,6 +25,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   ChatRoomEntity chatRoom = ChatRoomEntity(count: 0, users: [], messages: []);
   WebSocketChannel? channel;
   int currentChatId = 0;
+  bool isOpened = false;
   
   @override
   Stream<ChatState> mapEventToState(ChatEvent event) async*{
@@ -56,13 +58,24 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       if(channel != null){
         channel!.stream.listen((event) {
           print('EVENT WS: $event');
-
-          if(jsonDecode(event)['type'] == 'notification'){
+          if(jsonDecode(event)['type'] == 'notification' && jsonDecode(event)['notifications'] != null){
             add(NewNotificationEvent(notificationEntity: NotificationModel(
               id: 0,
               message: jsonDecode(event)['type'] ?? 'message',
+              time: DateTime.now(),
+            ), chatId: null, isNotification: true));
+          }else if(jsonDecode(event)['chat_id'] != null){
+            add(NewNotificationEvent(notificationEntity: NotificationModel(
+              id: 0,
+              message: jsonDecode(event)['message'] ?? 'message',
               time: DateTime.now()
-            )));
+            ), chatId: jsonDecode(event)['chat_id'], isNotification: false));
+          }else if(jsonDecode(event)['notifications'] == null){
+            add(NewNotificationEvent(notificationEntity: NotificationModel(
+              id: 0,
+              message: jsonDecode(event)['message'] ?? 'Новое событие в календаре',
+              time: DateTime.now()
+            ), chatId: null, isNotification: false));
           }
           // else if(jsonDecode(event)['chat_id'] == currentChatId){
           //   chatRoom.messages.add(ChatMessageModel.fromJson(jsonDecode(event)));
@@ -74,7 +87,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
     if(event is NewNotificationEvent){
       yield ChatBlankState();
-      yield NewNotificationState(notificationEntity: event.notificationEntity);
+      yield NewNotificationState(notificationEntity: event.notificationEntity, chatId: event.chatId, isNotification: event.isNotification);
     }
 
 

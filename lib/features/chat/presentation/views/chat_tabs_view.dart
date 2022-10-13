@@ -76,9 +76,14 @@ class ChatTabsView extends StatelessWidget {
                         child: ChatCard(
                           chatTabEntity: bloc.chatTabs[i],
                           onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => ChatView(
-                              chatTabEntity: bloc.chatTabs[i],
-                            )));
+                            Navigator.pushNamed(
+                                context,
+                                'chat',
+                                arguments: {'chat_tab': bloc.chatTabs[i]},
+                            );
+                            // Navigator.pushNamed(context, MaterialPageRoute(builder: (context) => ChatView(
+                            //   chatTabEntity: bloc.chatTabs[i],
+                            // )));
                           },
                         )
                       );

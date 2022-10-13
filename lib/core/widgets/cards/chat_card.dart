@@ -1,10 +1,15 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:siignores/constants/colors/color_styles.dart';
 import 'package:siignores/constants/main_config_app.dart';
 import 'package:siignores/features/chat/domain/entities/chat_tab_entity.dart';
+import 'package:siignores/features/chat/presentation/bloc/chat/chat_bloc.dart';
+import 'package:siignores/features/home/data/models/notification_model.dart';
+import 'package:siignores/features/home/domain/entities/notification_entity.dart';
 
 import '../../../constants/texts/text_styles.dart';
 import '../../utils/helpers/url_launcher.dart';
@@ -62,6 +67,15 @@ class ChatCard extends StatelessWidget {
           Bounce(
             duration: Duration(milliseconds: 110),
             onPressed: (){
+              // context.read<ChatBloc>().add(NewNotificationEvent(
+              //   notificationEntity: NotificationModel(
+              //     id: 0,
+              //     time: DateTime.now(),
+              //     message: 'Новое событие! Посмотрите календарь!'
+              //   ),
+              //   chatId: null,
+              //   isNotification: false
+              // ));
               if(!chatTabEntity.flag && chatTabEntity.linkTelegram != null){
                 launchURL(chatTabEntity.linkTelegram!.contains('http') 
                         ? chatTabEntity.linkTelegram! 

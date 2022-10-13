@@ -26,9 +26,9 @@ import '../widgets/chat_message_item_from_current_user.dart';
 
 
 class ChatView extends StatefulWidget {
-  final ChatTabEntity chatTabEntity;
+  // final ChatTabEntity chatTabEntity;
 
-  ChatView({required this.chatTabEntity});
+  // ChatView({required this.chatTabEntity});
 
   @override
   State<ChatView> createState() => _ChatViewState();
@@ -42,25 +42,37 @@ class _ChatViewState extends State<ChatView> {
   ScrollController scrollController = ScrollController();
   late StreamSubscription<bool> keyboardSub;
 
+  ChatTabEntity? chatTabEntity;
+  bool inited = false;
+
   @override
   void initState() {
+    context.read<ChatBloc>().isOpened = true;
     // TODO: implement initState
     super.initState();
-    context.read<ChatBloc>().add(GetChatEvent(id: widget.chatTabEntity.id));
+    // context.read<ChatBloc>().add(GetChatEvent(id: widget.chatTabEntity.id));
     keyboardSub = KeyboardVisibilityController().onChange.listen((event) async{
       print('event: $event');
       if (event == true) {
         Future.delayed(Duration(milliseconds: 150), scrollToBottom);
       }
     });
+
   }
 
+  void getChat(){
+    if(!inited){
+      context.read<ChatBloc>().add(GetChatEvent(id: chatTabEntity!.id));
+    }
+    inited = true;
+
+  }
   void sendMessage() async{
     if(messageController.text.trim().length > 0){
       setState(() {
         isLoading = true;
       });
-      context.read<ChatBloc>().add(SendMessageEvent(chatId: widget.chatTabEntity.id, message: messageController.text.trim()));
+      context.read<ChatBloc>().add(SendMessageEvent(chatId: chatTabEntity!.id, message: messageController.text.trim()));
       messageController.clear();
     }
   }
@@ -74,9 +86,18 @@ class _ChatViewState extends State<ChatView> {
     keyboardSub.cancel();
     super.dispose();
   }
+  
+  @override
+  void deactivate() {
+    context.read<ChatBloc>().isOpened = false;
+    // TODO: implement deactivate
+    super.deactivate();
+  }
 
   @override
   Widget build(BuildContext context) {
+    chatTabEntity = ((ModalRoute.of(context)?.settings.arguments ?? <String, dynamic>{}) as Map)['chat_tab'];
+    getChat();
     ChatBloc bloc = context.read<ChatBloc>();
     
     return Scaffold(
@@ -84,17 +105,17 @@ class _ChatViewState extends State<ChatView> {
         elevation: 1.h,
         title: GestureDetector(
           onTap: (){
-            if(bloc.chatRoom.users.isNotEmpty && bloc.currentChatId == widget.chatTabEntity.id){
+            if(bloc.chatRoom.users.isNotEmpty && bloc.currentChatId == chatTabEntity!.id){
               showModalGroupUsers(context, bloc.chatRoom.users);
             }
           },
           behavior: HitTestBehavior.translucent,
           child: Column(
             children: [
-              Text(widget.chatTabEntity.chatName, style: MainConfigApp.app.isSiignores 
+              Text(chatTabEntity!.chatName, style: MainConfigApp.app.isSiignores 
                 ? TextStyles.title_app_bar
                 : TextStyles.title_app_bar2,),
-              Text('${widget.chatTabEntity.usersCount} участников', style: MainConfigApp.app.isSiignores
+              Text('${chatTabEntity!.usersCount} участников', style: MainConfigApp.app.isSiignores
                 ? TextStyles.black_13_w400
                 : TextStyles.white_13_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
             ],
@@ -206,69 +227,76 @@ class _ChatViewState extends State<ChatView> {
             bottom: 0,
             right: 0,
             left: 0,
-            child: Container(
-              // height: 105.h,
-              constraints: BoxConstraints(minHeight: 105.h),
-              alignment: Alignment.bottomCenter,
-              padding: EdgeInsets.fromLTRB(20.w, 20.h, 24.w, 30.h),
-              decoration: BoxDecoration(
-                color: MainConfigApp.app.isSiignores ? ColorStyles.white : ColorStyles.black2,
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(15.w),
-                  topLeft: Radius.circular(15.w),
+            child: GestureDetector(
+              onVerticalDragUpdate: (details){
+                if(details.delta.dy > 20){
+                  FocusManager.instance.primaryFocus?.unfocus();
+                }
+              },
+              child: Container(
+                // height: 105.h,
+                constraints: BoxConstraints(minHeight: 105.h),
+                alignment: Alignment.bottomCenter,
+                padding: EdgeInsets.fromLTRB(20.w, 20.h, 24.w, 30.h),
+                decoration: BoxDecoration(
+                  color: MainConfigApp.app.isSiignores ? ColorStyles.white : ColorStyles.black2,
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(15.w),
+                    topLeft: Radius.circular(15.w),
+                  ),
                 ),
-              ),
-              child: Row(
-                children: [
-                  // SvgPicture.asset(
-                  //   'assets/svg/chat_clip.svg',
-                  //   color: MainConfigApp.app.isSiignores ? null : ColorStyles.white,
-                  // ),
-                  // SizedBox(width: 15.w,),
-                  Expanded(
-                    child: TextFormField(
-                      keyboardType: TextInputType.multiline,
-                      minLines: 1,
-                      maxLines: 6,
-                      textCapitalization: TextCapitalization.sentences,
-                      controller: messageController,
-                      style: MainConfigApp.app.isSiignores
-                        ? TextStyles.black_14_w400
-                        : TextStyles.white_14_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),
-                      decoration: InputDecoration(
-                        hintStyle: MainConfigApp.app.isSiignores
-                        ? TextStyles.black_14_w400.copyWith(color: ColorStyles.black.withOpacity(0.4))
-                        : TextStyles.white_14_w400.copyWith(fontFamily: MainConfigApp.fontFamily4, color: ColorStyles.white.withOpacity(0.4)),
-                        hintText: 'Написать сообщение...',
-                        contentPadding: EdgeInsets.symmetric(horizontal: 19.w, vertical: 17.h),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(11.w),
-                          borderSide: BorderSide(
-                            width: 1.w,
-                            color: MainConfigApp.app.isSiignores ? ColorStyles.black.withOpacity(0.1) : ColorStyles.white.withOpacity(0.1)
-                          )
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(11.w),
-                          borderSide: BorderSide(
-                            width: 1.w,
-                            color: MainConfigApp.app.isSiignores ? ColorStyles.black.withOpacity(0.1) : ColorStyles.white.withOpacity(0.1)
-                          )
-                        ),
-                        suffixIcon: GestureDetector(
-                          onTap: sendMessage,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 7.w),
-                            child: SvgPicture.asset(
-                              MainConfigApp.app.isSiignores ? 'assets/svg/send_btn.svg' : 'assets/svg/send_btn2.svg',
-                            ),
+                child: Row(
+                  children: [
+                    // SvgPicture.asset(
+                    //   'assets/svg/chat_clip.svg',
+                    //   color: MainConfigApp.app.isSiignores ? null : ColorStyles.white,
+                    // ),
+                    // SizedBox(width: 15.w,),
+                    Expanded(
+                      child: TextFormField(
+                        keyboardType: TextInputType.multiline,
+                        minLines: 1,
+                        maxLines: 6,
+                        textCapitalization: TextCapitalization.sentences,
+                        controller: messageController,
+                        style: MainConfigApp.app.isSiignores
+                          ? TextStyles.black_14_w400
+                          : TextStyles.white_14_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),
+                        decoration: InputDecoration(
+                          hintStyle: MainConfigApp.app.isSiignores
+                          ? TextStyles.black_14_w400.copyWith(color: ColorStyles.black.withOpacity(0.4))
+                          : TextStyles.white_14_w400.copyWith(fontFamily: MainConfigApp.fontFamily4, color: ColorStyles.white.withOpacity(0.4)),
+                          hintText: 'Написать сообщение...',
+                          contentPadding: EdgeInsets.symmetric(horizontal: 19.w, vertical: 17.h),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(11.w),
+                            borderSide: BorderSide(
+                              width: 1.w,
+                              color: MainConfigApp.app.isSiignores ? ColorStyles.black.withOpacity(0.1) : ColorStyles.white.withOpacity(0.1)
+                            )
                           ),
-                        )
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(11.w),
+                            borderSide: BorderSide(
+                              width: 1.w,
+                              color: MainConfigApp.app.isSiignores ? ColorStyles.black.withOpacity(0.1) : ColorStyles.white.withOpacity(0.1)
+                            )
+                          ),
+                          suffixIcon: GestureDetector(
+                            onTap: sendMessage,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 7.w),
+                              child: SvgPicture.asset(
+                                MainConfigApp.app.isSiignores ? 'assets/svg/send_btn.svg' : 'assets/svg/send_btn2.svg',
+                              ),
+                            ),
+                          )
+                        ),
                       ),
-                    ),
-                  )
-                ],
-              )
+                    )
+                  ],
+                )
+              ),
             )
           ),
 
