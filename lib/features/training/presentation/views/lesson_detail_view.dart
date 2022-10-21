@@ -104,7 +104,6 @@ class _LessonDetailViewState extends State<LessonDetailView> {
 
   @override
   Widget build(BuildContext context) {
-    print('ID: ${widget.lessonId}');
     LessonDetailBloc bloc = context.read<LessonDetailBloc>();
     if (bloc.selectedLessonId != widget.lessonId) {
       bloc.add(GetLessonDetailEvent(id: widget.lessonId));

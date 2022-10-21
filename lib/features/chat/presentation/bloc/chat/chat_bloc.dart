@@ -57,29 +57,35 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       
       if(channel != null){
         channel!.stream.listen((event) {
-          print('EVENT WS: $event');
-          if(jsonDecode(event)['type'] == 'notification' && jsonDecode(event)['notifications'] != null){
+          print('EVENT WS: $event from: ${jsonDecode(event)['from']['id'] != sl<AuthConfig>().userEntity!.id}');
+          // Событие в календаре
+          if(jsonDecode(event)['message'] != null && jsonDecode(event)['notifications'] != null){
             add(NewNotificationEvent(notificationEntity: NotificationModel(
               id: 0,
-              message: jsonDecode(event)['type'] ?? 'message',
+              message: jsonDecode(event)['message'],
               time: DateTime.now(),
-            ), chatId: null, isNotification: true));
+              chatId: null
+            )));
+          // Из чата
           }else if(jsonDecode(event)['chat_id'] != null){
+            if(jsonDecode(event)['chat_id'] == currentChatId && jsonDecode(event)['from']['id'] != sl<AuthConfig>().userEntity!.id){
+              chatRoom.messages.add(ChatMessageModel.fromJson(jsonDecode(event)));
+              add(ChatSetStateEvent());
+            }
             add(NewNotificationEvent(notificationEntity: NotificationModel(
               id: 0,
-              message: jsonDecode(event)['message'] ?? 'message',
-              time: DateTime.now()
-            ), chatId: jsonDecode(event)['chat_id'], isNotification: false));
-          }else if(jsonDecode(event)['notifications'] == null){
-            add(NewNotificationEvent(notificationEntity: NotificationModel(
-              id: 0,
-              message: jsonDecode(event)['message'] ?? 'Новое событие в календаре',
-              time: DateTime.now()
-            ), chatId: null, isNotification: false));
+              message: 'Сообщение в группе: ${jsonDecode(event)['message']}',
+              time: DateTime.now(),
+              chatId: jsonDecode(event)['chat_id'])
+            ));
+          // Событие в календаре
           }
-          // else if(jsonDecode(event)['chat_id'] == currentChatId){
-          //   chatRoom.messages.add(ChatMessageModel.fromJson(jsonDecode(event)));
-          //   add(ChatSetStateEvent());
+          // else if(jsonDecode(event)['notifications'] == null){
+          //   add(NewNotificationEvent(notificationEntity: NotificationModel(
+          //     id: 0,
+          //     message: jsonDecode(event)['message'] ?? 'Новое событие в календаре',
+          //     time: DateTime.now()
+          //   ), chatId: null, isNotification: false));
           // }
         });
       }
@@ -87,7 +93,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
     if(event is NewNotificationEvent){
       yield ChatBlankState();
-      yield NewNotificationState(notificationEntity: event.notificationEntity, chatId: event.chatId, isNotification: event.isNotification);
+      yield NewNotificationState(notificationEntity: event.notificationEntity);
     }
 
 

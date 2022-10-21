@@ -16,6 +16,7 @@ import '../../../../constants/texts/text_styles.dart';
 import '../../../../core/utils/toasts.dart';
 import '../../../../core/widgets/modals/lecture_modal.dart';
 import '../../../../core/widgets/sections/group_section.dart';
+import '../../../chat/presentation/bloc/chat_tabs/chat_tabs_bloc.dart';
 import '../../../main/presentation/bloc/main_screen/main_screen_bloc.dart';
 import '../../../profile/presentation/views/profile_view.dart';
 import '../bloc/offers/offers_bloc.dart';
@@ -89,7 +90,7 @@ class _HomeViewState extends State<HomeView> {
                     SizedBox(height: 20.h,),
                     TopInfoHome(
                       onTapByName: (){
-                        context.read<MainScreenBloc>().add(ChangeViewEvent(widget: ProfileView()));
+                        context.read<MainScreenBloc>().add(ChangeViewEvent(view: context.read<ChatTabsBloc>().chatTabs.isNotEmpty ? 3 : 2));
                       }, 
                     ),
                     SizedBox(height: 28.h,),

@@ -43,7 +43,7 @@ extension AppExtension on App {
   String get name {
     switch (this) {
       case App.siignores:
-        return 'Siignores';
+        return 'WOMEN’S CHANGE';
       case App.secondApp:
         return 'IBK';
     }

@@ -14,11 +14,13 @@ class LessonCard extends StatelessWidget {
   final Function() onTap;
   final bool isCompleted;
   final LessonListEntity lessonListEntity;
+  final bool back;
   const LessonCard(
       {Key? key,
       required this.onTap,
       required this.isCompleted,
-      required this.lessonListEntity})
+      required this.lessonListEntity,
+      required this.back})
       : super(key: key);
 
   @override
@@ -139,13 +141,30 @@ class LessonCard extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               constraints: BoxConstraints(minHeight: 140.h),
               margin: EdgeInsets.fromLTRB(0, 0, 0, 14.h),
-              padding: EdgeInsets.fromLTRB(14.w, 22.h, 0, 0),
               decoration: BoxDecoration(
                   color: ColorStyles.white,
                   borderRadius: BorderRadius.circular(14.h)),
               child: Stack(
                 children: [
-                  Positioned(
+                  back
+                  ? Positioned(
+                    bottom: 0,
+                    right: 0,
+                    top: 0,
+                    left: 0,
+                    child: Container(
+                      child: CachedImage(
+                          height: null,
+                          isProfilePhoto: false,
+                          fit: BoxFit.cover,
+                          borderRadius: BorderRadius.circular(14.h),
+                          alignment: Alignment.bottomRight,
+                          urlImage: lessonListEntity.image == null
+                              ? null
+                              : Config.url.url + lessonListEntity.image!),
+                    ),
+                  )
+                  : Positioned(
                     bottom: 5.h,
                     right: 5.h,
                     child: Container(
@@ -161,39 +180,42 @@ class LessonCard extends StatelessWidget {
                               : Config.url.url + lessonListEntity.image!),
                     ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.7,
-                              child: Text(
-                                lessonListEntity.title.toUpperCase(),
-                                style: TextStyles.black_15_w300,
-                              )),
-                          SizedBox(
-                            width: 10.h,
-                          ),
-                          getStatusWidget(lessonListEntity),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 5.h,
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.6,
-                        child: Text(
-                          lessonListEntity.miniDesc,
-                          style: TextStyles.black_20_w300,
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(14.w, 22.h, 0, 0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.7,
+                                child: Text(
+                                  lessonListEntity.title.toUpperCase(),
+                                  style: TextStyles.black_15_w300,
+                                )),
+                            SizedBox(
+                              width: 10.h,
+                            ),
+                            getStatusWidget(lessonListEntity),
+                          ],
                         ),
-                      ),
-                      SizedBox(
-                        height: 10.h,
-                      ),
-                    ],
+                        SizedBox(
+                          height: 5.h,
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.6,
+                          child: Text(
+                            lessonListEntity.miniDesc,
+                            style: TextStyles.black_20_w300,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10.h,
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:siignores/core/usecases/usecase.dart';
+import 'package:siignores/features/home/data/models/notification_model.dart';
 import '../../../../../core/error/failures.dart';
 import '../../../domain/entities/notification_entity.dart';
 import '../../../domain/usecases/get_notifications.dart';
@@ -24,6 +25,9 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
         (failure) => errorCheck(failure),
         (data){
           notifications = data;
+          notifications.add(
+            NotificationModel(id: 0, message: 'Message from', time: DateTime.now(), chatId: null)
+          );
           return GotSuccessNotificationsState();
         }
       );

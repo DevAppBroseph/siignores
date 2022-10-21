@@ -99,7 +99,7 @@ class _ChatViewState extends State<ChatView> {
     chatTabEntity = ((ModalRoute.of(context)?.settings.arguments ?? <String, dynamic>{}) as Map)['chat_tab'];
     getChat();
     ChatBloc bloc = context.read<ChatBloc>();
-    
+    print('CHAT ID: ${chatTabEntity?.id}');
     return Scaffold(
       appBar: AppBar(
         elevation: 1.h,

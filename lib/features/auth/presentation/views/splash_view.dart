@@ -87,22 +87,44 @@ class _SplashViewState extends State<SplashView> {
             return BlocConsumer<ChatBloc, ChatState>(
               listener: (context, state){
                 if(state is NewNotificationState){
-                  if(state.isNotification){
-                    setState(() {
-                      context.read<NotificationsBloc>().notifications.add(state.notificationEntity);
-                    });
-                  }else if(!context.read<ChatBloc>().isOpened){
+                  // if(state.isNotification){
+                  //   setState(() {
+                  //     context.read<NotificationsBloc>().notifications.add(state.notificationEntity);
+                  //   });
+                  // }else if(!context.read<ChatBloc>().isOpened){
+                  //   TopMessageDialog().showDialog(
+                  //     context, 
+                  //     message: state.notificationEntity.message, 
+                  //     onTap: (){
+                  //       if(state.chatId == null){
+                  //         context.read<MainScreenBloc>().add(ChangeViewEvent(widget: CalendarView()));
+                  //       }else{
+                  //         Navigator.pushNamed(
+                  //           context,
+                  //           'chat',
+                  //           arguments: {'chat_tab': context.read<ChatTabsBloc>().chatTabs.where((element) => element.id == state.chatId).first},
+                  //         );
+                  //       }
+                  //     }
+                  //   );
+                  // }
+
+
+                  setState(() {
+                    context.read<NotificationsBloc>().notifications.add(state.notificationEntity);
+                  });
+                  if(!context.read<ChatBloc>().isOpened){
                     TopMessageDialog().showDialog(
                       context, 
                       message: state.notificationEntity.message, 
                       onTap: (){
-                        if(state.chatId == null){
+                        if(state.notificationEntity.chatId == null){
                           context.read<MainScreenBloc>().add(ChangeViewEvent(widget: CalendarView()));
                         }else{
                           Navigator.pushNamed(
                             context,
                             'chat',
-                            arguments: {'chat_tab': context.read<ChatTabsBloc>().chatTabs.where((element) => element.id == state.chatId).first},
+                            arguments: {'chat_tab': context.read<ChatTabsBloc>().chatTabs.where((element) => element.id == state.notificationEntity.chatId).first},
                           );
                         }
                       }

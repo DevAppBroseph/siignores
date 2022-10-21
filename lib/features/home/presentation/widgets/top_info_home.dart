@@ -13,7 +13,11 @@ import '../../../../core/utils/toasts.dart';
 import '../../../../core/widgets/image/cached_image.dart';
 import '../../../../locator.dart';
 import '../../../auth/presentation/bloc/auth/auth_bloc.dart';
+import '../../../chat/presentation/bloc/chat_tabs/chat_tabs_bloc.dart';
+import '../../../main/presentation/bloc/main_screen/main_screen_bloc.dart';
+import '../../domain/entities/notification_entity.dart';
 import '../bloc/notifications/notifications_bloc.dart';
+import '../views/calendar_view.dart';
 
 
 
@@ -23,10 +27,11 @@ class TopInfoHome extends StatelessWidget {
   
   NotificationsBloc? notificationsBloc;
   clearNotifications(){
-    Future.delayed(Duration(seconds: 3), (){
       notificationsBloc!.add(ClearNotificationsEvent());
-    });
+    // Future.delayed(Duration(seconds: 3), (){
+    // });
   }
+  CustomPopupMenuController controller = CustomPopupMenuController();
   @override
   Widget build(BuildContext context) {
     NotificationsBloc bloc = context.read<NotificationsBloc>();
@@ -91,12 +96,20 @@ class TopInfoHome extends StatelessWidget {
                         arrowColor: ColorStyles.white,
                         arrowSize: 20,
                         showArrow: true,
+                        controller: controller,
                         child: SvgPicture.asset(
                           'assets/svg/notification.svg',
                           width: MediaQuery.of(context).size.width > 550 ? 20.w : null,
                           color: MainConfigApp.app.isSiignores ? null : ColorStyles.white,
                         ),
-                        menuBuilder: _buildLongPressMenu,
+                        menuBuilder: (){
+                          return _buildLongPressMenu(context, notificationsBloc!.notifications);
+                        },
+                        menuOnChange: (open){
+                          if(!open){
+                            clearNotifications();
+                          }
+                        },
                         barrierColor: Colors.black.withOpacity(0.5),
                         pressType: PressType.singleClick,
                         
@@ -133,7 +146,7 @@ class TopInfoHome extends StatelessWidget {
 
 
 
-  Widget _buildLongPressMenu() {
+  Widget _buildLongPressMenu(BuildContext context, List<NotificationEntity> notifications) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(14.h),
       child: Container(
@@ -142,28 +155,42 @@ class TopInfoHome extends StatelessWidget {
         color: ColorStyles.white,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: notificationsBloc!.notifications.map((not) 
-            => Container(
-              width: double.maxFinite,
-              padding: EdgeInsets.symmetric(vertical: 26.h),
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(width: 1.h, color: ColorStyles.black.withOpacity(0.15))
-                )
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(not.message, style: MainConfigApp.app.isSiignores
-                    ? TextStyles.black_15_w500
-                    : TextStyles.black_15_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
-                  SizedBox(height: 4.h,),
-                  Text(convertToAgo(not.time), style: MainConfigApp.app.isSiignores 
-                    ? TextStyles.black_13_w400
-                    .copyWith(color: ColorStyles.black.withOpacity(0.5))
-                    : TextStyles.black_13_w400
-                    .copyWith(fontFamily: MainConfigApp.fontFamily4, color: ColorStyles.black.withOpacity(0.5)),)
-                ],
+          children: notifications.reversed.toList().map((not) 
+            => GestureDetector(
+              onTap: (){
+                controller.hideMenu();
+                if(not.chatId == null){
+                  context.read<MainScreenBloc>().add(ChangeViewEvent(widget: CalendarView()));
+                }else{
+                  Navigator.pushNamed(
+                    context,
+                    'chat',
+                    arguments: {'chat_tab': context.read<ChatTabsBloc>().chatTabs.where((element) => element.id == not.chatId).first},
+                  );
+                }
+              },
+              child: Container(
+                width: double.maxFinite,
+                padding: EdgeInsets.symmetric(vertical: 26.h),
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(width: 1.h, color: ColorStyles.black.withOpacity(0.15))
+                  )
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(not.message, style: MainConfigApp.app.isSiignores
+                      ? TextStyles.black_15_w500
+                      : TextStyles.black_15_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
+                    SizedBox(height: 4.h,),
+                    Text(convertToAgo(not.time), style: MainConfigApp.app.isSiignores 
+                      ? TextStyles.black_13_w400
+                      .copyWith(color: ColorStyles.black.withOpacity(0.5))
+                      : TextStyles.black_13_w400
+                      .copyWith(fontFamily: MainConfigApp.fontFamily4, color: ColorStyles.black.withOpacity(0.5)),)
+                  ],
+                ),
               ),
             )
           ).toList()
