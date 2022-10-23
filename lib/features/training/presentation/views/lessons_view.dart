@@ -96,7 +96,7 @@ class LessonsView extends StatelessWidget {
                         itemBuilder: (context, i) {
                           return LessonCard(
                               lessonListEntity: bloc.lessons[i],
-                              back: moduleEntity.title == 'БОНУСЫ' && i == 0,
+                              back: moduleEntity.title.trim() == 'БОНУСЫ' && i == 0,
                               onTap: () {
                                 if (bloc.lessons[i].tests.isNotEmpty) {
                                   context

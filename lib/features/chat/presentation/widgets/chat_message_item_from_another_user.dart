@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:siignores/constants/main_config_app.dart';
+import 'package:siignores/features/auth/domain/entities/user_entity.dart';
 import 'package:siignores/features/chat/domain/entities/chat_message_entity.dart';
 import '../../../../constants/colors/color_styles.dart';
 import '../../../../constants/texts/text_styles.dart';
@@ -12,10 +13,15 @@ import '../../../../core/widgets/image/cached_image.dart';
 
 class ChatMessageItemFromAnotherUser extends StatelessWidget {
   final ChatMessageEntity chatMessage;
-  const ChatMessageItemFromAnotherUser({Key? key, required this.chatMessage}) : super(key: key);
+  final List<UserEntity> users;
+  final bool showName;
+  const ChatMessageItemFromAnotherUser({Key? key, required this.showName, required this.chatMessage, required this.users}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Color color = users.any((element) => element.id == chatMessage.from.id)
+                      ? users.where((element) => element.id == chatMessage.from.id).first.color
+                      : Colors.red;
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,10 +45,20 @@ class ChatMessageItemFromAnotherUser extends StatelessWidget {
                   color: MainConfigApp.app.isSiignores ? ColorStyles.white : ColorStyles.black2,
                   borderRadius: BorderRadius.circular(12.w),
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 18.w, vertical: 16.h),
-                child: Text(chatMessage.message, style: MainConfigApp.app.isSiignores
-                  ? TextStyles.black_14_w400
-                  : TextStyles.white_14_w400.copyWith(color: ColorStyles.white, fontFamily: MainConfigApp.fontFamily4),),
+                padding: EdgeInsets.fromLTRB(18.w, 12.h, 18.w, 16.h),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if(showName)
+                    ...[Text('${chatMessage.from.firstName} ${chatMessage.from.lastName}', style: MainConfigApp.app.isSiignores
+                      ? TextStyles.black_14_w700.copyWith(color: color)
+                      : TextStyles.white_14_w700.copyWith(color: color, fontFamily: MainConfigApp.fontFamily4),),
+                    SizedBox(height: 4.h,)],
+                    Text(chatMessage.message, style: MainConfigApp.app.isSiignores
+                      ? TextStyles.black_14_w400
+                      : TextStyles.white_14_w400.copyWith(color: ColorStyles.white, fontFamily: MainConfigApp.fontFamily4),),
+                  ],
+                ),
               )
             ],
           ),

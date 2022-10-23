@@ -20,6 +20,7 @@ import '../../../../core/widgets/btns/back_appbar_btn.dart';
 import '../../../../core/widgets/loaders/loader_v1.dart';
 import '../../../../core/widgets/modals/group_users_modal.dart';
 import '../../../../locator.dart';
+import '../../../auth/domain/entities/user_entity.dart';
 import '../../../auth/presentation/bloc/auth/auth_bloc.dart';
 import '../widgets/chat_message_item_from_current_user.dart';
 
@@ -205,10 +206,20 @@ class _ChatViewState extends State<ChatView> {
                                 ? TextStyles.black_13_w400
                                 : TextStyles.white_13_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
                               SizedBox(height: 27.h,),
-                              _buildMessage(context, bloc.chatRoom.messages[i])
+                              _buildMessage(
+                                context, 
+                                bloc.chatRoom.messages[i], 
+                                bloc.chatRoom.users,
+                                i == 0 || bloc.chatRoom.messages[i-1].from.id != bloc.chatRoom.messages[i].from.id
+                              )
                             ],
                           )
-                          : _buildMessage(context, bloc.chatRoom.messages[i]);
+                          : _buildMessage(
+                            context, 
+                            bloc.chatRoom.messages[i], 
+                            bloc.chatRoom.users,
+                            i == 0 || bloc.chatRoom.messages[i-1].from.id != bloc.chatRoom.messages[i].from.id
+                          );
                         }
                       ),
                       SizedBox(height: 105.h)
@@ -323,7 +334,7 @@ class _ChatViewState extends State<ChatView> {
 
 
 
-  Widget _buildMessage(BuildContext context, ChatMessageEntity chatMessageEntity){
+  Widget _buildMessage(BuildContext context, ChatMessageEntity chatMessageEntity, List<UserEntity> users, bool showName){
     return Container(
       margin: EdgeInsets.only(bottom: 20.h),
       child: chatMessageEntity.from.id == sl<AuthConfig>().userEntity!.id
@@ -332,6 +343,8 @@ class _ChatViewState extends State<ChatView> {
         )
         : ChatMessageItemFromAnotherUser(
           chatMessage: chatMessageEntity,
+          users: users,
+          showName: showName,
         )
     );
   }

@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
+
 class MainConfigApp {
   //======== APP SETTINGS ========//
 
-  static App app = App.siignores;
+  static App app = App.secondApp;
 
   static String telegram = MainConfigApp.app.isSiignores
       ? 'https://t.me/siignores'
@@ -14,6 +16,16 @@ class MainConfigApp {
       MainConfigApp.app.isSiignores ? 'Юлия' : 'Екатерина';
   static String hintLastname =
       MainConfigApp.app.isSiignores ? 'Бойкова' : 'Образцова';
+
+  static List<Color> colorsOfUsers = [
+    Color(0xFF0260E8),
+    Color(0xFF7EB3FF),
+    Color(0xFF117243),
+    Color(0xFFA7E541),
+    Color(0xFFFFD600),
+    Color(0xFFF85C50),
+    Color(0xFFFF2970),
+  ];
 
   String? urlToCompany;
   bool isTelegram = false;

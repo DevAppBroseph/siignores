@@ -147,55 +147,73 @@ class TopInfoHome extends StatelessWidget {
 
 
   Widget _buildLongPressMenu(BuildContext context, List<NotificationEntity> notifications) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(14.h),
-      child: Container(
-        width: 330.w,
-        padding: EdgeInsets.symmetric(horizontal: 23.w),
-        color: ColorStyles.white,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: notifications.reversed.toList().map((not) 
-            => GestureDetector(
-              onTap: (){
-                controller.hideMenu();
-                if(not.chatId == null){
-                  context.read<MainScreenBloc>().add(ChangeViewEvent(widget: CalendarView()));
-                }else{
-                  Navigator.pushNamed(
-                    context,
-                    'chat',
-                    arguments: {'chat_tab': context.read<ChatTabsBloc>().chatTabs.where((element) => element.id == not.chatId).first},
-                  );
-                }
-              },
-              child: Container(
-                width: double.maxFinite,
-                padding: EdgeInsets.symmetric(vertical: 26.h),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(width: 1.h, color: ColorStyles.black.withOpacity(0.15))
-                  )
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(not.message, style: MainConfigApp.app.isSiignores
-                      ? TextStyles.black_15_w500
-                      : TextStyles.black_15_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
-                    SizedBox(height: 4.h,),
-                    Text(convertToAgo(not.time), style: MainConfigApp.app.isSiignores 
-                      ? TextStyles.black_13_w400
-                      .copyWith(color: ColorStyles.black.withOpacity(0.5))
-                      : TextStyles.black_13_w400
-                      .copyWith(fontFamily: MainConfigApp.fontFamily4, color: ColorStyles.black.withOpacity(0.5)),)
-                  ],
-                ),
-              ),
+    double deltaX = 0;
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(14.h),
+          child: Container(
+            width: 330.w,
+            padding: EdgeInsets.symmetric(horizontal: 23.w),
+            color: ColorStyles.white,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: notifications.reversed.toList().map((not) 
+                => GestureDetector(
+                  onTap: (){
+                    controller.hideMenu();
+                    if(not.chatId == null){
+                      context.read<MainScreenBloc>().add(ChangeViewEvent(widget: CalendarView()));
+                    }else{
+                      Navigator.pushNamed(
+                        context,
+                        'chat',
+                        arguments: {'chat_tab': context.read<ChatTabsBloc>().chatTabs.where((element) => element.id == not.chatId).first},
+                      );
+                    }
+                  },
+                  onHorizontalDragUpdate: (details) {
+                    deltaX = details.delta.dx;
+                  },
+                  onHorizontalDragEnd: (_){
+                    if (deltaX > 20 || deltaX < -20) {
+                      setState((){
+                        notifications.remove(not);
+                      });
+                    }
+                    if(notifications.isEmpty){
+                      controller.hideMenu();
+                    }
+                  },
+                  child: Container(
+                    width: double.maxFinite,
+                    padding: EdgeInsets.symmetric(vertical: 26.h),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(width: 1.h, color: ColorStyles.black.withOpacity(0.15))
+                      )
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(not.message, style: MainConfigApp.app.isSiignores
+                          ? TextStyles.black_15_w500
+                          : TextStyles.black_15_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),),
+                        SizedBox(height: 4.h,),
+                        Text(convertToAgo(not.time), style: MainConfigApp.app.isSiignores 
+                          ? TextStyles.black_13_w400
+                          .copyWith(color: ColorStyles.black.withOpacity(0.5))
+                          : TextStyles.black_13_w400
+                          .copyWith(fontFamily: MainConfigApp.fontFamily4, color: ColorStyles.black.withOpacity(0.5)),)
+                      ],
+                    ),
+                  ),
+                )
+              ).toList()
             )
-          ).toList()
-        )
-      ),
+          ),
+        );
+      }
     );
   }
 }

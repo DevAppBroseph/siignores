@@ -25,9 +25,15 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
         (failure) => errorCheck(failure),
         (data){
           notifications = data;
-          notifications.add(
-            NotificationModel(id: 0, message: 'Message from', time: DateTime.now(), chatId: null)
-          );
+          // notifications.add(
+          //   NotificationModel(id: 0, message: 'Message from', time: DateTime.now(), chatId: null),
+          // );
+          // notifications.add(
+          //   NotificationModel(id: 2, message: 'Message from 2', time: DateTime.now(), chatId: null),
+          // );
+          // notifications.add(
+          //   NotificationModel(id: 3, message: 'Message from 3', time: DateTime.now(), chatId: null),
+          // );
           return GotSuccessNotificationsState();
         }
       );

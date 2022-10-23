@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:siignores/constants/main_config_app.dart';
 import 'package:siignores/core/services/network/endpoints.dart';
 import 'package:siignores/features/chat/data/models/chat_message_model.dart';
 import 'package:siignores/features/chat/domain/entities/chat_room_entity.dart';
@@ -38,6 +39,15 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
         (data){
           currentChatId = event.id;
           chatRoom = data;
+          int colorIndex = 0;
+          for(int i = 0; i < chatRoom.users.length; i++){
+            chatRoom.users[i].color = MainConfigApp.colorsOfUsers[colorIndex];
+            if(colorIndex == MainConfigApp.colorsOfUsers.length-1){
+              colorIndex = 0;
+            }else{
+              colorIndex++;
+            }
+          } 
           return GotSuccessChatState();
         }
       );
@@ -57,7 +67,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
       
       if(channel != null){
         channel!.stream.listen((event) {
-          print('EVENT WS: $event from: ${jsonDecode(event)['from']['id'] != sl<AuthConfig>().userEntity!.id}');
+          print('EVENT WS: $event');
           // Событие в календаре
           if(jsonDecode(event)['message'] != null && jsonDecode(event)['notifications'] != null){
             add(NewNotificationEvent(notificationEntity: NotificationModel(

@@ -89,14 +89,14 @@ showModalLecture(
                         ),
                         SizedBox(height: 22.h,),
                         Text(
-                          '${offerEntity.header}', 
+                          offerEntity.header, 
                           style: MainConfigApp.app.isSiignores
                             ? TextStyles.black_18_w700
                             : TextStyles.black_18_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),
                         ),
                         SizedBox(height: 22.h,),
                         Text(
-                          '${offerEntity.description}', 
+                          offerEntity.description == 'null' ? '' : offerEntity.description, 
                           style: MainConfigApp.app.isSiignores
                             ? TextStyles.black_13_w400
                             : TextStyles.black_13_w400.copyWith(fontFamily: MainConfigApp.fontFamily4),
