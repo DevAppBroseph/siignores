@@ -45,7 +45,10 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
       yield GotSuccessNotificationsState();
     }
 
-    
+    if(event is SetStateNotificationsEvent){
+      yield NotificationsBlankState();
+      yield GotSuccessNotificationsState();
+    }
   }
 
 

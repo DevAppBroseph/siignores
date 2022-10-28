@@ -79,7 +79,7 @@ class _ChatViewState extends State<ChatView> {
   }
 
   void scrollToBottom() {
-    scrollController.jumpTo(scrollController.position.maxScrollExtent+100.h);
+    scrollController.jumpTo(scrollController.position.maxScrollExtent);
   }
 
   @override
@@ -100,7 +100,6 @@ class _ChatViewState extends State<ChatView> {
     chatTabEntity = ((ModalRoute.of(context)?.settings.arguments ?? <String, dynamic>{}) as Map)['chat_tab'];
     getChat();
     ChatBloc bloc = context.read<ChatBloc>();
-    print('CHAT ID: ${chatTabEntity?.id}');
     return Scaffold(
       appBar: AppBar(
         elevation: 1.h,
@@ -144,7 +143,7 @@ class _ChatViewState extends State<ChatView> {
                   setState(() {
                     isLoading = false;
                   });
-                  Future.delayed(Duration(milliseconds: 10), (){
+                  Future.delayed(Duration(milliseconds: 50), (){
                     if(bloc.chatRoom.messages.isNotEmpty){
                       scrollToBottom();
                     }
@@ -180,7 +179,7 @@ class _ChatViewState extends State<ChatView> {
                     ],
                   );
                 }
-
+                WidgetsBinding.instance.addPostFrameCallback((_) => scrollToBottom());
                 return SingleChildScrollView(
                   controller: scrollController,
                   child: Padding(

@@ -56,38 +56,36 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
     if(event is StartSocketEvent){
 
-      try{
-        print('URL: ${Endpoints.chatWS.getPath(params: [sl<AuthConfig>().token])}');
-        channel = WebSocketChannel.connect(
-          Uri.parse(Endpoints.chatWS.getPath(params: [sl<AuthConfig>().token])),
-        );
-      }catch(e){
-        yield ChatErrorState(message: 'Ошибка с сервером');
-      }
+      print('URL: ${Endpoints.chatWS.getPath(params: [sl<AuthConfig>().token])}');
+      channel = WebSocketChannel.connect(
+        Uri.parse(Endpoints.chatWS.getPath(params: [sl<AuthConfig>().token])),
+      );
       
       if(channel != null){
-        channel!.stream.listen((event) {
-          print('EVENT WS: $event');
+        channel!.stream.listen((eventWS) {
+          print('EVENT WS: $eventWS');
           // Событие в календаре
-          if(jsonDecode(event)['message'] != null && jsonDecode(event)['notifications'] != null){
+          if(jsonDecode(eventWS)['message'] != null && jsonDecode(eventWS)['notifications'] != null){
             add(NewNotificationEvent(notificationEntity: NotificationModel(
               id: 0,
-              message: jsonDecode(event)['message'],
+              message: jsonDecode(eventWS)['message'],
               time: DateTime.now(),
               chatId: null
             )));
           // Из чата
-          }else if(jsonDecode(event)['chat_id'] != null){
-            if(jsonDecode(event)['chat_id'] == currentChatId && jsonDecode(event)['from']['id'] != sl<AuthConfig>().userEntity!.id){
-              chatRoom.messages.add(ChatMessageModel.fromJson(jsonDecode(event)));
+          }else if(jsonDecode(eventWS)['chat_id'] != null){
+            if(jsonDecode(eventWS)['chat_id'] == currentChatId && jsonDecode(eventWS)['from']['id'] != sl<AuthConfig>().userEntity!.id){
+              chatRoom.messages.add(ChatMessageModel.fromJson(jsonDecode(eventWS)));
               add(ChatSetStateEvent());
             }
-            add(NewNotificationEvent(notificationEntity: NotificationModel(
-              id: 0,
-              message: 'Сообщение в группе: ${jsonDecode(event)['message']}',
-              time: DateTime.now(),
-              chatId: jsonDecode(event)['chat_id'])
-            ));
+            if(!(isOpened && jsonDecode(eventWS)['chat_id'] == currentChatId) && jsonDecode(eventWS)['from']['id'] != sl<AuthConfig>().userEntity!.id){
+              add(NewNotificationEvent(notificationEntity: NotificationModel(
+                id: 0,
+                message: 'Сообщение в группе: ${jsonDecode(eventWS)['message']}',
+                time: DateTime.now(),
+                chatId: jsonDecode(eventWS)['chat_id'])
+              ));
+            }
           // Событие в календаре
           }
           // else if(jsonDecode(event)['notifications'] == null){
@@ -97,7 +95,19 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
           //     time: DateTime.now()
           //   ), chatId: null, isNotification: false));
           // }
-        });
+        },
+        onDone: () {
+          debugPrint('ws channel closed');
+        },
+        onError: (error){
+          print('SOCKET ERROR: $error');
+          if(event.trialsCount < 4){
+            channel!.sink.close();
+            add(StartSocketEvent(trialsCount: event.trialsCount+1));
+          }
+        }
+        
+        );
       }
     }
 

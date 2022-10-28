@@ -176,7 +176,7 @@ class TopInfoHome extends StatelessWidget {
                     deltaX = details.delta.dx;
                   },
                   onHorizontalDragEnd: (_){
-                    if (deltaX > 20 || deltaX < -20) {
+                    if (deltaX > 6 || deltaX < -6) {
                       setState((){
                         notifications.remove(not);
                       });

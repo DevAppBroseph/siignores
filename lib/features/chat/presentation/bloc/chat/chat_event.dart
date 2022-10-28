@@ -11,7 +11,10 @@ class GetChatEvent extends ChatEvent{
   GetChatEvent({required this.id});
 }
 
-class StartSocketEvent extends ChatEvent{}
+class StartSocketEvent extends ChatEvent{
+  final int trialsCount;
+  StartSocketEvent({this.trialsCount = 0});
+}
 class CloseSocketEvent extends ChatEvent{}
 class SendMessageEvent extends ChatEvent{
   final int chatId;

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class MainConfigApp {
   //======== APP SETTINGS ========//
 
-  static App app = App.secondApp;
+  static App app = App.siignores;
 
   static String telegram = MainConfigApp.app.isSiignores
       ? 'https://t.me/siignores'

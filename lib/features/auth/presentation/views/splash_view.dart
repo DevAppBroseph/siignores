@@ -6,6 +6,7 @@ import 'package:siignores/constants/texts/text_styles.dart';
 import 'package:siignores/core/services/database/auth_params.dart';
 import 'package:siignores/features/auth/presentation/views/sign_in_view.dart';
 import 'package:siignores/features/chat/presentation/bloc/chat/chat_bloc.dart';
+import 'package:siignores/features/home/presentation/bloc/calendar/calendar_bloc.dart';
 import 'package:siignores/features/main/presentation/views/main_view.dart';
 import 'package:siignores/features/training/presentation/bloc/course/course_bloc.dart';
 import '../../../../constants/colors/color_styles.dart';
@@ -113,6 +114,10 @@ class _SplashViewState extends State<SplashView> {
                   setState(() {
                     context.read<NotificationsBloc>().notifications.add(state.notificationEntity);
                   });
+                  context.read<NotificationsBloc>().add(SetStateNotificationsEvent());
+                  if(state.notificationEntity.chatId == null){
+                    context.read<CalendarBloc>().add(GetCalendarEvent());
+                  }
                   if(!context.read<ChatBloc>().isOpened){
                     TopMessageDialog().showDialog(
                       context, 

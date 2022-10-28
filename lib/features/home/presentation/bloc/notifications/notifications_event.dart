@@ -8,4 +8,5 @@ class NotificationsEvent extends Equatable {
 
 class GetNotificationsEvent extends NotificationsEvent{}
 class ClearNotificationsEvent extends NotificationsEvent{}
+class SetStateNotificationsEvent extends NotificationsEvent{}
 

@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 import '../../domain/entities/calendar_entity.dart';
 
 class CalendarModel extends CalendarEntity{
@@ -18,13 +20,14 @@ class CalendarModel extends CalendarEntity{
     period: period,
   );
 
-  factory CalendarModel.fromJson(Map<String, dynamic> json) => CalendarModel(
-    id: json['id'] ?? 1,
-    header: json['header'],
-    description: json['description'],
-    dateTime: DateTime.parse('${json['date']} ${json['time']}').toLocal(),
-    period: json['period'],
-    nonCycle: json['non_cycle']
-    
-  );
+  factory CalendarModel.fromJson(Map<String, dynamic> json){
+    return CalendarModel(
+      id: json['id'] ?? 1,
+      header: json['header'],
+      description: json['description'],
+      dateTime: DateFormat("yyyy-MM-dd HH:mm:ss").parse('${json['date']} ${json['time']}', true).toLocal(),//DateTime.parse('${json['date']} ${json['time']}').toLocal(),
+      period: json['period'],
+      nonCycle: json['non_cycle']
+    );
+  }
 }

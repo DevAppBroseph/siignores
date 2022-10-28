@@ -145,7 +145,7 @@ class _EditProfileViewState extends State<EditProfileView> {
                       },
                       controller: emailController,
                     ),
-                    SizedBox(height: 50.h,),
+                    SizedBox(height: 32.h,),
                     // Container(
                     //   padding: EdgeInsets.symmetric(horizontal: 20.h, vertical: 20.h),
                     //   decoration: BoxDecoration(
@@ -162,7 +162,11 @@ class _EditProfileViewState extends State<EditProfileView> {
                     //     ],
                     //   ),
                     // ),
-                    SizedBox(height: 280.h,),
+                    PrimaryBtn(
+                      title: 'Сохранить изменения',
+                      onTap: () => saveTap(context),
+                    ),
+                    SizedBox(height: 80.h,),
                   ],
                 ),
               ),
@@ -172,18 +176,18 @@ class _EditProfileViewState extends State<EditProfileView> {
       ),
 
 
-      floatingActionButton: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          PrimaryBtn(
-            title: 'Сохранить изменения',
-            onTap: () => saveTap(context),
-          ),
-                    SizedBox(height: 140.h,),
-        ],
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // floatingActionButton: Column(
+      //   crossAxisAlignment: CrossAxisAlignment.center,
+      //   mainAxisAlignment: MainAxisAlignment.end,
+      //   children: [
+      //     PrimaryBtn(
+      //       title: 'Сохранить изменения',
+      //       onTap: () => saveTap(context),
+      //     ),
+      //               SizedBox(height: 140.h,),
+      //   ],
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
